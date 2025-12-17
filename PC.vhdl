@@ -20,7 +20,7 @@ BEGIN
     PROCESS(clk, rst)
     BEGIN
         IF rst = '1' THEN
-            pc_reg <= (OTHERS => '0');
+            pc_reg <= x"00000010";
         ELSIF rising_edge(clk) THEN
             IF pc_write = '1' THEN
                 pc_reg <= pc_in;

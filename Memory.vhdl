@@ -27,20 +27,28 @@ ARCHITECTURE Behavior OF Memory IS
     -- 1. Assemble your code.
     -- 2. Place it here.
     CONSTANT INIT_RAM : ram_type := (
-        0 => x"00000010", -- [Reset Vector] PC Start Address = 16 (0x10)
-        1 => x"00000100", -- [Int Vector]   Interrupt Handler Address = 256
-        2 => x"00000000", -- [Int 0]
-        3 => x"00000000", -- [Int 1]
-        
-        -- ...
-        
-        16 => x"78040005", -- LDM R1, 5       # R1 = 5
-        17 => x"7808000A", -- LDM R2, 10      # R2 = 10
-        18 => x"49500000", -- ADD R4, R1, R2  # R4 = R1 + R2 = 15
-    
-        OTHERS => (others => '0')
-    );
-
+    16 => x"78040014", -- LDM R1, 20      # R1 = 20 (0x14)
+    17 => x"7808000A", -- LDM R2, 10      # R2 = 10 (0x0A)
+    18 => x"780C0005", -- LDM R3, 5       # R3 = 5  (0x05)
+    19 => x"00000000", -- NOP
+    20 => x"00000000", -- NOP
+    21 => x"00000000", -- NOP
+    22 => x"51500000", -- SUB R4, R1, R2
+    23 => x"00000000", -- NOP
+    24 => x"00000000", -- NOP
+    25 => x"00000000", -- NOP
+    26 => x"5A740000", -- AND R5, R2, R3
+    27 => x"00000000", -- NOP
+    28 => x"00000000", -- NOP
+    29 => x"00000000", -- NOP
+    30 => x"61180005", -- IADD R6, R1, 5
+    31 => x"00000000", -- NOP
+    32 => x"00000000", -- NOP
+    33 => x"00000000", -- NOP
+    34 => x"495C0000", -- ADD R7, R1, R2
+    35 => x"08000000", -- HLT
+    OTHERS => (others => '0')
+);
     SIGNAL ram : ram_type := INIT_RAM;
     
     CONSTANT ZEROS : std_logic_vector(31 DOWNTO 0) := (OTHERS => '0');
