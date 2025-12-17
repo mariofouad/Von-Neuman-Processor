@@ -1,76 +1,47 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
--- USE work.Processor_Pkg.all; -- Package usage depends on user preference, we'll keep it explicit for now.
+USE work.Processor_Pkg.all;
 
 ENTITY Processor IS
     PORT (
         clk           : IN  std_logic;
         rst           : IN  std_logic;
         
-        -- Control Signals (Input from Testbench/Control Unit)
-        
-        -- Register File Controls
-        reg_write_en1 : IN  std_logic;
-        reg_write_en2 : IN  std_logic;
-        r_addr1       : IN  std_logic_vector(2 DOWNTO 0);
-        r_addr2       : IN  std_logic_vector(2 DOWNTO 0);
-        w_addr1       : IN  std_logic_vector(2 DOWNTO 0);
-        w_addr2       : IN  std_logic_vector(2 DOWNTO 0);
-        
-        -- ALU Controls
-        alu_sel       : IN  std_logic_vector(2 DOWNTO 0);
-        src_b_sel     : IN  std_logic; -- NEW: 0 for RegB, 1 for Immediate
-        
-        -- Immediate Input
-        imm_in        : IN  std_logic_vector(15 DOWNTO 0); -- NEW
-        
-        -- Memory Controls
-        mem_write     : IN  std_logic;
-        
-        -- Mux Selections
-        -- 0: ALU Result, 1: Memory Out
-        wb_sel        : IN  std_logic; 
-        
-        -- PC Controls
-        pc_write      : IN  std_logic;
-        pc_inc        : IN  std_logic;
-        
-        -- SP Controls
-        sp_write      : IN  std_logic;
-
-        -- Address Selection
-        -- 00: PC (Fetch)
-        -- 01: ALU Result (Load/Store)
-        -- 10: SP (Push/Pop)
-        addr_sel      : IN  std_logic_vector(1 DOWNTO 0);
-        
-        -- ALU Src A Selection
-        -- 00: Register A
-        -- 01: PC
-        -- 10: SP
-        src_a_sel     : IN  std_logic_vector(1 DOWNTO 0);
-        
-        -- Memory Data Input Selection
-        -- 0: Register B (Store)
-        -- 1: PC (Push Return Address)
-        mem_data_sel  : IN  std_logic;
-
-        -- Debug Outputs (To see what's happening in TB)
-        alu_out_debug : OUT std_logic_vector(31 DOWNTO 0);
-        mem_out_debug : OUT std_logic_vector(31 DOWNTO 0)
+        -- Debug Outputs
+        debug_pc      : OUT std_logic_vector(31 DOWNTO 0);
+        debug_inst    : OUT std_logic_vector(31 DOWNTO 0); -- NEW
+        debug_reg_w_en: OUT std_logic;                     -- NEW
+        debug_mem_w_en: OUT std_logic;                     -- NEW
+        debug_alu     : OUT std_logic_vector(31 DOWNTO 0)
     );
 END Processor;
 
 ARCHITECTURE Structure OF Processor IS
 
-    -- Component Declarations
+    ----------------------------------------------------------------------------
+    -- COMPONENTS
+    ----------------------------------------------------------------------------
+    COMPONENT ControlUnit
+    PORT (
+        opcode      : IN  std_logic_vector(4 DOWNTO 0);
+        reg_write   : OUT std_logic;
+        wb_sel      : OUT std_logic; 
+        mem_write   : OUT std_logic;
+        mem_read    : OUT std_logic;
+        alu_sel     : OUT std_logic_vector(2 DOWNTO 0);
+        alu_src_b   : OUT std_logic;
+        branch_type : OUT std_logic_vector(2 DOWNTO 0);
+        sp_write    : OUT std_logic
+    );
+    END COMPONENT;
+
     COMPONENT RegisterFile
     PORT(
         clk           : IN  std_logic;
         rst           : IN  std_logic;
         reg_write_en1 : IN  std_logic;
-        reg_write_en2 : IN  std_logic;
+        reg_write_en2 : IN  std_logic; -- Not used in simple pipeline
         read_addr1    : IN  std_logic_vector(2 DOWNTO 0);
         read_addr2    : IN  std_logic_vector(2 DOWNTO 0);
         write_addr1   : IN  std_logic_vector(2 DOWNTO 0);
@@ -116,124 +87,263 @@ ARCHITECTURE Structure OF Processor IS
     );
     END COMPONENT;
 
-    COMPONENT SP
+    -- PIPELINE REGISTERS
+    COMPONENT IF_ID_Reg
     PORT (
-        clk      : IN  std_logic;
-        rst      : IN  std_logic;
-        sp_write : IN  std_logic;
-        sp_in    : IN  std_logic_vector(31 DOWNTO 0);
-        sp_out   : OUT std_logic_vector(31 DOWNTO 0)
+        clk, rst, en : IN std_logic;
+        pc_in, inst_in : IN std_logic_vector(31 DOWNTO 0);
+        pc_out, inst_out : OUT std_logic_vector(31 DOWNTO 0)
     );
     END COMPONENT;
 
-    -- Internal Signals
-    SIGNAL r_data1, r_data2 : std_logic_vector(31 DOWNTO 0);
-    SIGNAL alu_result       : std_logic_vector(31 DOWNTO 0);
-    SIGNAL mem_data_out     : std_logic_vector(31 DOWNTO 0);
-    
-    SIGNAL pc_val           : std_logic_vector(31 DOWNTO 0);
-    SIGNAL sp_val           : std_logic_vector(31 DOWNTO 0);
-    
-    -- Mux Outputs
-    SIGNAL write_back_data  : std_logic_vector(31 DOWNTO 0);
-    SIGNAL mem_addr         : std_logic_vector(31 DOWNTO 0);
-    SIGNAL alu_src_a        : std_logic_vector(31 DOWNTO 0);
-    SIGNAL alu_src_b        : std_logic_vector(31 DOWNTO 0); -- NEW
-    SIGNAL mem_data_in      : std_logic_vector(31 DOWNTO 0);
-    
-    SIGNAL imm_extended     : std_logic_vector(31 DOWNTO 0); -- NEW
-    
-    -- Flags
-    SIGNAL z, n, c : std_logic;
+    COMPONENT ID_EX_Reg
+    PORT (
+        clk, rst, en : IN std_logic;
+        reg_write_in, wb_sel_in, mem_write_in, mem_read_in, alu_src_b_in : IN std_logic;
+        alu_sel_in : IN std_logic_vector(2 DOWNTO 0);
+        pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
+        r_addr1_in, r_addr2_in, w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
+        
+        reg_write_out, wb_sel_out, mem_write_out, mem_read_out, alu_src_b_out : OUT std_logic;
+        alu_sel_out : OUT std_logic_vector(2 DOWNTO 0);
+        pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
+        r_addr1_out, r_addr2_out, w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
+    );
+    END COMPONENT;
 
+    COMPONENT EX_MEM_Reg
+    PORT (
+        clk, rst, en : IN std_logic;
+        reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
+        alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
+        
+        reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
+        alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
+    );
+    END COMPONENT;
+    
+    COMPONENT MEM_WB_Reg
+    PORT (
+        clk, rst, en : IN std_logic;
+        reg_write_in, wb_sel_in : IN std_logic;
+        mem_data_in, alu_result_in : IN std_logic_vector(31 DOWNTO 0);
+        w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
+        
+        reg_write_out, wb_sel_out : OUT std_logic;
+        mem_data_out, alu_result_out : OUT std_logic_vector(31 DOWNTO 0);
+        w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
+    );
+    END COMPONENT;
+
+    ----------------------------------------------------------------------------
+    -- SIGNALS
+    ----------------------------------------------------------------------------
+    
+    -- STAGE: IF
+    SIGNAL pc_current, pc_next, pc_plus_1 : std_logic_vector(31 DOWNTO 0);
+    SIGNAL if_inst : std_logic_vector(31 DOWNTO 0);
+    SIGNAL if_stall : std_logic;
+    
+    -- STAGE: ID
+    SIGNAL id_pc, id_inst : std_logic_vector(31 DOWNTO 0);
+    SIGNAL id_opcode : std_logic_vector(4 DOWNTO 0);
+    SIGNAL id_r1, id_r2, id_w : std_logic_vector(2 DOWNTO 0);
+    SIGNAL id_imm_ext : std_logic_vector(31 DOWNTO 0);
+    SIGNAL id_r_data1, id_r_data2 : std_logic_vector(31 DOWNTO 0);
+    
+    -- Control Signals in ID
+    SIGNAL c_reg_write, c_wb_sel, c_mem_write, c_mem_read, c_alu_src_b, c_sp_write : std_logic;
+    SIGNAL c_alu_sel : std_logic_vector(2 DOWNTO 0);
+    SIGNAL c_branch_type : std_logic_vector(2 DOWNTO 0);
+    
+    -- STAGE: EX
+    SIGNAL ex_reg_write, ex_wb_sel, ex_mem_write, ex_mem_read, ex_alu_src_b : std_logic;
+    SIGNAL ex_alu_sel : std_logic_vector(2 DOWNTO 0);
+    SIGNAL ex_pc, ex_r_data1, ex_r_data2, ex_imm_ext : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_r_addr1, ex_r_addr2, ex_w_addr_dest : std_logic_vector(2 DOWNTO 0);
+    
+    SIGNAL ex_src_a, ex_src_b : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_alu_result : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_zero, ex_neg, ex_carry : std_logic;
+    
+    -- STAGE: MEM
+    SIGNAL mem_reg_write, mem_wb_sel, mem_mem_write, mem_mem_read : std_logic;
+    SIGNAL mem_alu_result, mem_write_data : std_logic_vector(31 DOWNTO 0);
+    SIGNAL mem_w_addr_dest : std_logic_vector(2 DOWNTO 0);
+    SIGNAL mem_read_data : std_logic_vector(31 DOWNTO 0);
+    
+    -- STAGE: WB
+    SIGNAL wb_reg_write, wb_wb_sel : std_logic;
+    SIGNAL wb_mem_data, wb_alu_result : std_logic_vector(31 DOWNTO 0);
+    SIGNAL wb_w_addr_dest : std_logic_vector(2 DOWNTO 0);
+    SIGNAL wb_write_data : std_logic_vector(31 DOWNTO 0);
+    
+    -- MEMORY ARBITER
+    SIGNAL memory_addr : std_logic_vector(31 DOWNTO 0);
+    SIGNAL memory_we : std_logic;
+    SIGNAL memory_data_in : std_logic_vector(31 DOWNTO 0);
+    SIGNAL memory_data_out : std_logic_vector(31 DOWNTO 0);
+    SIGNAL mem_busy : std_logic;
+
+    -- Signals for Static Port Mapping
+    SIGNAL pc_write_sig : std_logic;
+    SIGNAL if_id_en_sig : std_logic;
+    
 BEGIN
-
-    -- 0. IMMEDIATE EXTENSION (Sign extension)
-    imm_extended <= std_logic_vector(resize(signed(imm_in), 32));
-
-    -- 1. WRITE BACK MUX
-    write_back_data <= alu_result WHEN wb_sel = '0' ELSE mem_data_out;
-
-    -- 2. MEMORY ADDRESS MUX (PC, ALU, SP)
-    -- 00: PC, 01: ALU, 10: SP
-    WITH addr_sel SELECT
-        mem_addr <= pc_val     WHEN "00",
-                    alu_result WHEN "01",
-                    sp_val     WHEN "10",
-                    (others => '0') WHEN OTHERS;
     
-    -- 3. ALU SRC A MUX (RegA, PC, SP)
-    WITH src_a_sel SELECT
-        alu_src_a <= r_data1 WHEN "00",
-                     pc_val  WHEN "01",
-                     sp_val  WHEN "10",
-                     (others => '0') WHEN OTHERS;
-                     
-    -- 3.5 ALU SRC B MUX (RegB, Imm) --> NEW
-    alu_src_b <= r_data2 WHEN src_b_sel = '0' ELSE imm_extended;
+    -- Assign Signals for Port Map
+    pc_write_sig <= NOT if_stall;
+    if_id_en_sig <= NOT if_stall;
 
-    -- 4. MEMORY DATA INPUT MUX (Store Value: RegB vs PC)
-    -- 0: Reg B, 1: PC (for Push PC)
-    mem_data_in <= r_data2 WHEN mem_data_sel = '0' ELSE pc_val;
-
-    -- 5. Register File Instance
-    U_RegFile: RegisterFile PORT MAP (
-        clk           => clk,
-        rst           => rst,
-        reg_write_en1 => reg_write_en1,
-        reg_write_en2 => reg_write_en2, 
-        read_addr1    => r_addr1,
-        read_addr2    => r_addr2,
-        write_addr1   => w_addr1,  
-        write_data1   => write_back_data, 
-        write_addr2   => w_addr2,  
-        write_data2   => r_data2,  
-        read_data1    => r_data1,
-        read_data2    => r_data2
-    );
-
-    -- 6. ALU Instance
-    U_ALU: ALU PORT MAP (
-        SrcA       => alu_src_a, 
-        SrcB       => alu_src_b, -- CHANGED
-        ALU_Sel    => alu_sel,
-        ALU_Result => alu_result,
-        Zero       => z,
-        Negative   => n,
-        Carry      => c
-    );
-
-    -- 7. Memory Instance
-    U_Memory: Memory PORT MAP (
-        clk      => clk,
-        rst      => rst,
-        addr     => mem_addr,  
-        data_in  => mem_data_in, -- FROM DATA MUX
-        we       => mem_write,
-        data_out => mem_data_out
-    );
+    ----------------------------------------------------------------------------
+    -- 1. FETCH STAGE
+    ----------------------------------------------------------------------------
+    -- Arbitrate Memory: IF MEM Stage needs it, give it.
+    mem_busy <= '1' WHEN (mem_mem_write = '1' OR mem_mem_read = '1') ELSE '0';
     
-    -- 8. Program Counter Instance
+    -- Mux for Memory Inputs
+    memory_addr    <= mem_alu_result WHEN mem_busy = '1' ELSE pc_current;
+    memory_data_in <= mem_write_data; -- Only used when WE=1 (MEM stage)
+    memory_we      <= mem_mem_write;
+    
+    -- Stalling Fetch if Memory Busy
+    if_stall <= mem_busy; -- If busy, stall IF
+    
+    -- PC Logic
+    pc_plus_1 <= std_logic_vector(unsigned(pc_current) + 1);
+    pc_next   <= pc_plus_1; -- Default Next
+    -- TODO: Add Branching Mux Here (using EX branching results)
+    
     U_PC: PC PORT MAP (
-        clk      => clk,
-        rst      => rst,
-        pc_write => pc_write,
-        pc_inc   => pc_inc,
-        pc_in    => write_back_data, -- PC loads from common bus
-        pc_out   => pc_val
+        clk => clk, rst => rst,
+        pc_write => pc_write_sig, -- Fixed invalid expression
+        pc_inc => '0', -- We calc externally
+        pc_in => pc_next,
+        pc_out => pc_current
     );
     
-    -- 9. Stack Pointer Instance
-    U_SP: SP PORT MAP (
-        clk      => clk,
-        rst      => rst,
-        sp_write => sp_write,
-        sp_in    => write_back_data, -- SP loads from common bus
-        sp_out   => sp_val
+    -- IF Inst is Mem Out (Only valid if NOT busy)
+    if_inst <= memory_data_out;
+    
+    -- IF/ID Reg
+    U_IF_ID: IF_ID_Reg PORT MAP (
+        clk => clk, rst => rst, en => if_id_en_sig, -- Fixed invalid expression
+        pc_in => pc_current, inst_in => if_inst,
+        pc_out => id_pc, inst_out => id_inst
     );
 
-    -- Debug Connections
-    alu_out_debug <= alu_result;
-    mem_out_debug <= mem_data_out;
+    ----------------------------------------------------------------------------
+    -- 2. DECODE STAGE
+    ----------------------------------------------------------------------------
+    id_opcode <= id_inst(31 DOWNTO 27);
+    id_r1     <= id_inst(26 DOWNTO 24); -- Rsrc1
+    id_r2     <= id_inst(23 DOWNTO 21); -- Rsrc2
+    id_w      <= id_inst(20 DOWNTO 18); -- Rdst
+    id_imm_ext <= std_logic_vector(resize(signed(id_inst(15 DOWNTO 0)), 32));
+    
+    U_Control: ControlUnit PORT MAP (
+        opcode => id_opcode,
+        reg_write => c_reg_write, wb_sel => c_wb_sel,
+        mem_write => c_mem_write, mem_read => c_mem_read,
+        alu_sel => c_alu_sel, alu_src_b => c_alu_src_b,
+        branch_type => c_branch_type, sp_write => c_sp_write
+    );
+    
+    U_RegFile: RegisterFile PORT MAP (
+        clk => clk, rst => rst,
+        reg_write_en1 => wb_reg_write, -- Write from WB Stage
+        reg_write_en2 => '0',
+        read_addr1 => id_r1, read_addr2 => id_r2,
+        write_addr1 => wb_w_addr_dest, write_data1 => wb_write_data,
+        write_addr2 => (others=>'0'), write_data2 => (others=>'0'),
+        read_data1 => id_r_data1, read_data2 => id_r_data2
+    );
+    
+    U_ID_EX: ID_EX_Reg PORT MAP (
+        clk => clk, rst => rst, en => '1',
+        reg_write_in => c_reg_write, wb_sel_in => c_wb_sel, 
+        mem_write_in => c_mem_write, mem_read_in => c_mem_read, 
+        alu_src_b_in => c_alu_src_b, alu_sel_in => c_alu_sel,
+        pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2, 
+        imm_extended_in => id_imm_ext,
+        r_addr1_in => id_r1, r_addr2_in => id_r2, w_addr_dest_in => id_w,
+        
+        reg_write_out => ex_reg_write, wb_sel_out => ex_wb_sel, 
+        mem_write_out => ex_mem_write, mem_read_out => ex_mem_read, 
+        alu_src_b_out => ex_alu_src_b, alu_sel_out => ex_alu_sel,
+        pc_out => ex_pc, r_data1_out => ex_r_data1, r_data2_out => ex_r_data2, 
+        imm_extended_out => ex_imm_ext,
+        r_addr1_out => ex_r_addr1, r_addr2_out => ex_r_addr2, w_addr_dest_out => ex_w_addr_dest
+    );
+
+    ----------------------------------------------------------------------------
+    -- 3. EXECUTE STAGE
+    ----------------------------------------------------------------------------
+    ex_src_a <= ex_r_data1; -- No Forwarding yet
+    ex_src_b <= ex_r_data2 WHEN ex_alu_src_b = '0' ELSE ex_imm_ext;
+    
+    U_ALU: ALU PORT MAP (
+        SrcA => ex_src_a, SrcB => ex_src_b,
+        ALU_Sel => ex_alu_sel,
+        ALU_Result => ex_alu_result,
+        Zero => ex_zero, Negative => ex_neg, Carry => ex_carry
+    );
+    
+    U_EX_MEM: EX_MEM_Reg PORT MAP (
+        clk => clk, rst => rst, en => '1',
+        reg_write_in => ex_reg_write, wb_sel_in => ex_wb_sel,
+        mem_write_in => ex_mem_write, mem_read_in => ex_mem_read,
+        alu_result_in => ex_alu_result, write_data_in => ex_r_data2, -- Store Data
+        w_addr_dest_in => ex_w_addr_dest,
+        
+        reg_write_out => mem_reg_write, wb_sel_out => mem_wb_sel,
+        mem_write_out => mem_mem_write, mem_read_out => mem_mem_read,
+        alu_result_out => mem_alu_result, write_data_out => mem_write_data,
+        w_addr_dest_out => mem_w_addr_dest
+    );
+
+    ----------------------------------------------------------------------------
+    -- 4. MEMORY STAGE
+    ----------------------------------------------------------------------------
+    U_Memory: Memory PORT MAP (
+        clk => clk, rst => rst,
+        addr => memory_addr,    -- From Arbiter
+        data_in => memory_data_in, -- From Arbiter
+        we => memory_we,        -- From Arbiter
+        data_out => memory_data_out
+    );
+    
+    -- If MEM stage was reading, grab data. Else garbage.
+    mem_read_data <= memory_data_out; 
+    
+    U_MEM_WB: MEM_WB_Reg PORT MAP (
+        clk => clk, rst => rst, en => '1',
+        reg_write_in => mem_reg_write, wb_sel_in => mem_wb_sel,
+        mem_data_in => mem_read_data, alu_result_in => mem_alu_result,
+        w_addr_dest_in => mem_w_addr_dest,
+        
+        reg_write_out => wb_reg_write, wb_sel_out => wb_wb_sel,
+        mem_data_out => wb_mem_data, alu_result_out => wb_alu_result,
+        w_addr_dest_out => wb_w_addr_dest
+    );
+
+    ----------------------------------------------------------------------------
+    -- 5. WRITE BACK STAGE
+    ----------------------------------------------------------------------------
+    wb_write_data <= wb_alu_result WHEN wb_wb_sel = '0' ELSE wb_mem_data;
+
+    ----------------------------------------------------------------------------
+    -- DEBUG
+    ----------------------------------------------------------------------------
+    ----------------------------------------------------------------------------
+    -- DEBUG
+    ----------------------------------------------------------------------------
+    debug_pc <= pc_current;
+    debug_inst <= if_inst;         -- Fetch Instruction
+    debug_reg_w_en <= wb_reg_write;-- WriteBack Enable
+    debug_mem_w_en <= mem_mem_write; -- Memory Write Enable
+    debug_alu <= ex_alu_result;
 
 END Structure;
