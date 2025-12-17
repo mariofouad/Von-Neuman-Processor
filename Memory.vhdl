@@ -22,7 +22,26 @@ END Memory;
 ARCHITECTURE Behavior OF Memory IS
     -- Memory array: 4K x 32-bit
     TYPE ram_type IS ARRAY (0 TO MEM_SIZE-1) OF std_logic_vector(31 DOWNTO 0);
-    SIGNAL ram : ram_type;
+    
+    -- --- PROGRAM LOADER (Hardcoded for Simulation) ---
+    -- 1. Assemble your code.
+    -- 2. Place it here.
+    CONSTANT INIT_RAM : ram_type := (
+        0 => x"00000010", -- [Reset Vector] PC Start Address = 16 (0x10)
+        1 => x"00000100", -- [Int Vector]   Interrupt Handler Address = 256
+        2 => x"00000000", -- [Int 0]
+        3 => x"00000000", -- [Int 1]
+        
+        -- ...
+        
+        16 => x"78040005", -- LDM R1, 5       # R1 = 5
+        17 => x"7808000A", -- LDM R2, 10      # R2 = 10
+        18 => x"49500000", -- ADD R4, R1, R2  # R4 = R1 + R2 = 15
+    
+        OTHERS => (others => '0')
+    );
+
+    SIGNAL ram : ram_type := INIT_RAM;
     
     CONSTANT ZEROS : std_logic_vector(31 DOWNTO 0) := (OTHERS => '0');
 BEGIN 
