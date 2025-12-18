@@ -44,47 +44,30 @@ USE ieee.std_logic_1164.all;
 
 ENTITY ID_EX_Reg IS
     PORT (
-        clk             : IN  std_logic;
-        rst             : IN  std_logic;
-        en              : IN  std_logic;
-
-        -- CONTROL SIGNALS (WB, M, EX)
-        -- WB
-        reg_write_in    : IN  std_logic;
-        wb_sel_in       : IN  std_logic; -- MemToReg
-        -- M
-        mem_write_in    : IN  std_logic;
-        mem_read_in     : IN  std_logic;
-        -- EX
-        alu_sel_in      : IN  std_logic_vector(2 DOWNTO 0);
-        alu_src_b_in    : IN  std_logic; -- ALUSrc
-        is_std_in       : IN  std_logic; -- Flag for STD optimization
+        clk, rst, en : IN std_logic;
+        -- Control Signals
+        reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
+        alu_sel_in   : IN std_logic_vector(2 DOWNTO 0);
+        alu_src_b_in : IN std_logic;
+        is_std_in    : IN std_logic;
+        sp_write_in  : IN std_logic; -- NEW
+        is_stack_in  : IN std_logic; -- NEW (Identifies PUSH/POP/CALL/RET)
         
-        -- DATA
-        pc_in           : IN  std_logic_vector(31 DOWNTO 0);
-        r_data1_in      : IN  std_logic_vector(31 DOWNTO 0);
-        r_data2_in      : IN  std_logic_vector(31 DOWNTO 0);
-        imm_extended_in : IN  std_logic_vector(31 DOWNTO 0);
-        r_addr1_in      : IN  std_logic_vector(2 DOWNTO 0); -- For forwarding
-        r_addr2_in      : IN  std_logic_vector(2 DOWNTO 0); -- For forwarding
-        w_addr_dest_in  : IN  std_logic_vector(2 DOWNTO 0); -- Destination Reg
-
-        -- OUTPUTS
-        reg_write_out   : OUT std_logic;
-        wb_sel_out      : OUT std_logic;
-        mem_write_out   : OUT std_logic;
-        mem_read_out    : OUT std_logic;
-        alu_sel_out     : OUT std_logic_vector(2 DOWNTO 0);
-        alu_src_b_out   : OUT std_logic;
-        is_std_out      : OUT std_logic;
+        -- Data Signals
+        pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_val_in    : IN std_logic_vector(31 DOWNTO 0); -- NEW
+        r_addr1_in, r_addr2_in, w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
-        pc_out          : OUT std_logic_vector(31 DOWNTO 0);
-        r_data1_out     : OUT std_logic_vector(31 DOWNTO 0);
-        r_data2_out     : OUT std_logic_vector(31 DOWNTO 0);
-        imm_extended_out: OUT std_logic_vector(31 DOWNTO 0);
-        r_addr1_out     : OUT std_logic_vector(2 DOWNTO 0);
-        r_addr2_out     : OUT std_logic_vector(2 DOWNTO 0);
-        w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
+        -- Outputs
+        reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
+        alu_sel_out   : OUT std_logic_vector(2 DOWNTO 0);
+        alu_src_b_out : OUT std_logic;
+        is_std_out    : OUT std_logic;
+        sp_write_out  : OUT std_logic; -- NEW
+        is_stack_out  : OUT std_logic; -- NEW
+        pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
+        sp_val_out    : OUT std_logic_vector(31 DOWNTO 0); -- NEW
+        r_addr1_out, r_addr2_out, w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
 END ID_EX_Reg;
 
@@ -93,37 +76,18 @@ BEGIN
     PROCESS(clk, rst)
     BEGIN
         IF rst = '1' THEN
-            -- Reset all outputs
-            reg_write_out   <= '0';
-            wb_sel_out      <= '0';
-            mem_write_out   <= '0';
-            mem_read_out    <= '0';
-            alu_sel_out     <= (others => '0');
-            alu_src_b_out   <= '0';
-            is_std_out      <= '0';
-            pc_out          <= (others => '0');
-            r_data1_out     <= (others => '0');
-            r_data2_out     <= (others => '0');
-            imm_extended_out<= (others => '0');
-            r_addr1_out     <= (others => '0');
-            r_addr2_out     <= (others => '0');
-            w_addr_dest_out <= (others => '0');
+            reg_write_out <= '0'; mem_write_out <= '0'; sp_write_out <= '0'; is_stack_out <= '0';
+            -- Initialize other signals to 0...
         ELSIF rising_edge(clk) THEN
             IF en = '1' THEN
-                reg_write_out   <= reg_write_in;
-                wb_sel_out      <= wb_sel_in;
-                mem_write_out   <= mem_write_in;
-                mem_read_out    <= mem_read_in;
-                alu_sel_out     <= alu_sel_in;
-                alu_src_b_out   <= alu_src_b_in;
-                is_std_out      <= is_std_in;
-                
-                pc_out          <= pc_in;
-                r_data1_out     <= r_data1_in;
-                r_data2_out     <= r_data2_in;
-                imm_extended_out<= imm_extended_in;
-                r_addr1_out     <= r_addr1_in;
-                r_addr2_out     <= r_addr2_in;
+                reg_write_out <= reg_write_in; wb_sel_out <= wb_sel_in;
+                mem_write_out <= mem_write_in; mem_read_out <= mem_read_in;
+                alu_sel_out <= alu_sel_in; alu_src_b_out <= alu_src_b_in;
+                is_std_out <= is_std_in; sp_write_out <= sp_write_in;
+                is_stack_out <= is_stack_in; pc_out <= pc_in;
+                r_data1_out <= r_data1_in; r_data2_out <= r_data2_in;
+                imm_extended_out <= imm_extended_in; sp_val_out <= sp_val_in;
+                r_addr1_out <= r_addr1_in; r_addr2_out <= r_addr2_in;
                 w_addr_dest_out <= w_addr_dest_in;
             END IF;
         END IF;
@@ -138,31 +102,23 @@ USE ieee.std_logic_1164.all;
 
 ENTITY EX_MEM_Reg IS
     PORT (
-        clk             : IN  std_logic;
-        rst             : IN  std_logic;
-        en              : IN  std_logic;
-
-        -- CONTROL
-        reg_write_in    : IN  std_logic;
-        wb_sel_in       : IN  std_logic;
-        mem_write_in    : IN  std_logic;
-        mem_read_in     : IN  std_logic;
-
-        -- DATA
-        pc_in           : IN  std_logic_vector(31 DOWNTO 0);
-        alu_result_in   : IN  std_logic_vector(31 DOWNTO 0);
-        write_data_in   : IN  std_logic_vector(31 DOWNTO 0); -- For Store
-        w_addr_dest_in  : IN  std_logic_vector(2 DOWNTO 0);
+        clk, rst, en : IN std_logic;
+        reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
+        sp_write_in  : IN std_logic; -- NEW
+        is_stack_in  : IN std_logic; -- NEW
+        pc_in        : IN std_logic_vector(31 DOWNTO 0);
+        alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_new_val_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_val_in     : IN std_logic_vector(31 DOWNTO 0); -- NEW (Original SP for POP)
+        w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
-        -- OUTPUTS
-        reg_write_out   : OUT std_logic;
-        wb_sel_out      : OUT std_logic;
-        mem_write_out   : OUT std_logic;
-        mem_read_out    : OUT std_logic;
-        
-        pc_out          : OUT std_logic_vector(31 DOWNTO 0);
-        alu_result_out  : OUT std_logic_vector(31 DOWNTO 0);
-        write_data_out  : OUT std_logic_vector(31 DOWNTO 0);
+        reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
+        sp_write_out  : OUT std_logic; 
+        is_stack_out  : OUT std_logic; 
+        pc_out        : OUT std_logic_vector(31 DOWNTO 0);
+        alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        sp_new_val_out : OUT std_logic_vector(31 DOWNTO 0);
+        sp_val_out     : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
 END EX_MEM_Reg;
@@ -172,29 +128,20 @@ BEGIN
     PROCESS(clk, rst)
     BEGIN
         IF rst = '1' THEN
-            reg_write_out   <= '0';
-            wb_sel_out      <= '0';
-            mem_write_out   <= '0';
-            mem_read_out    <= '0';
-            pc_out          <= (others => '0');
-            alu_result_out  <= (others => '0');
-            write_data_out  <= (others => '0');
-            w_addr_dest_out <= (others => '0');
+            reg_write_out <= '0'; mem_write_out <= '0'; sp_write_out <= '0'; is_stack_out <= '0';
         ELSIF rising_edge(clk) THEN
             IF en = '1' THEN
-                reg_write_out   <= reg_write_in;
-                wb_sel_out      <= wb_sel_in;
-                mem_write_out   <= mem_write_in;
-                mem_read_out    <= mem_read_in;
-                pc_out          <= pc_in;
-                alu_result_out  <= alu_result_in;
-                write_data_out  <= write_data_in;
+                reg_write_out <= reg_write_in; wb_sel_out <= wb_sel_in;
+                mem_write_out <= mem_write_in; mem_read_out <= mem_read_in;
+                sp_write_out <= sp_write_in; is_stack_out <= is_stack_in;
+                pc_out <= pc_in; alu_result_out <= alu_result_in;
+                write_data_out <= write_data_in; sp_new_val_out <= sp_new_val_in;
+                sp_val_out <= sp_val_in;
                 w_addr_dest_out <= w_addr_dest_in;
             END IF;
         END IF;
     END PROCESS;
 END Behavior;
-
 -- =============================================================================
 -- MEM/WB REGISTER
 -- =============================================================================

@@ -23,7 +23,8 @@ ENTITY ControlUnit IS
         branch_type : OUT std_logic_vector(2 DOWNTO 0); -- 0: None, 1: JZ, 2: JN, 3: JC, 4: JMP, 5: CALL, 6: RET
         
         -- Stack / Special
-        sp_write    : OUT std_logic
+        sp_write    : OUT std_logic;
+        is_stack    : OUT std_logic
     );
 END ControlUnit;
 
@@ -41,7 +42,8 @@ BEGIN
         alu_src_b   <= '0';         -- Reg by default
         branch_type <= "000";       -- No Branch
         sp_write    <= '0';
-
+        is_stack    <= '0';
+        
         CASE opcode IS
             WHEN OP_NOP =>
                 NULL;
@@ -100,6 +102,7 @@ BEGIN
             WHEN OP_PUSH =>
                 mem_write <= '1';
                 sp_write  <= '1'; -- Dec SP
+                is_stack  <= '1';
                 -- Needs Processor logic: Addr = SP, Data = Rsrc
             
             WHEN OP_POP =>
@@ -107,6 +110,7 @@ BEGIN
                 sp_write  <= '1'; -- Inc SP
                 wb_sel    <= '1'; -- From Mem
                 mem_read  <= '1';
+                is_stack  <= '1';
                 -- Needs Processor logic: Addr = SP
             
             WHEN OP_LDM =>
@@ -142,21 +146,25 @@ BEGIN
                 branch_type <= "101";
                 mem_write   <= '1'; -- Push PC
                 sp_write    <= '1'; -- Dec SP
+                is_stack    <= '1';
                 
             WHEN OP_RET =>
                 branch_type <= "110"; -- RET type
                 sp_write    <= '1';   -- Inc SP
                 mem_read    <= '1';   -- Pop PC
+                is_stack    <= '1';
             
             WHEN OP_INT =>
                 branch_type <= "111"; -- INT type
                 mem_write   <= '1';   -- Push PC/Flags
                 sp_write    <= '1';
+                is_stack    <= '1';
                 
             WHEN OP_RTI =>
                 branch_type <= "110"; -- Same as RET effectively for control flow, popping logic differs
                 sp_write    <= '1';
                 mem_read    <= '1';
+                is_stack    <= '1';
 
             WHEN OTHERS =>
                 NULL;

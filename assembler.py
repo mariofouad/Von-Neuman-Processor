@@ -104,6 +104,8 @@ def assemble_line(line):
         
     elif mnemonic in ['NOT', 'INC', 'OUT', 'IN', 'POP', 'PUSH']:
         # Format: Op Rdst
+        # Note: For PUSH, OUT, NOT, INC, the 'Rdst' field actually holds the Source for the operation,
+        # but we parse it into the 'rdst' variable (bits 20-18) because that's where the VHDL Control/Mux expects it.
         if args: rdst = parse_reg(args[0])
         
     elif mnemonic in ['MOV', 'SWAP']:

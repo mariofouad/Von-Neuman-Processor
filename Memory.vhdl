@@ -28,22 +28,17 @@ ARCHITECTURE Behavior OF Memory IS
     -- 2. Place it here.
     -- Assembling test_case.asm to VHDL Init Format --
     CONSTANT INIT_RAM : ram_type := (
-        0 => x"78000001", -- LDM R0, 1
-        1 => x"7804AAAA", -- LDM R1, AAAA
-        2 => x"7808FFFF", -- LDM R2, FFFF
-        3 => x"7808FFFF", -- LDM R2, FFFF
-        4 => x"20000000", -- INC R0
-        5 => x"39100000", -- MOV R1, R4
-        -- 5 => x"18040000", -- NOT R1
-        -- 6 => x"380C0000", -- MOV R0, R3
-        -- 7 => x"30000000", -- IN R0	# R0 = FFFF_FFFF
-        -- 8 => x"28000000", -- OUT R0
-        -- 9 => x"59140000", -- AND R5, R1, R0
-        -- 10 => x"38180000", -- MOV R0, R6
-        -- 11 => x"18180000", -- NOT R6
-        -- 12 => x"20000000", -- INC R0
-        OTHERS => (others => '0')
-    );
+    0 => x"78040005", -- LDM R1, 0x0005  -- Load 5 into R1
+    1 => x"00000000", -- NOP             -- Fillers to avoid RAW hazards for now
+    2 => x"00000000", -- NOP
+    3 => x"00000000", -- NOP
+    4 => x"68040000", -- PUSH R1         -- Memory[0x03FF] should become 5, SP should become 0x03FE
+    5 => x"00000000", -- NOP
+    6 => x"00000000", -- NOP
+    7 => x"00000000", -- NOP
+    8 => x"70080000", -- POP R2          -- SP should become 0x03FF, R2 should become 5
+    OTHERS => (others => '0')
+);
 
 
     SIGNAL ram : ram_type := INIT_RAM;

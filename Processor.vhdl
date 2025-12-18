@@ -41,7 +41,8 @@ ARCHITECTURE Structure OF Processor IS
         alu_sel     : OUT std_logic_vector(2 DOWNTO 0);
         alu_src_b   : OUT std_logic;
         branch_type : OUT std_logic_vector(2 DOWNTO 0);
-        sp_write    : OUT std_logic
+        sp_write    : OUT std_logic;
+        is_stack    : OUT std_logic
     );
     END COMPONENT;
 
@@ -95,7 +96,16 @@ ARCHITECTURE Structure OF Processor IS
         pc_out   : OUT std_logic_vector(31 DOWNTO 0)
     );
     END COMPONENT;
-
+    -- SP component
+    COMPONENT SP
+    PORT (
+        clk      : IN  std_logic;
+        rst      : IN  std_logic;
+        sp_write : IN  std_logic;
+        sp_in    : IN  std_logic_vector(31 DOWNTO 0);
+        sp_out   : OUT std_logic_vector(31 DOWNTO 0)
+    );
+    END COMPONENT;
     -- PIPELINE REGISTERS
     COMPONENT IF_ID_Reg
     PORT (
@@ -112,14 +122,22 @@ ARCHITECTURE Structure OF Processor IS
         alu_sel_in : IN std_logic_vector(2 DOWNTO 0);
         alu_src_b_in : IN std_logic;
         is_std_in  : IN std_logic;
+        sp_write_in  : IN std_logic; -- NEW
+        is_stack_in  : IN std_logic; -- NEW
+        
         pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_val_in    : IN std_logic_vector(31 DOWNTO 0); -- NEW
         r_addr1_in, r_addr2_in, w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
         reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
         alu_sel_out : OUT std_logic_vector(2 DOWNTO 0);
         alu_src_b_out : OUT std_logic;
         is_std_out  : OUT std_logic;
+        sp_write_out  : OUT std_logic; -- NEW
+        is_stack_out  : OUT std_logic; -- NEW
+        
         pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
+        sp_val_out    : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         r_addr1_out, r_addr2_out, w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
     END COMPONENT;
@@ -128,13 +146,21 @@ ARCHITECTURE Structure OF Processor IS
     PORT (
         clk, rst, en : IN std_logic;
         reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
+        sp_write_in  : IN std_logic; -- NEW
+        is_stack_in  : IN std_logic; -- NEW
         pc_in         : IN  std_logic_vector(31 DOWNTO 0); -- NEW
         alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_new_val_in : IN std_logic_vector(31 DOWNTO 0);
+        sp_val_in     : IN std_logic_vector(31 DOWNTO 0); -- NEW
         w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
         reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
+        sp_write_out  : OUT std_logic; -- NEW
+        is_stack_out  : OUT std_logic; -- NEW
         pc_out          : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        sp_new_val_out : OUT std_logic_vector(31 DOWNTO 0); -- NEW
+        sp_val_out     : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
     END COMPONENT;
@@ -169,17 +195,21 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL id_r1, id_r2, id_w : std_logic_vector(2 DOWNTO 0);
     SIGNAL id_imm_ext : std_logic_vector(31 DOWNTO 0);
     SIGNAL id_r_data1, id_r_data2 : std_logic_vector(31 DOWNTO 0);
+    SIGNAL id_r1_mux : std_logic_vector(2 DOWNTO 0); -- NEW Mux signal
     
     -- Control Signals in ID
-    SIGNAL c_reg_write, c_wb_sel, c_mem_write, c_mem_read, c_alu_src_b, c_sp_write : std_logic;
+    SIGNAL c_reg_write, c_wb_sel, c_mem_write, c_mem_read, c_alu_src_b : std_logic;
     SIGNAL c_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_branch_type : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_is_std : std_logic; -- NEW
+    SIGNAL c_is_stack : std_logic; -- NEW
+
     
     -- STAGE: EX
     SIGNAL ex_reg_write, ex_wb_sel, ex_mem_write, ex_mem_read, ex_alu_src_b : std_logic;
     SIGNAL ex_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL ex_is_std  : std_logic; -- NEW
+    SIGNAL ex_is_stack : std_logic; -- NEW
     SIGNAL ex_pc, ex_r_data1, ex_r_data2, ex_imm_ext : std_logic_vector(31 DOWNTO 0);
     SIGNAL ex_r_addr1, ex_r_addr2, ex_w_addr_dest : std_logic_vector(2 DOWNTO 0);
     SIGNAL ex_write_data : std_logic_vector(31 DOWNTO 0); -- NEW for STD swap
@@ -190,8 +220,10 @@ ARCHITECTURE Structure OF Processor IS
     
     -- STAGE: MEM
     SIGNAL mem_reg_write, mem_wb_sel, mem_mem_write, mem_mem_read : std_logic;
+    SIGNAL mem_is_stack : std_logic; -- NEW
     SIGNAL mem_pc : std_logic_vector(31 DOWNTO 0); -- NEW
     SIGNAL mem_alu_result, mem_write_data : std_logic_vector(31 DOWNTO 0);
+    SIGNAL mem_sp_new_val : std_logic_vector(31 DOWNTO 0); -- NEW
     SIGNAL mem_w_addr_dest : std_logic_vector(2 DOWNTO 0);
     SIGNAL mem_read_data : std_logic_vector(31 DOWNTO 0);
     
@@ -212,6 +244,17 @@ ARCHITECTURE Structure OF Processor IS
     -- Signals for Static Port Mapping
     SIGNAL pc_write_sig : std_logic;
     SIGNAL if_id_en_sig : std_logic;
+
+    -- SP section
+    SIGNAL sp_current : std_logic_vector(31 DOWNTO 0);
+    SIGNAL id_sp_val, ex_sp_val, mem_sp_val : std_logic_vector(31 DOWNTO 0);
+    SIGNAL c_sp_write, ex_sp_write, mem_sp_write : std_logic;
+    -- Logic for SP math
+    SIGNAL ex_sp_side_result : std_logic_vector(31 DOWNTO 0);
+    
+    -- Stall Mux Signals
+    SIGNAL pipe_reg_write, pipe_mem_write, pipe_mem_read, pipe_sp_write, pipe_is_stack : std_logic;
+
     
 BEGIN
     
@@ -226,7 +269,10 @@ BEGIN
     mem_busy <= '1' WHEN (mem_mem_write = '1' OR mem_mem_read = '1') ELSE '0';
     
     -- Mux for Memory Inputs
-    memory_addr    <= mem_alu_result WHEN mem_busy = '1' ELSE pc_current;
+    memory_addr <= mem_sp_val         WHEN (mem_is_stack = '1' AND mem_mem_write = '1') ELSE -- PUSH: Write to current SP
+                   mem_sp_new_val     WHEN (mem_is_stack = '1' AND mem_mem_read = '1')  ELSE -- POP: Read from SP + 1
+                   mem_alu_result     WHEN (mem_busy = '1')                             ELSE 
+                   pc_current;
     memory_data_in <= mem_write_data; -- Only used when WE=1 (MEM stage)
     memory_we      <= mem_mem_write;
     
@@ -269,12 +315,18 @@ BEGIN
                   std_logic_vector(resize(unsigned(id_inst(15 DOWNTO 0)), 32)) WHEN id_opcode = OP_LDM ELSE
                   std_logic_vector(resize(signed(id_inst(15 DOWNTO 0)), 32));
     
+    -- Mux for Read Address 1 (Fix for PUSH/NOT/INC where 'Rdst' field holds the Source Reg)
+    -- Assembler puts the reg in bits 20-18 (id_w) for these instructions.
+    id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
+                 ELSE id_r1;
+
     U_Control: ControlUnit PORT MAP (
         opcode => id_opcode,
         reg_write => c_reg_write, wb_sel => c_wb_sel,
         mem_write => c_mem_write, mem_read => c_mem_read,
         alu_sel => c_alu_sel, alu_src_b => c_alu_src_b,
-        branch_type => c_branch_type, sp_write => c_sp_write
+        branch_type => c_branch_type, sp_write => c_sp_write,
+        is_stack => c_is_stack
     );
 
     -- Detect STD Opcode
@@ -284,22 +336,44 @@ BEGIN
         clk => clk, rst => rst,
         reg_write_en1 => wb_reg_write, -- Write from WB Stage
         reg_write_en2 => '0',
-        read_addr1 => id_r1, read_addr2 => id_r2,
+        read_addr1 => id_r1_mux, read_addr2 => id_r2,
         write_addr1 => wb_w_addr_dest, write_data1 => wb_write_data,
         write_addr2 => (others=>'0'), write_data2 => (others=>'0'),
         read_data1 => id_r_data1, read_data2 => id_r_data2
     );
+    U_SP: SP PORT MAP (
+    clk      => clk,
+    rst      => rst,
+    sp_write => mem_sp_write, -- Updated from the MEM stage (Writeback)
+    sp_in    => mem_sp_new_val, -- Usually the result of SP +/- 1
+    sp_out   => sp_current
+);
+
+
+    
+    -- STALL LOGIC: Insert Bubble (NOP) if stalling
+    pipe_reg_write <= '0' WHEN if_stall = '1' ELSE c_reg_write;
+    pipe_mem_write <= '0' WHEN if_stall = '1' ELSE c_mem_write;
+    pipe_mem_read  <= '0' WHEN if_stall = '1' ELSE c_mem_read;
+    pipe_sp_write  <= '0' WHEN if_stall = '1' ELSE c_sp_write;
+    pipe_is_stack  <= '0' WHEN if_stall = '1' ELSE c_is_stack;
     
     U_ID_EX: ID_EX_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',
-        reg_write_in => c_reg_write, wb_sel_in => c_wb_sel, 
-        mem_write_in => c_mem_write, mem_read_in => c_mem_read, 
+        reg_write_in => pipe_reg_write, wb_sel_in => c_wb_sel, 
+        mem_write_in => pipe_mem_write, mem_read_in => pipe_mem_read, 
         alu_src_b_in => c_alu_src_b, alu_sel_in => c_alu_sel,
         is_std_in => c_is_std,
+        sp_write_in => pipe_sp_write, -- Squashed
+        is_stack_in => pipe_is_stack, -- Squashed
+        sp_val_in => sp_current,     -- Read directly from SP register
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2, 
         imm_extended_in => id_imm_ext,
         r_addr1_in => id_r1, r_addr2_in => id_r2, w_addr_dest_in => id_w,
         
+        sp_write_out => ex_sp_write,
+        is_stack_out => ex_is_stack,
+        sp_val_out => ex_sp_val,
         reg_write_out => ex_reg_write, wb_sel_out => ex_wb_sel, 
         mem_write_out => ex_mem_write, mem_read_out => ex_mem_read, 
         alu_src_b_out => ex_alu_src_b, alu_sel_out => ex_alu_sel,
@@ -321,22 +395,31 @@ BEGIN
         ALU_Result => ex_alu_result,
         Zero => ex_zero, Negative => ex_neg, Carry => ex_carry
     );
-    
+    -- EX Stage logic
+    ex_sp_side_result <= std_logic_vector(unsigned(ex_sp_val) + 1) WHEN (ex_mem_read = '1' AND ex_is_stack = '1') ELSE -- POP
+                     std_logic_vector(unsigned(ex_sp_val) - 1) WHEN (ex_mem_write = '1' AND ex_is_stack = '1') ELSE -- PUSH
+                     ex_sp_val;
     ex_write_data <= ex_r_data1 WHEN ex_is_std = '1' ELSE ex_r_data2;
 
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',
         reg_write_in => ex_reg_write, wb_sel_in => ex_wb_sel,
         mem_write_in => ex_mem_write, mem_read_in => ex_mem_read,
+        sp_write_in => ex_sp_write, is_stack_in => ex_is_stack,
         pc_in => ex_pc,
         alu_result_in => ex_alu_result, 
         write_data_in => ex_write_data,
+        sp_new_val_in => ex_sp_side_result,
+        sp_val_in     => ex_sp_val, -- Pass original SP for POP
         w_addr_dest_in => ex_w_addr_dest,
         
         reg_write_out => mem_reg_write, wb_sel_out => mem_wb_sel,
         mem_write_out => mem_mem_write, mem_read_out => mem_mem_read,
+        sp_write_out => mem_sp_write, is_stack_out => mem_is_stack,
         pc_out => mem_pc,
         alu_result_out => mem_alu_result, write_data_out => mem_write_data,
+        sp_new_val_out => mem_sp_new_val,
+        sp_val_out     => mem_sp_val, -- Available in MEM stage
         w_addr_dest_out => mem_w_addr_dest
     );
 
