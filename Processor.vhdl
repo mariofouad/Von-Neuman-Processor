@@ -8,12 +8,21 @@ ENTITY Processor IS
         clk           : IN  std_logic;
         rst           : IN  std_logic;
         
-        -- Debug Outputs
-        debug_pc      : OUT std_logic_vector(31 DOWNTO 0);
-        debug_inst    : OUT std_logic_vector(31 DOWNTO 0); -- NEW
-        debug_reg_w_en: OUT std_logic;                     -- NEW
-        debug_mem_w_en: OUT std_logic;                     -- NEW
-        debug_alu     : OUT std_logic_vector(31 DOWNTO 0)
+        -- Debug Outputs (Detailed Pipeline Trace)
+        debug_pc      : OUT std_logic_vector(31 DOWNTO 0); -- Same as debug_if_pc
+        debug_if_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_id_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_ex_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_mem_pc  : OUT std_logic_vector(31 DOWNTO 0);
+        debug_wb_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        
+        debug_inst    : OUT std_logic_vector(31 DOWNTO 0);
+        debug_reg_w_en: OUT std_logic;
+        debug_mem_w_en: OUT std_logic;
+        debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
+        
+        -- I/O Ports
+        input_port    : IN  std_logic_vector(31 DOWNTO 0)
     );
 END Processor;
 
@@ -99,13 +108,17 @@ ARCHITECTURE Structure OF Processor IS
     COMPONENT ID_EX_Reg
     PORT (
         clk, rst, en : IN std_logic;
-        reg_write_in, wb_sel_in, mem_write_in, mem_read_in, alu_src_b_in : IN std_logic;
+        reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
         alu_sel_in : IN std_logic_vector(2 DOWNTO 0);
+        alu_src_b_in : IN std_logic;
+        is_std_in  : IN std_logic;
         pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
         r_addr1_in, r_addr2_in, w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
-        reg_write_out, wb_sel_out, mem_write_out, mem_read_out, alu_src_b_out : OUT std_logic;
+        reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
         alu_sel_out : OUT std_logic_vector(2 DOWNTO 0);
+        alu_src_b_out : OUT std_logic;
+        is_std_out  : OUT std_logic;
         pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
         r_addr1_out, r_addr2_out, w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
@@ -115,10 +128,12 @@ ARCHITECTURE Structure OF Processor IS
     PORT (
         clk, rst, en : IN std_logic;
         reg_write_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
+        pc_in         : IN  std_logic_vector(31 DOWNTO 0); -- NEW
         alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
         w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
         reg_write_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
+        pc_out          : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
@@ -128,10 +143,12 @@ ARCHITECTURE Structure OF Processor IS
     PORT (
         clk, rst, en : IN std_logic;
         reg_write_in, wb_sel_in : IN std_logic;
+        pc_in          : IN  std_logic_vector(31 DOWNTO 0); -- NEW
         mem_data_in, alu_result_in : IN std_logic_vector(31 DOWNTO 0);
         w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
         
         reg_write_out, wb_sel_out : OUT std_logic;
+        pc_out          : OUT std_logic_vector(31 DOWNTO 0); -- NEW
         mem_data_out, alu_result_out : OUT std_logic_vector(31 DOWNTO 0);
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
     );
@@ -157,12 +174,15 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL c_reg_write, c_wb_sel, c_mem_write, c_mem_read, c_alu_src_b, c_sp_write : std_logic;
     SIGNAL c_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_branch_type : std_logic_vector(2 DOWNTO 0);
+    SIGNAL c_is_std : std_logic; -- NEW
     
     -- STAGE: EX
     SIGNAL ex_reg_write, ex_wb_sel, ex_mem_write, ex_mem_read, ex_alu_src_b : std_logic;
     SIGNAL ex_alu_sel : std_logic_vector(2 DOWNTO 0);
+    SIGNAL ex_is_std  : std_logic; -- NEW
     SIGNAL ex_pc, ex_r_data1, ex_r_data2, ex_imm_ext : std_logic_vector(31 DOWNTO 0);
     SIGNAL ex_r_addr1, ex_r_addr2, ex_w_addr_dest : std_logic_vector(2 DOWNTO 0);
+    SIGNAL ex_write_data : std_logic_vector(31 DOWNTO 0); -- NEW for STD swap
     
     SIGNAL ex_src_a, ex_src_b : std_logic_vector(31 DOWNTO 0);
     SIGNAL ex_alu_result : std_logic_vector(31 DOWNTO 0);
@@ -170,12 +190,14 @@ ARCHITECTURE Structure OF Processor IS
     
     -- STAGE: MEM
     SIGNAL mem_reg_write, mem_wb_sel, mem_mem_write, mem_mem_read : std_logic;
+    SIGNAL mem_pc : std_logic_vector(31 DOWNTO 0); -- NEW
     SIGNAL mem_alu_result, mem_write_data : std_logic_vector(31 DOWNTO 0);
     SIGNAL mem_w_addr_dest : std_logic_vector(2 DOWNTO 0);
     SIGNAL mem_read_data : std_logic_vector(31 DOWNTO 0);
     
     -- STAGE: WB
     SIGNAL wb_reg_write, wb_wb_sel : std_logic;
+    SIGNAL wb_pc : std_logic_vector(31 DOWNTO 0); -- NEW
     SIGNAL wb_mem_data, wb_alu_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL wb_w_addr_dest : std_logic_vector(2 DOWNTO 0);
     SIGNAL wb_write_data : std_logic_vector(31 DOWNTO 0);
@@ -241,7 +263,11 @@ BEGIN
     id_r1     <= id_inst(26 DOWNTO 24); -- Rsrc1
     id_r2     <= id_inst(23 DOWNTO 21); -- Rsrc2
     id_w      <= id_inst(20 DOWNTO 18); -- Rdst
-    id_imm_ext <= std_logic_vector(resize(signed(id_inst(15 DOWNTO 0)), 32));
+    
+    -- Mux for Immediate or Input Port (Routing Input via Immediate Path)
+    id_imm_ext <= input_port WHEN id_opcode = OP_IN ELSE
+                  std_logic_vector(resize(unsigned(id_inst(15 DOWNTO 0)), 32)) WHEN id_opcode = OP_LDM ELSE
+                  std_logic_vector(resize(signed(id_inst(15 DOWNTO 0)), 32));
     
     U_Control: ControlUnit PORT MAP (
         opcode => id_opcode,
@@ -250,6 +276,9 @@ BEGIN
         alu_sel => c_alu_sel, alu_src_b => c_alu_src_b,
         branch_type => c_branch_type, sp_write => c_sp_write
     );
+
+    -- Detect STD Opcode
+    c_is_std <= '1' WHEN id_opcode = OP_STD ELSE '0';
     
     U_RegFile: RegisterFile PORT MAP (
         clk => clk, rst => rst,
@@ -266,6 +295,7 @@ BEGIN
         reg_write_in => c_reg_write, wb_sel_in => c_wb_sel, 
         mem_write_in => c_mem_write, mem_read_in => c_mem_read, 
         alu_src_b_in => c_alu_src_b, alu_sel_in => c_alu_sel,
+        is_std_in => c_is_std,
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2, 
         imm_extended_in => id_imm_ext,
         r_addr1_in => id_r1, r_addr2_in => id_r2, w_addr_dest_in => id_w,
@@ -273,6 +303,7 @@ BEGIN
         reg_write_out => ex_reg_write, wb_sel_out => ex_wb_sel, 
         mem_write_out => ex_mem_write, mem_read_out => ex_mem_read, 
         alu_src_b_out => ex_alu_src_b, alu_sel_out => ex_alu_sel,
+        is_std_out => ex_is_std,
         pc_out => ex_pc, r_data1_out => ex_r_data1, r_data2_out => ex_r_data2, 
         imm_extended_out => ex_imm_ext,
         r_addr1_out => ex_r_addr1, r_addr2_out => ex_r_addr2, w_addr_dest_out => ex_w_addr_dest
@@ -281,7 +312,7 @@ BEGIN
     ----------------------------------------------------------------------------
     -- 3. EXECUTE STAGE
     ----------------------------------------------------------------------------
-    ex_src_a <= ex_r_data1; -- No Forwarding yet
+    ex_src_a <= ex_r_data2 WHEN ex_is_std = '1' ELSE ex_r_data1; -- Swap for STD (Base in R2)
     ex_src_b <= ex_r_data2 WHEN ex_alu_src_b = '0' ELSE ex_imm_ext;
     
     U_ALU: ALU PORT MAP (
@@ -291,15 +322,20 @@ BEGIN
         Zero => ex_zero, Negative => ex_neg, Carry => ex_carry
     );
     
+    ex_write_data <= ex_r_data1 WHEN ex_is_std = '1' ELSE ex_r_data2;
+
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',
         reg_write_in => ex_reg_write, wb_sel_in => ex_wb_sel,
         mem_write_in => ex_mem_write, mem_read_in => ex_mem_read,
-        alu_result_in => ex_alu_result, write_data_in => ex_r_data2, -- Store Data
+        pc_in => ex_pc,
+        alu_result_in => ex_alu_result, 
+        write_data_in => ex_write_data,
         w_addr_dest_in => ex_w_addr_dest,
         
         reg_write_out => mem_reg_write, wb_sel_out => mem_wb_sel,
         mem_write_out => mem_mem_write, mem_read_out => mem_mem_read,
+        pc_out => mem_pc,
         alu_result_out => mem_alu_result, write_data_out => mem_write_data,
         w_addr_dest_out => mem_w_addr_dest
     );
@@ -321,10 +357,12 @@ BEGIN
     U_MEM_WB: MEM_WB_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',
         reg_write_in => mem_reg_write, wb_sel_in => mem_wb_sel,
+        pc_in => mem_pc,
         mem_data_in => mem_read_data, alu_result_in => mem_alu_result,
         w_addr_dest_in => mem_w_addr_dest,
         
         reg_write_out => wb_reg_write, wb_sel_out => wb_wb_sel,
+        pc_out => wb_pc,
         mem_data_out => wb_mem_data, alu_result_out => wb_alu_result,
         w_addr_dest_out => wb_w_addr_dest
     );
@@ -339,11 +377,16 @@ BEGIN
     ----------------------------------------------------------------------------
     ----------------------------------------------------------------------------
     -- DEBUG
-    ----------------------------------------------------------------------------
-    debug_pc <= pc_current;
-    debug_inst <= if_inst;         -- Fetch Instruction
-    debug_reg_w_en <= wb_reg_write;-- WriteBack Enable
-    debug_mem_w_en <= mem_mem_write; -- Memory Write Enable
-    debug_alu <= ex_alu_result;
-
+    --------------------------------------------------------------------------    -- Debug Signal Assignments
+    debug_pc       <= pc_current;
+    debug_if_pc    <= pc_current;
+    debug_id_pc    <= id_pc;
+    debug_ex_pc    <= ex_pc;
+    debug_mem_pc   <= mem_pc;
+    debug_wb_pc    <= wb_pc;
+    
+    debug_inst     <= id_inst; -- instruction currently being decoded
+    debug_reg_w_en <= wb_reg_write;
+    debug_mem_w_en <= mem_mem_write;
+    debug_alu      <= mem_alu_result; -- result of EX stage moving into MEM
 END Structure;

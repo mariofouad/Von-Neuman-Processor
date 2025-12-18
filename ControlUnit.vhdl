@@ -67,11 +67,8 @@ BEGIN
             
             WHEN OP_IN =>
                 reg_write <= '1';
-                -- Assuming IN comes from 'Imm' port or special port? 
-                -- For now, treat as specific ALU or Mem op?
-                -- ISA: "IN Rdst". Reads from input port.
-                -- Let's assume input port is memory mapped or special. 
-                -- Ignoring for now as ports not defined.
+                alu_src_b <= '1'; -- Use Input (Routed via Imm path)
+                alu_sel   <= "001"; -- Pass B
 
             WHEN OP_MOV =>
                 reg_write <= '1';
