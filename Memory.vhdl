@@ -32,11 +32,9 @@ ARCHITECTURE Behavior OF Memory IS
     1 => x"00000000", -- NOP             -- Fillers to avoid RAW hazards for now
     2 => x"00000000", -- NOP
     3 => x"00000000", -- NOP
-    4 => x"68040000", -- PUSH R1         -- Memory[0x03FF] should become 5, SP should become 0x03FE
-    5 => x"00000000", -- NOP
-    6 => x"00000000", -- NOP
-    7 => x"00000000", -- NOP
-    8 => x"70080000", -- POP R2          -- SP should become 0x03FF, R2 should become 5
+    4 => x"69200000", -- PUSH R1         -- Memory[0x03FF] should become 5, SP should become 0x03FE
+    5 => x"00000000",   
+    6 => x"70080000", -- POP R2          -- SP should become 0x03FF, R2 should become 5
     OTHERS => (others => '0')
 );
 

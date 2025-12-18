@@ -102,11 +102,27 @@ def assemble_line(line):
     if mnemonic in ['NOP', 'HLT', 'RET', 'RTI', 'SETC']:
         pass
         
-    elif mnemonic in ['NOT', 'INC', 'OUT', 'IN', 'POP', 'PUSH']:
+    elif mnemonic in ['NOT', 'INC']:
         # Format: Op Rdst
-        # Note: For PUSH, OUT, NOT, INC, the 'Rdst' field actually holds the Source for the operation,
-        # but we parse it into the 'rdst' variable (bits 20-18) because that's where the VHDL Control/Mux expects it.
-        if args: rdst = parse_reg(args[0])
+        # These read from the register and write back to it.
+        # So we put the register in both rsrc1 (source) and rdst (destination).
+        if args:
+            reg = parse_reg(args[0])
+            rsrc1 = reg
+            rdst  = reg
+            
+    elif mnemonic in ['PUSH', 'OUT']:
+        # Format: Op Rsrc (Reads from register, no write-back)
+        # We put the register in rsrc1 or rsrc2. Processor expects PUSH data in rsrc2.
+        if args:
+            reg = parse_reg(args[0])
+            rsrc1 = reg # For security
+            rsrc2 = reg # Processor uses ex_r_data2 for memory write data
+            
+    elif mnemonic in ['POP', 'IN']:
+        # Format: Op Rdst (Writes to register, no source read)
+        if args:
+            rdst = parse_reg(args[0])
         
     elif mnemonic in ['MOV', 'SWAP']:
         # Format: Op Rsrc, Rdst (Note: User ISA definition had specific order, assume Std: Dest, Src or Src, Dest?)

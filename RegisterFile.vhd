@@ -53,8 +53,13 @@ begin
         end if;
     end process;
 
-    -- Read Process (Asynchronous)
-    read_data1 <= registers(to_integer(unsigned(read_addr1)));
-    read_data2 <= registers(to_integer(unsigned(read_addr2)));
+    -- Read Process (Asynchronous with Internal Forwarding/Write-First)
+    read_data1 <= write_data2 when (reg_write_en2 = '1' and read_addr1 = write_addr2) else
+                  write_data1 when (reg_write_en1 = '1' and read_addr1 = write_addr1) else
+                  registers(to_integer(unsigned(read_addr1)));
+
+    read_data2 <= write_data2 when (reg_write_en2 = '1' and read_addr2 = write_addr2) else
+                  write_data1 when (reg_write_en1 = '1' and read_addr2 = write_addr1) else
+                  registers(to_integer(unsigned(read_addr2)));
 
 end Behavioral;
