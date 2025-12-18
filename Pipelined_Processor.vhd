@@ -37,7 +37,9 @@ architecture Structural of Pipelined_Processor is
     signal alu_result_w, mem_read_data_w, final_wb_data_w : STD_LOGIC_VECTOR(31 downto 0);
     signal rd_addr_w : STD_LOGIC_VECTOR(2 downto 0);
 
-    -- === HAZARD UNIT STUBS (For future) ===
+    -- === HAZARD / BRANCH SIGNALS ===
+    signal branch_taken : STD_LOGIC;
+    signal branch_target_address : STD_LOGIC_VECTOR(31 downto 0);
     signal stall_f, stall_d, flush_d, flush_e : STD_LOGIC := '0';
 
 begin
@@ -46,9 +48,18 @@ begin
     -- STAGE 1: FETCH
     -- =========================================================================
     
-    -- PC Logic
+    -- PC Logic: Determine Next PC Value
     pc_plus_1_f <= std_logic_vector(unsigned(pc_f) + 1);
-    pc_next_f   <= pc_plus_1_f; -- (Branch Mux will go here later)
+
+    -- PC Mux: Choose between Next Line (PC+1) or Branch Target
+    process(pc_plus_1_f, branch_target_address, branch_taken)
+    begin
+        if branch_taken = '1' then
+            pc_next_f <= branch_target_address;
+        else
+            pc_next_f <= pc_plus_1_f;
+        end if;
+    end process;
 
     PC_Reg: entity work.PC port map(
         clk => clk, rst => rst, 
@@ -62,6 +73,7 @@ begin
     );
 
     -- IF/ID PIPELINE REGISTER
+    -- Connect flush_d here to kill instruction if jumping
     IF_ID: entity work.IF_ID_Reg port map(
         clk => clk, rst => rst, stall => stall_d, flush => flush_d,
         pc_in => pc_f, inst_in => inst_f,
@@ -72,18 +84,51 @@ begin
     -- STAGE 2: DECODE
     -- =========================================================================
 
-   -- 1. Fixed Source Addresses
+    -- 1. Fixed Source Addresses
     rs1_addr_d <= inst_d(26 downto 24);
     rs2_addr_d <= inst_d(23 downto 21);
 
+    -- 2. Destination Address Logic (Corrected for your ISA)
     rd_addr_d <= inst_d(20 downto 18);
+
+    -- 3. === NEW BRANCH LOGIC STARTS HERE ===
+    
+    -- Calculate Target: Just use the Immediate value (Absolute Jump)
+    -- (If you want PC-Relative, change to: pc_d + imm_d)
+    branch_target_address <= imm_d;
+
+    -- Decide if we should branch
+    process(inst_d, reg_data1_d)
+    begin
+        branch_taken <= '0'; -- Default to Not Taken
+
+        -- Check Opcode (High 5 bits)
+        case inst_d(31 downto 27) is
+            when "10101" => -- JMP (Unconditional)
+                branch_taken <= '1';
+
+            when "10010" => -- JZ (Jump if Zero)
+                if unsigned(reg_data1_d) = 0 then
+                    branch_taken <= '1';
+                end if;
+            
+            when others =>
+                branch_taken <= '0';
+        end case;
+    end process;
+
+    -- Connect the Flush Signal
+    -- If we take a branch, the instruction currently in Fetch (PC+1) is wrong.
+    -- We flush it so it becomes a bubble.
+    flush_d <= branch_taken;
+
+    -- === NEW BRANCH LOGIC ENDS HERE ===
 
     Control: entity work.ControlUnit port map(
         Opcode => inst_d(31 downto 27),
         RegWrite => reg_write_d, MemWrite => mem_write_d,
         MemToReg => mem_to_reg_d, ALU_Src => alu_src_d,
         ALU_Sel => alu_sel_d
-        -- Branch signal ignored for now
     );
 
     RegFile: entity work.RegisterFile port map(
@@ -136,7 +181,7 @@ begin
         wb_reg_write_in => reg_write_e, mem_write_in => mem_write_e,
         mem_to_reg_in => mem_to_reg_e,
         -- Data
-        alu_result_in => alu_result_e, write_data_in => reg_data2_e, -- Data2 is what we store
+        alu_result_in => alu_result_e, write_data_in => reg_data2_e, 
         rd_addr_in => rd_addr_e,
         
         -- Outputs

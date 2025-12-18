@@ -4,23 +4,39 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- ============================================================
 -- 1. IF/ID Register (Fetch -> Decode)
 -- ============================================================
+
+
 entity IF_ID_Reg is
-    Port (
-        clk, rst, stall, flush : in STD_LOGIC;
-        pc_in, inst_in         : in STD_LOGIC_VECTOR(31 downto 0);
-        pc_out, inst_out       : out STD_LOGIC_VECTOR(31 downto 0)
-    );
+    Port ( clk : in STD_LOGIC;
+           rst : in STD_LOGIC;
+           stall : in STD_LOGIC;
+           flush : in STD_LOGIC; -- Ensure this is here
+           pc_in : in STD_LOGIC_VECTOR (31 downto 0);
+           inst_in : in STD_LOGIC_VECTOR (31 downto 0);
+           pc_out : out STD_LOGIC_VECTOR (31 downto 0);
+           inst_out : out STD_LOGIC_VECTOR (31 downto 0));
 end IF_ID_Reg;
 
 architecture Behavioral of IF_ID_Reg is
 begin
     process(clk, rst)
     begin
-        if rst = '1' or flush = '1' then
+        if rst = '1' then
             pc_out <= (others => '0');
-            inst_out <= (others => '0'); -- NOP
+            inst_out <= (others => '0');
         elsif rising_edge(clk) then
-            if stall = '0' then -- Only update if NOT stalled
+            -- PRIORITY 1: FLUSH (The Kill Switch)
+            if flush = '1' then
+                inst_out <= (others => '0'); -- Turn instruction into NOP (0x00000000)
+                pc_out <= (others => '0');
+            
+            -- PRIORITY 2: STALL (Freeze)
+            elsif stall = '1' then
+                -- Do nothing (keep previous values)
+                NULL; 
+            
+            -- PRIORITY 3: NORMAL
+            else
                 pc_out <= pc_in;
                 inst_out <= inst_in;
             end if;

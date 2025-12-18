@@ -26,29 +26,37 @@ ARCHITECTURE Behavior OF Memory IS
     -- --- PROGRAM LOADER (Hardcoded for Simulation) ---
     -- 1. Assemble your code.
     -- 2. Place it here.
-    CONSTANT INIT_RAM : ram_type := (
-    16 => x"78040014", -- LDM R1, 20      # R1 = 20 (0x14)
-    17 => x"7808000A", -- LDM R2, 10      # R2 = 10 (0x0A)
-    18 => x"780C0005", -- LDM R3, 5       # R3 = 5  (0x05)
-    19 => x"00000000", -- NOP
-    20 => x"00000000", -- NOP
-    21 => x"00000000", -- NOP
-    22 => x"51500000", -- SUB R4, R1, R2
-    23 => x"00000000", -- NOP
-    24 => x"00000000", -- NOP
-    25 => x"00000000", -- NOP
-    26 => x"5A740000", -- AND R5, R2, R3
-    27 => x"00000000", -- NOP
-    28 => x"00000000", -- NOP
-    29 => x"00000000", -- NOP
-    30 => x"61180005", -- IADD R6, R1, 5
-    31 => x"00000000", -- NOP
-    32 => x"00000000", -- NOP
-    33 => x"00000000", -- NOP
-    34 => x"495C0000", -- ADD R7, R1, R2
-    35 => x"08000000", -- HLT
-    OTHERS => (others => '0')
-);
+   CONSTANT INIT_RAM : ram_type := (
+        0 => x"00000010", -- Reset Vector -> Jump to 16
+
+        -- TEST 1: JMP 20 (Unconditional) - ALREADY WORKING
+        16 => x"A8000014", 
+        17 => x"79000BAD", -- TRAP (Flushed)
+        18 => x"00000000", 19 => x"00000000",
+        20 => x"7900CAFE", -- LDM R1, 0xCAFE (Results in FFFFCAFE)
+
+        -- TEST 2: JZ (Taken)
+        21 => x"7A000000", -- LDM R2, 0
+        
+        -- !!! FIXED LINE BELOW !!!
+        -- JZ R2, 25 (Was 91..., Changed to 92... to check R2)
+        22 => x"92000019", 
+        
+        23 => x"7A000BAD", -- TRAP: LDM R2, 0xBAD (Should be FLUSHED)
+        24 => x"00000000",
+        25 => x"7B00FACE", -- LDM R3, 0xFACE (Should execute)
+
+        -- TEST 3: JZ (Not Taken)
+        26 => x"7C000001", -- LDM R4, 1
+        
+        -- JZ R4, 30 (Check R4=100 -> Op 10010 100 -> 94 hex)
+        27 => x"9400001E", 
+        
+        28 => x"7D00BEEF", -- LDM R5, 0xBEEF (Should EXECUTE)
+        30 => x"00800000", -- HLT
+
+        OTHERS => (others => '0')
+    );
     SIGNAL ram : ram_type := INIT_RAM;
     
     CONSTANT ZEROS : std_logic_vector(31 DOWNTO 0) := (OTHERS => '0');
