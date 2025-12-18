@@ -12,17 +12,25 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
         clk           : IN  std_logic;
         rst           : IN  std_logic;
         debug_pc      : OUT std_logic_vector(31 DOWNTO 0);
-        debug_inst    : OUT std_logic_vector(31 DOWNTO 0); -- NEW
-        debug_reg_w_en: OUT std_logic;                     -- NEW
-        debug_mem_w_en: OUT std_logic;                     -- NEW
-        debug_alu     : OUT std_logic_vector(31 DOWNTO 0)
+        debug_if_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_id_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_ex_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_mem_pc  : OUT std_logic_vector(31 DOWNTO 0);
+        debug_wb_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        debug_inst    : OUT std_logic_vector(31 DOWNTO 0);
+        debug_reg_w_en: OUT std_logic;
+        debug_mem_w_en: OUT std_logic;
+        debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
+        input_port    : IN  std_logic_vector(31 DOWNTO 0)
     );
     END COMPONENT;
 
     SIGNAL clk : std_logic := '0';
     SIGNAL rst : std_logic := '0';
     SIGNAL debug_pc, debug_inst, debug_alu : std_logic_vector(31 DOWNTO 0);
+    SIGNAL debug_if_pc, debug_id_pc, debug_ex_pc, debug_mem_pc, debug_wb_pc : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_reg_w_en, debug_mem_w_en : std_logic;
+    SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"FFFFFFFF"; -- Default value from test case
 
     CONSTANT clk_period : time := 10 ns;
 
@@ -53,10 +61,16 @@ BEGIN
         clk => clk,
         rst => rst,
         debug_pc => debug_pc,
+        debug_if_pc => debug_if_pc,
+        debug_id_pc => debug_id_pc,
+        debug_ex_pc => debug_ex_pc,
+        debug_mem_pc => debug_mem_pc,
+        debug_wb_pc => debug_wb_pc,
         debug_inst => debug_inst,
         debug_reg_w_en => debug_reg_w_en,
         debug_mem_w_en => debug_mem_w_en,
-        debug_alu => debug_alu
+        debug_alu => debug_alu,
+        input_port => input_port_sig
     );
 
     clk_process :process
@@ -69,21 +83,26 @@ BEGIN
     begin
         -- Hold Reset
         rst <= '1';
-        wait for 50 ns;
+        wait for 10 ns;
         rst <= '0';
-        
+        wait for 10 ns;
+
         REPORT "--- Starting Pipeline Simulation ---";
-        REPORT "Cycle | PC (Fetch) | Inst (Hex) | ALU Res | RegW | MemW";
-        REPORT "--------------------------------------------------------";
+        REPORT "Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW";
+        REPORT "-----------------------------------------------------------------------------";
         
-        -- Run for 30 cycles
-        FOR i IN 0 TO 30 LOOP
+        -- Run for 40 cycles to see full test case
+        FOR i IN 0 TO 40 LOOP
             wait for clk_period;
             
             REPORT "C" & integer'image(i) & " | " & 
-                   integer'image(to_integer(unsigned(debug_pc))) & " | " & 
+                   integer'image(to_integer(unsigned(debug_if_pc))) & " | " & 
+                   integer'image(to_integer(unsigned(debug_id_pc))) & " | " & 
+                   integer'image(to_integer(unsigned(debug_ex_pc))) & " | " & 
+                   integer'image(to_integer(unsigned(debug_mem_pc))) & " | " & 
+                   integer'image(to_integer(unsigned(debug_wb_pc))) & " | " & 
                    to_hex_string(debug_inst) & " | " & 
-                   integer'image(to_integer(unsigned(debug_alu))) & " | " & 
+                   to_hex_string(debug_alu) & " | " & 
                    std_logic'image(debug_reg_w_en) & " | " & 
                    std_logic'image(debug_mem_w_en);
         END LOOP;

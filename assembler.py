@@ -44,20 +44,23 @@ def parse_reg(reg_str):
     return "000"
 
 def parse_imm(imm_str):
-    """Converts immediate/offset to 16-bit binary string."""
-    imm_str = imm_str.strip()
-    val = 0
+    """Converts hex immediate/offset to 16-bit binary string."""
+    imm_str = imm_str.strip().lower()
+    if imm_str.startswith('0x'):
+        imm_str = imm_str[2:]
+    
     try:
-        if imm_str.lower().startswith('0x'):
-            val = int(imm_str, 16)
-        else:
-            val = int(imm_str)
+        # All numbers are hex format as per user requirement
+        val = int(imm_str, 16)
     except ValueError:
         return "0000000000000000"
     
-    # Handle negative (2's complement)
+    # Handle negative if necessary (though usually hex is unsigned here)
     if val < 0:
         val = (1 << 16) + val
+    
+    # Ensure it fits in 16 bits
+    val &= 0xFFFF
     
     return f"{val:016b}"
 
@@ -68,8 +71,14 @@ def assemble_line(line):
     if not line:
         return None
         
+    # Standardize comma removal
+    line = line.replace(',', ' ')
     parts = re.split(r'\s+', line)
     mnemonic = parts[0].upper()
+    
+    # Handle .ORG directive separately or return it
+    if mnemonic == '.ORG':
+        return line # Special case handled in main
     
     if mnemonic not in OPCODES:
         return f"ERROR: Unknown Opcode {mnemonic}"
@@ -201,20 +210,44 @@ def main():
 
     # File Mode
     filename = sys.argv[1]
-    print(f"-- Assembling {filename} to VHDL Init Format --")
-    print("CONSTANT INIT_RAM : ram_type := (")
+    memory = {}
+    current_addr = 0
+    
     try:
         with open(filename, 'r') as f:
-            addr = 16 # Start at 16 (0x10)
             for line in f:
                 res = assemble_line(line)
-                if res and "ERROR" not in res:
-                    print(f"    {addr} => {res}, -- {line.strip()}")
-                    addr += 1
-                elif res:
-                    print(f"    -- {res}")
+                if res is None:
+                    continue
+                
+                if res.upper().startswith('.ORG'):
+                    parts = re.split(r'\s+', res)
+                    if len(parts) > 1:
+                        # Address is in hex as per requirement
+                        current_addr = int(parts[1], 16)
+                    continue
+                
+                if "ERROR" in res:
+                    print(f"-- {res} at {current_addr}")
+                    continue
+                
+                memory[current_addr] = (res, line.strip())
+                current_addr += 1
+                
     except FileNotFoundError:
-        print("File not found.")
+        print(f"Error: File {filename} not found.")
+        return
+
+    # Output VHDL INIT format
+    print(f"-- Assembling {filename} to VHDL Init Format --")
+    print("CONSTANT INIT_RAM : ram_type := (")
+    
+    # Sort addresses
+    sorted_addrs = sorted(memory.keys())
+    for addr in sorted_addrs:
+        val, original = memory[addr]
+        print(f"    {addr} => {val}, -- {original}")
+        
     print("    OTHERS => (others => '0')")
     print(");")
 

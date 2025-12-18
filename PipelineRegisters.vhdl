@@ -58,6 +58,7 @@ ENTITY ID_EX_Reg IS
         -- EX
         alu_sel_in      : IN  std_logic_vector(2 DOWNTO 0);
         alu_src_b_in    : IN  std_logic; -- ALUSrc
+        is_std_in       : IN  std_logic; -- Flag for STD optimization
         
         -- DATA
         pc_in           : IN  std_logic_vector(31 DOWNTO 0);
@@ -75,6 +76,7 @@ ENTITY ID_EX_Reg IS
         mem_read_out    : OUT std_logic;
         alu_sel_out     : OUT std_logic_vector(2 DOWNTO 0);
         alu_src_b_out   : OUT std_logic;
+        is_std_out      : OUT std_logic;
         
         pc_out          : OUT std_logic_vector(31 DOWNTO 0);
         r_data1_out     : OUT std_logic_vector(31 DOWNTO 0);
@@ -98,6 +100,7 @@ BEGIN
             mem_read_out    <= '0';
             alu_sel_out     <= (others => '0');
             alu_src_b_out   <= '0';
+            is_std_out      <= '0';
             pc_out          <= (others => '0');
             r_data1_out     <= (others => '0');
             r_data2_out     <= (others => '0');
@@ -113,6 +116,7 @@ BEGIN
                 mem_read_out    <= mem_read_in;
                 alu_sel_out     <= alu_sel_in;
                 alu_src_b_out   <= alu_src_b_in;
+                is_std_out      <= is_std_in;
                 
                 pc_out          <= pc_in;
                 r_data1_out     <= r_data1_in;
@@ -145,6 +149,7 @@ ENTITY EX_MEM_Reg IS
         mem_read_in     : IN  std_logic;
 
         -- DATA
+        pc_in           : IN  std_logic_vector(31 DOWNTO 0);
         alu_result_in   : IN  std_logic_vector(31 DOWNTO 0);
         write_data_in   : IN  std_logic_vector(31 DOWNTO 0); -- For Store
         w_addr_dest_in  : IN  std_logic_vector(2 DOWNTO 0);
@@ -155,6 +160,7 @@ ENTITY EX_MEM_Reg IS
         mem_write_out   : OUT std_logic;
         mem_read_out    : OUT std_logic;
         
+        pc_out          : OUT std_logic_vector(31 DOWNTO 0);
         alu_result_out  : OUT std_logic_vector(31 DOWNTO 0);
         write_data_out  : OUT std_logic_vector(31 DOWNTO 0);
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
@@ -170,6 +176,7 @@ BEGIN
             wb_sel_out      <= '0';
             mem_write_out   <= '0';
             mem_read_out    <= '0';
+            pc_out          <= (others => '0');
             alu_result_out  <= (others => '0');
             write_data_out  <= (others => '0');
             w_addr_dest_out <= (others => '0');
@@ -179,6 +186,7 @@ BEGIN
                 wb_sel_out      <= wb_sel_in;
                 mem_write_out   <= mem_write_in;
                 mem_read_out    <= mem_read_in;
+                pc_out          <= pc_in;
                 alu_result_out  <= alu_result_in;
                 write_data_out  <= write_data_in;
                 w_addr_dest_out <= w_addr_dest_in;
@@ -204,6 +212,7 @@ ENTITY MEM_WB_Reg IS
         wb_sel_in       : IN  std_logic;
 
         -- DATA
+        pc_in           : IN  std_logic_vector(31 DOWNTO 0);
         mem_data_in     : IN  std_logic_vector(31 DOWNTO 0);
         alu_result_in   : IN  std_logic_vector(31 DOWNTO 0);
         w_addr_dest_in  : IN  std_logic_vector(2 DOWNTO 0);
@@ -212,6 +221,7 @@ ENTITY MEM_WB_Reg IS
         reg_write_out   : OUT std_logic;
         wb_sel_out      : OUT std_logic;
         
+        pc_out          : OUT std_logic_vector(31 DOWNTO 0);
         mem_data_out    : OUT std_logic_vector(31 DOWNTO 0);
         alu_result_out  : OUT std_logic_vector(31 DOWNTO 0);
         w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
@@ -225,6 +235,7 @@ BEGIN
         IF rst = '1' THEN
             reg_write_out   <= '0';
             wb_sel_out      <= '0';
+            pc_out          <= (others => '0');
             mem_data_out    <= (others => '0');
             alu_result_out  <= (others => '0');
             w_addr_dest_out <= (others => '0');
@@ -232,6 +243,7 @@ BEGIN
             IF en = '1' THEN
                 reg_write_out   <= reg_write_in;
                 wb_sel_out      <= wb_sel_in;
+                pc_out          <= pc_in;
                 mem_data_out    <= mem_data_in;
                 alu_result_out  <= alu_result_in;
                 w_addr_dest_out <= w_addr_dest_in;
