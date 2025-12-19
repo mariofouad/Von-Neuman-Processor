@@ -21,7 +21,8 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
         debug_reg_w_en: OUT std_logic;
         debug_mem_w_en: OUT std_logic;
         debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
-        input_port    : IN  std_logic_vector(31 DOWNTO 0)
+        input_port    : IN  std_logic_vector(31 DOWNTO 0);
+        hardware_interrupt : IN std_logic
     );
     END COMPONENT;
 
@@ -30,7 +31,7 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     SIGNAL debug_pc, debug_inst, debug_alu : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_if_pc, debug_id_pc, debug_ex_pc, debug_mem_pc, debug_wb_pc : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_reg_w_en, debug_mem_w_en : std_logic;
-    
+    SIGNAL hardware_interrupt_sig : std_logic := '0';
     -- Input Port Signal driven by Process
     SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000000";
 
@@ -70,7 +71,8 @@ BEGIN
         debug_reg_w_en => debug_reg_w_en,
         debug_mem_w_en => debug_mem_w_en,
         debug_alu => debug_alu,
-        input_port => input_port_sig
+        input_port => input_port_sig,
+        hardware_interrupt => hardware_interrupt_sig
     );
 
     -- Clock Process

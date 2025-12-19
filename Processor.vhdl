@@ -46,7 +46,7 @@ ARCHITECTURE Structure OF Processor IS
         alu_src_b   : OUT std_logic;
         port_sel    : OUT std_logic; 
         branch_type : OUT std_logic_vector(2 DOWNTO 0);
-        flags_en    : OUT std_logic; -- NEW
+        flags_en    : OUT std_logic;
         sp_write    : OUT std_logic;
         is_stack    : OUT std_logic;
         rti_en      : OUT std_logic;
@@ -88,7 +88,6 @@ ARCHITECTURE Structure OF Processor IS
     COMPONENT Memory
     PORT(
         clk     : IN  std_logic;
-        rst     : IN  std_logic;
         addr    : IN  std_logic_vector(31 DOWNTO 0);
         data_in : IN  std_logic_vector(31 DOWNTO 0);
         we      : IN  std_logic;
@@ -121,14 +120,14 @@ ARCHITECTURE Structure OF Processor IS
     PORT (
         clk                 : IN  std_logic;
         rst                 : IN  std_logic;
-        hardware_interrupt   : IN  std_logic;
-        mem_branch_type      : IN  std_logic_vector(2 DOWNTO 0);
-        if_inst_raw          : IN  std_logic_vector(31 DOWNTO 0);
-        rst_init_pending     : OUT std_logic;
-        rst_load_pc          : OUT std_logic;
-        hw_int_pending       : OUT std_logic;
-        int_phase            : OUT std_logic;
-        ex_mem_en            : OUT std_logic
+        hardware_interrupt  : IN  std_logic;
+        mem_branch_type     : IN  std_logic_vector(2 DOWNTO 0);
+        if_inst_raw         : IN  std_logic_vector(31 DOWNTO 0);
+        rst_init_pending    : OUT std_logic;
+        rst_load_pc         : OUT std_logic;
+        hw_int_pending      : OUT std_logic;
+        int_phase           : OUT std_logic;
+        ex_mem_en           : OUT std_logic
     );
     END COMPONENT;
 
@@ -156,13 +155,14 @@ ARCHITECTURE Structure OF Processor IS
         reg_write_in, reg_write_2_in, wb_sel_in, mem_write_in, mem_read_in : IN std_logic;
         alu_sel_in   : IN std_logic_vector(2 DOWNTO 0);
         alu_src_b_in : IN std_logic;
+        port_sel_in  : IN std_logic; -- ADDED
         is_std_in    : IN std_logic;
         sp_write_in  : IN std_logic;
         is_stack_in  : IN std_logic;
         out_en_in    : IN std_logic;
         rti_en_in    : IN std_logic;
         branch_type_in : IN std_logic_vector(2 DOWNTO 0);
-        flags_en_in  : IN std_logic; -- NEW
+        flags_en_in  : IN std_logic;
         ccr_z_en_in, ccr_n_en_in, ccr_c_en_in : IN std_logic;
         
         pc_in, r_data1_in, r_data2_in, imm_in : IN std_logic_vector(31 DOWNTO 0);
@@ -172,13 +172,14 @@ ARCHITECTURE Structure OF Processor IS
         reg_write_out, reg_write_2_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
         alu_sel_out   : OUT std_logic_vector(2 DOWNTO 0);
         alu_src_b_out : OUT std_logic;
+        port_sel_out  : OUT std_logic; -- ADDED
         is_std_out    : OUT std_logic;
         sp_write_out  : OUT std_logic;
         is_stack_out  : OUT std_logic;
         out_en_out    : OUT std_logic;
         rti_en_out    : OUT std_logic;
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
-        flags_en_out  : OUT std_logic; -- NEW
+        flags_en_out  : OUT std_logic;
         ccr_z_en_out, ccr_n_en_out, ccr_c_en_out : OUT std_logic;
         
         pc_out, r_data1_out, r_data2_out, imm_out : OUT std_logic_vector(31 DOWNTO 0);
@@ -280,7 +281,7 @@ ARCHITECTURE Structure OF Processor IS
     
     -- STAGE: EX
     SIGNAL ex_reg_write, ex_reg_write_2, ex_wb_sel, ex_mem_write, ex_mem_read, ex_alu_src_b : std_logic;
-    SIGNAL ex_out_en, ex_rti_en, ex_flags_en : std_logic;
+    SIGNAL ex_out_en, ex_rti_en, ex_flags_en, ex_port_sel : std_logic; -- Added ex_port_sel
     SIGNAL ex_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL ex_is_std, ex_sp_write, ex_is_stack : std_logic;
     SIGNAL ex_branch_type : std_logic_vector(2 DOWNTO 0);
@@ -294,7 +295,6 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL ex_sp_val, ex_sp_side_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL ex_pc_plus_1, ex_int_addr, ex_alu_result_final : std_logic_vector(31 DOWNTO 0);
     
-    -- CCR Signals
     -- CCR Signals
     SIGNAL ccr_write_z, ccr_write_n, ccr_write_c : std_logic;
     SIGNAL ccr_z_in, ccr_n_in, ccr_c_in : std_logic;
@@ -368,7 +368,7 @@ BEGIN
     
     memory_addr <= (OTHERS => '0')    WHEN rst_init_pending = '1' ELSE
                    mem_sp_val         WHEN (mem_is_stack = '1' AND mem_mem_write = '1' AND int_phase = '0') ELSE
-                   mem_alu_result     WHEN (mem_branch_type = "111" AND int_phase = '1')                   ELSE
+                   mem_alu_result     WHEN (mem_branch_type = "111" AND int_phase = '1')                 ELSE
                    mem_sp_new_val     WHEN (mem_is_stack = '1' AND mem_mem_read = '1')                      ELSE
                    pc_current;
                    
@@ -466,7 +466,7 @@ BEGIN
         END CASE;
     END PROCESS;
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
-                 ELSE id_r1;
+                     ELSE id_r1;
 
     -- HW Interrupt Opcode Injection
     id_inst_mux <= x"C0040000" WHEN (hw_int_pending = '1' AND if_stall = '0') ELSE id_inst;
@@ -517,6 +517,7 @@ BEGIN
         wb_sel_in => c_wb_sel, mem_write_in => c_mem_write, mem_read_in => c_mem_read,
         out_en_in => c_out_en, rti_en_in => c_rti_en,
         alu_sel_in => c_alu_sel, alu_src_b_in => c_alu_src_b,
+        port_sel_in => c_port_sel, -- CONNECTED
         is_std_in => c_is_std, sp_write_in => c_sp_write, is_stack_in => c_is_stack,
         branch_type_in => c_branch_type,
         flags_en_in => c_flags_en,
@@ -532,6 +533,7 @@ BEGIN
         wb_sel_out => ex_wb_sel, mem_write_out => ex_mem_write, mem_read_out => ex_mem_read,
         out_en_out => ex_out_en, rti_en_out => ex_rti_en,
         alu_sel_out => ex_alu_sel, alu_src_b_out => ex_alu_src_b,
+        port_sel_out => ex_port_sel, -- CONNECTED
         is_std_out => ex_is_std, sp_write_out => ex_sp_write, is_stack_out => ex_is_stack,
         branch_type_out => ex_branch_type,
         flags_en_out => ex_flags_en,
@@ -640,7 +642,7 @@ BEGIN
     -- 4. MEMORY STAGE
     ----------------------------------------------------------------------------
     U_Memory: Memory PORT MAP (
-        clk => clk, rst => rst,
+        clk => clk,
         addr => memory_addr, data_in => memory_data_in, we => memory_we,
         data_out => memory_data_out
     );

@@ -38,16 +38,67 @@ def assemble_line(line):
     parts = re.split(r'\s+', line)
     mnemonic = parts[0].upper()
     
-    if mnemonic == '.ORG': return line
-    if mnemonic not in OPCODES: return f"ERROR: {mnemonic}"
+    # Handle .ORG directive separately or return it
+    if mnemonic == '.ORG':
+        return line # Special case handled in main
+    
+    # Check if the line is just a raw number (for vectors)
+    is_raw_num = False
+    try:
+        # Check if it's hex (prefixed or raw hex) or decimal
+        raw_val = int(parts[0].replace('0x', ''), 16)
+        is_raw_num = True
+    except ValueError:
+        pass
+        
+    if is_raw_num and mnemonic not in OPCODES:
+        # Return as a 32-bit hex word
+        return f"{raw_val:08X}"
+
+    if mnemonic not in OPCODES:
+        return f"ERROR: Unknown Opcode {mnemonic}"
         
     opcode_bin = OPCODES[mnemonic]
-    rsrc1, rsrc2, rdst, imm = "000", "000", "000", "0000000000000000"
-    args = parts[1:]
-
-    # Formatting based on Instruction Type
-    if mnemonic in ['NOT', 'INC', 'OUT', 'IN', 'POP', 'PUSH']:
-        if len(args) >= 1: rdst = parse_reg(args[0])
+    
+    # Default Fields
+    rsrc1 = "000"
+    rsrc2 = "000"
+    rdst  = "000"
+    imm   = "0000000000000000"
+    
+    # FORMAT PARSING
+    # R-Type: Op Rdst, Rsrc1, Rsrc2  | Op Rdst, Rsrc | Op Rdst
+    # I-Type: Op Rdst, Rsrc, Imm     | Op Rdst, Imm
+    # J-Type: Op Imm
+    
+    args = parts[1:] if len(parts) > 1 else []
+    
+    # --- LOGIC PER INSTRUCTION TYPE ---
+    if mnemonic in ['NOP', 'HLT', 'RET', 'RTI', 'SETC']:
+        pass
+        
+    elif mnemonic in ['NOT', 'INC']:
+        # Format: Op Rdst
+        # These read from the register and write back to it.
+        # So we put the register in both rsrc1 (source) and rdst (destination).
+        if args:
+            reg = parse_reg(args[0])
+            rsrc1 = reg
+            rdst  = reg
+            
+    elif mnemonic in ['PUSH', 'OUT']:
+        # Format: Op Rsrc (Reads from register, no write-back)
+        # We put the register in rsrc1 or rsrc2. Processor expects PUSH data in rsrc2.
+        if args:
+            reg = parse_reg(args[0])
+            rsrc1 = reg # For security
+            rsrc2 = reg # Processor uses ex_r_data2 for memory write data
+            
+    elif mnemonic in ['POP', 'IN']:
+        # Format: Op Rdst (Writes to register, no source read)
+        if args:
+            rdst = parse_reg(args[0])
+        
     elif mnemonic in ['MOV', 'SWAP']:
         if len(args) >= 2:
             rsrc1 = parse_reg(args[0])
@@ -70,10 +121,33 @@ def assemble_line(line):
     elif mnemonic in ['JZ', 'JN', 'JC', 'JMP', 'CALL']:
         if len(args) >= 1: imm = parse_imm(args[0])
     elif mnemonic == 'INT':
-        if len(args) >= 1: imm = f"{int(args[0]):016b}"
+        # Format: INT index (index is 0 or 1)
+        if args:
+            try:
+                # We interpret index as hex as per requirement
+                val = int(args[0].strip(), 16)
+            except ValueError:
+                val = 0
+            imm = f"{val:016b}"
 
-    binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}00{imm}"
-    return f"{int(binary_str, 2):08X}"
+    # Construct 32-bit Binary
+    # [31:27] Op
+    # [26:24] Rsrc1
+    # [23:21] Rsrc2
+    # [20:18] Rdst
+    # [17:16] Unused/OpExtension -> Using 01 for INT Pre-decode
+    # [15:0]  Imm
+    if mnemonic == 'INT':
+        unused = "01"
+    elif mnemonic == 'RTI':
+        unused = "10"
+    else:
+        unused = "00"
+    
+    binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}{unused}{imm}"
+    hex_str = f"{int(binary_str, 2):08X}"
+    
+    return hex_str
 
 def main():
     if len(sys.argv) < 2:
