@@ -57,7 +57,7 @@ ENTITY ID_EX_Reg is
         flags_en_in  : IN std_logic;
         
         -- Data Inputs
-        pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
+        pc_in, r_data1_in, r_data2_in, imm_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in    : IN std_logic_vector(31 DOWNTO 0);
         r_addr1_in, r_addr2_in, rdst_addr_in : IN std_logic_vector(2 DOWNTO 0);
         
@@ -76,7 +76,7 @@ ENTITY ID_EX_Reg is
         
         -- Data Outputs
         port_sel_out : OUT std_logic;
-        pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
+        pc_out, r_data1_out, r_data2_out, imm_out : OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
         r_addr1_out, r_addr2_out, rdst_addr_out : OUT std_logic_vector(2 DOWNTO 0)
     );
@@ -91,6 +91,7 @@ BEGIN
             mem_write_out <= '0'; sp_write_out <= '0'; is_stack_out <= '0';
             out_en_out <= '0'; rti_en_out <= '0'; flags_en_out <= '0';
             branch_type_out <= (others => '0');
+            mem_read_out <= '0';
         ELSIF rising_edge(clk) THEN
             IF en = '1' THEN
                 reg_write_out <= reg_write_in; reg_write_2_out <= reg_write_2_in;
@@ -106,7 +107,7 @@ BEGIN
                 port_sel_out <= port_sel_in;
                 pc_out <= pc_in;
                 r_data1_out <= r_data1_in; r_data2_out <= r_data2_in;
-                imm_extended_out <= imm_extended_in; sp_val_out <= sp_val_in;
+                imm_out <= imm_in; sp_val_out <= sp_val_in;
                 r_addr1_out <= r_addr1_in; r_addr2_out <= r_addr2_in;
                 rdst_addr_out <= rdst_addr_in;
             END IF;
@@ -136,12 +137,11 @@ ENTITY EX_MEM_Reg is
 
         -- Data Inputs
         pc_in         : IN std_logic_vector(31 DOWNTO 0);
-        alu_res_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        alu_res_in, r_data2_in : IN std_logic_vector(31 DOWNTO 0);
         sp_new_val_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in     : IN std_logic_vector(31 DOWNTO 0);
         rdst_addr_in: IN std_logic_vector(2 DOWNTO 0);
         rsrc_addr_in : IN std_logic_vector(2 DOWNTO 0);
-        swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
         
         -- Outputs
         reg_write_out, reg_write_2_out : OUT std_logic;
@@ -155,12 +155,11 @@ ENTITY EX_MEM_Reg is
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
         
         pc_out        : OUT std_logic_vector(31 DOWNTO 0);
-        alu_res_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        alu_res_out, r_data2_out : OUT std_logic_vector(31 DOWNTO 0);
         sp_new_val_out: OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
         rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
-        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
     );
 END EX_MEM_Reg;
 
@@ -171,6 +170,7 @@ BEGIN
         IF rst = '1' THEN
             reg_write_out <= '0'; reg_write_2_out <= '0';
             mem_write_out <= '0'; sp_write_out <= '0'; is_stack_out <= '0';
+            mem_read_out <= '0';
             out_en_out <= '0'; rti_en_out <= '0';
             branch_type_out <= (others => '0'); -- Reset Branch Type
         ELSIF rising_edge(clk) THEN
@@ -185,7 +185,7 @@ BEGIN
                 branch_type_out <= branch_type_in;
                 
                 pc_out <= pc_in; alu_res_out <= alu_res_in;
-                write_data_out <= write_data_in; sp_new_val_out <= sp_new_val_in;
+                sp_new_val_out <= sp_new_val_in;
                 sp_val_out <= sp_val_in;
                 rdst_addr_out <= rdst_addr_in;
                 rsrc_addr_out <= rsrc_addr_in;
