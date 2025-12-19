@@ -23,6 +23,10 @@ ENTITY Processor IS
         
         -- I/O Ports
         input_port    : IN  std_logic_vector(31 DOWNTO 0)
+
+        -- Output Port
+        output_port   : OUT std_logic_vector(31 DOWNTO 0)
+        out_en        : OUT std_logic
     );
 END Processor;
 
