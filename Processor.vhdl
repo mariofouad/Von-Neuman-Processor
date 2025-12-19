@@ -84,7 +84,6 @@ ARCHITECTURE Structure OF Processor IS
     COMPONENT Memory
     PORT(
         clk     : IN  std_logic;
-        rst     : IN  std_logic;
         addr    : IN  std_logic_vector(31 DOWNTO 0);
         data_in : IN  std_logic_vector(31 DOWNTO 0);
         we      : IN  std_logic;
@@ -113,6 +112,19 @@ ARCHITECTURE Structure OF Processor IS
     );
     END COMPONENT;
 
+    COMPONENT ForwardingUnit
+    PORT (
+        id_ex_rs1        : IN  std_logic_vector(2 DOWNTO 0);
+        id_ex_rs2        : IN  std_logic_vector(2 DOWNTO 0);
+        ex_mem_rd        : IN  std_logic_vector(2 DOWNTO 0);
+        ex_mem_reg_write : IN  std_logic;
+        mem_wb_rd        : IN  std_logic_vector(2 DOWNTO 0);
+        mem_wb_reg_write : IN  std_logic;
+        forward_a        : OUT std_logic_vector(1 DOWNTO 0);
+        forward_b        : OUT std_logic_vector(1 DOWNTO 0)
+    );
+    END COMPONENT;
+
     COMPONENT IF_ID_Reg
     PORT (
         clk, rst, en : IN std_logic;
@@ -134,6 +146,7 @@ ARCHITECTURE Structure OF Processor IS
         rti_en_in    : IN std_logic;
         branch_type_in : IN std_logic_vector(2 DOWNTO 0);
         flags_en_in  : IN std_logic; -- NEW
+        port_sel_in  : IN std_logic;
         
         pc_in, r_data1_in, r_data2_in, imm_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in    : IN std_logic_vector(31 DOWNTO 0);
@@ -168,12 +181,11 @@ ARCHITECTURE Structure OF Processor IS
         branch_type_in : IN std_logic_vector(2 DOWNTO 0);
 
         pc_in         : IN std_logic_vector(31 DOWNTO 0);
-        alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        alu_res_in, r_data2_in : IN std_logic_vector(31 DOWNTO 0);
         sp_new_val_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in     : IN std_logic_vector(31 DOWNTO 0);
         rdst_addr_in: IN std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_in : IN std_logic_vector(2 DOWNTO 0);
-        swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
+        rsrc_addr_in : IN std_logic_vector(2 DOWNTO 0);
         
         reg_write_out, reg_write_2_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
         sp_write_out  : OUT std_logic;
@@ -183,12 +195,11 @@ ARCHITECTURE Structure OF Processor IS
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
         
         pc_out        : OUT std_logic_vector(31 DOWNTO 0);
-        alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        alu_res_out, r_data2_out : OUT std_logic_vector(31 DOWNTO 0);
         sp_new_val_out: OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_out : OUT std_logic_vector(2 DOWNTO 0);
-        swap_data_out   : OUT std_logic_vector(31 DOWNTO 0)
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0)
     );
     END COMPONENT;
     
@@ -199,19 +210,19 @@ ARCHITECTURE Structure OF Processor IS
         
         pc_in          : IN std_logic_vector(31 DOWNTO 0);
         mem_data_in    : IN std_logic_vector(31 DOWNTO 0);
-        alu_result_in  : IN std_logic_vector(31 DOWNTO 0);
+        alu_res_in  : IN std_logic_vector(31 DOWNTO 0);
         rdst_addr_in : IN std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_in : IN std_logic_vector(2 DOWNTO 0);
-        swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
+        rsrc_addr_in : IN std_logic_vector(2 DOWNTO 0);
+        r_data2_in   : IN std_logic_vector(31 DOWNTO 0);
         
         reg_write_out, reg_write_2_out, wb_sel_out : OUT std_logic;
         
         pc_out         : OUT std_logic_vector(31 DOWNTO 0);
         mem_data_out   : OUT std_logic_vector(31 DOWNTO 0);
-        alu_result_out : OUT std_logic_vector(31 DOWNTO 0);
+        alu_res_out : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_out : OUT std_logic_vector(2 DOWNTO 0);
-        swap_data_out   : OUT std_logic_vector(31 DOWNTO 0)
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
+        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
     );
     END COMPONENT;
 
@@ -265,6 +276,7 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL ex_zero, ex_neg, ex_carry : std_logic;
     SIGNAL ex_sp_val, ex_sp_side_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL forward_a_sel, forward_b_sel : std_logic_vector(1 DOWNTO 0);
+    SIGNAL ex_r2_forwarded : std_logic_vector(31 DOWNTO 0);
     
     -- CCR Signals
     SIGNAL ccr : std_logic_vector(2 DOWNTO 0) := (others => '0');
@@ -468,7 +480,7 @@ BEGIN
         is_std_in => c_is_std, sp_write_in => c_sp_write, is_stack_in => c_is_stack,
         branch_type_in => c_branch_type,
         flags_en_in => c_flags_en, -- New
-        
+        port_sel_in => c_port_sel,
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2,
         imm_in => id_imm_or_port, sp_val_in => sp_current,
         r_addr1_in => id_r1, r_addr2_in => id_r2, rdst_addr_in => id_w,
@@ -518,16 +530,27 @@ BEGIN
         END CASE;
     END PROCESS;
 
-    -- MUX for ALU Operand A
-    ex_src_a <= ex_alu_result_from_mem WHEN forward_a_sel = "10" ELSE -- From EX/MEM stage
-            wb_write_data          WHEN forward_a_sel = "01" ELSE -- From MEM/WB stage
-            ex_r_data1;                                          -- From Register File 
+    -- Forwarding Unit Instantiation
+    U_ForwardingUnit: ForwardingUnit PORT MAP (
+        id_ex_rs1 => ex_r_addr1,
+        id_ex_rs2 => ex_r_addr2,
+        ex_mem_rd => mem_w_addr_dest,
+        ex_mem_reg_write => mem_reg_write,
+        mem_wb_rd => wb_w_addr_dest,
+        mem_wb_reg_write => wb_reg_write,
+        forward_a => forward_a_sel,
+        forward_b => forward_b_sel
+    );
 
-            
+    -- MUX for ALU Operand A
+    ex_src_a <= mem_alu_result WHEN forward_a_sel = "10" ELSE -- From EX/MEM stage
+                wb_write_data  WHEN forward_a_sel = "01" ELSE -- From MEM/WB stage
+                ex_r_data1;                                   -- From Register File 
+
     -- 1. First, find the "Correct" value of the register (considering hazards)
-    ex_r2_forwarded <= ex_alu_result_from_mem WHEN forward_b_sel = "10" ELSE 
-                    wb_write_data          WHEN forward_b_sel = "01" ELSE 
-                    ex_r_data2;
+    ex_r2_forwarded <= mem_alu_result WHEN forward_b_sel = "10" ELSE 
+                       wb_write_data   WHEN forward_b_sel = "01" ELSE 
+                       ex_r_data2;
 
     -- 2. Second, choose between THAT "Correct" register value OR the Immediate
     ex_src_b <= ex_imm_ext WHEN ex_alu_src_b = '1' ELSE 
@@ -562,10 +585,10 @@ BEGIN
         sp_write_in => ex_sp_write, is_stack_in => ex_is_stack,
         branch_type_in => ex_branch_type, 
         
-        pc_in => ex_pc, alu_result_in => ex_alu_result, write_data_in => ex_write_data,
+        pc_in => ex_pc, alu_res_in => ex_alu_result, r_data2_in => ex_write_data,
         sp_new_val_in => ex_sp_side_result, sp_val_in => ex_sp_val,
         rdst_addr_in => ex_w_addr_dest,
-        w_addr_swap_in => ex_r_addr1, swap_data_in => ex_r_data2,
+        rsrc_addr_in => ex_r_addr1,
         
         reg_write_out => mem_reg_write, reg_write_2_out => mem_reg_write_2,
         wb_sel_out => mem_wb_sel, mem_write_out => mem_mem_write, mem_read_out => mem_mem_read,
@@ -573,21 +596,23 @@ BEGIN
         sp_write_out => mem_sp_write, is_stack_out => mem_is_stack,
         branch_type_out => mem_branch_type, 
         
-        pc_out => mem_pc, alu_result_out => mem_alu_result, write_data_out => mem_write_data,
+        pc_out => mem_pc, alu_res_out => mem_alu_result, r_data2_out => mem_write_data,
         sp_new_val_out => mem_sp_new_val, sp_val_out => mem_sp_val,
         rdst_addr_out => mem_w_addr_dest,
-        w_addr_swap_out => mem_w_addr_swap, swap_data_out => mem_swap_data
+        rsrc_addr_out => mem_w_addr_swap
     );
 
     ----------------------------------------------------------------------------
     -- 4. MEMORY STAGE
     ----------------------------------------------------------------------------
     U_Memory: Memory PORT MAP (
-        clk => clk, rst => rst,
+        clk => clk,
         addr => memory_addr, data_in => memory_data_in, we => memory_we,
         data_out => memory_data_out
     );
     mem_read_data <= memory_data_out;
+    -- For swap operations, use the r_data2_out from EX_MEM (which is mem_write_data)
+    mem_swap_data <= mem_write_data;
 
     -- Check for RET/RTI
     mem_branch_taken <= '1' WHEN (mem_branch_type = "110") ELSE '0';
@@ -596,13 +621,13 @@ BEGIN
         clk => clk, rst => rst, en => '1',
         reg_write_in => mem_reg_write, reg_write_2_in => mem_reg_write_2,
         wb_sel_in => mem_wb_sel,
-        pc_in => mem_pc, mem_data_in => mem_read_data, alu_result_in => mem_alu_result,
-        rdst_addr_in => mem_w_addr_dest, w_addr_swap_in => mem_w_addr_swap, swap_data_in => mem_swap_data,
+        pc_in => mem_pc, mem_data_in => mem_read_data, alu_res_in => mem_alu_result,
+        rdst_addr_in => mem_w_addr_dest, rsrc_addr_in => mem_w_addr_swap, r_data2_in => mem_swap_data,
         
         reg_write_out => wb_reg_write, reg_write_2_out => wb_reg_write_2,
         wb_sel_out => wb_wb_sel,
-        pc_out => wb_pc, mem_data_out => wb_mem_data, alu_result_out => wb_alu_result,
-        rdst_addr_out => wb_w_addr_dest, w_addr_swap_out => wb_w_addr_swap, swap_data_out => wb_swap_data
+        pc_out => wb_pc, mem_data_out => wb_mem_data, alu_res_out => wb_alu_result,
+        rdst_addr_out => wb_w_addr_dest, rsrc_addr_out => wb_w_addr_swap, r_data2_out => wb_swap_data
     );
 
     ----------------------------------------------------------------------------
