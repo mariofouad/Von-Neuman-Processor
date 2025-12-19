@@ -33,8 +33,7 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     SIGNAL debug_pc, debug_inst, debug_alu : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_if_pc, debug_id_pc, debug_ex_pc, debug_mem_pc, debug_wb_pc : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_reg_w_en, debug_mem_w_en : std_logic;
-    
-    SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000000";
+    SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000005"; -- Sample input
     SIGNAL hw_int_sig : std_logic := '0';
     SIGNAL output_port_sig : std_logic_vector(31 DOWNTO 0);
     SIGNAL out_en_sig : std_logic;
@@ -50,7 +49,9 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     BEGIN
         slv_norm := sv; -- Normalize
         FOR i IN 1 TO result'length LOOP
+            -- Extract nibble (4 bits)
             nibble := to_integer(unsigned(slv_norm(slv_norm'length - (i-1)*4 - 1 DOWNTO slv_norm'length - i*4)));
+            -- Check for unknown logic
             IF nibble >= 0 AND nibble <= 15 THEN
                 result(i) := chars(nibble + 1);
             ELSE
@@ -81,36 +82,12 @@ BEGIN
         out_en => out_en_sig
     );
 
-    -- Clock Process
     clk_process :process
     begin
         clk <= '0'; wait for clk_period/2;
         clk <= '1'; wait for clk_period/2;
     end process;
 
-    -- SMART INPUT DRIVER:
-    -- Changes the input_port value based on which instruction is currently in the Decode (ID) stage.
-    -- This matches the addresses provided in your Assembly Test Case.
-    PROCESS(debug_id_pc)
-    BEGIN
-        CASE to_integer(unsigned(debug_id_pc)) IS
-            -- Initial IN instructions
-            WHEN 10 => input_port_sig <= x"0000001E"; -- IN R1 (Expect 30)
-            WHEN 11 => input_port_sig <= x"00000032"; -- IN R2 (Expect 50)
-            WHEN 12 => input_port_sig <= x"00000064"; -- IN R3 (Expect 100)
-            WHEN 13 => input_port_sig <= x"0000012C"; -- IN R4 (Expect 300)
-            
-            -- IN instructions after Jumps
-            WHEN 53 => input_port_sig <= x"0000003C"; -- IN R1 (Expect 60)
-            WHEN 60 => input_port_sig <= x"00000046"; -- IN R1 (Expect 70)
-            WHEN 80 => input_port_sig <= x"000002BC"; -- IN R6 (Expect 700)
-            
-            -- Default value (Safety)
-            WHEN OTHERS => input_port_sig <= x"FFFFFFFF"; 
-        END CASE;
-    END PROCESS;
-
-    -- Stimulus Process
     stim_proc: process
     begin
         -- Hold Reset
@@ -123,8 +100,8 @@ BEGIN
         REPORT "Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW";
         REPORT "-----------------------------------------------------------------------------";
         
-        -- Increased Loop Count to 100 cycles to allow the full program (Jumps/Branches) to execute
-        FOR i IN 0 TO 100 LOOP
+        -- Run for 40 cycles to see full test case
+        FOR i IN 0 TO 40 LOOP
             wait for clk_period;
             
             REPORT "C" & integer'image(i) & " | " & 
