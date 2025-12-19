@@ -21,7 +21,10 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
         debug_reg_w_en: OUT std_logic;
         debug_mem_w_en: OUT std_logic;
         debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
-        input_port    : IN  std_logic_vector(31 DOWNTO 0)
+        input_port    : IN  std_logic_vector(31 DOWNTO 0);
+        hardware_interrupt : IN std_logic;
+        output_port   : OUT std_logic_vector(31 DOWNTO 0);
+        out_en        : OUT std_logic
     );
     END COMPONENT;
 
@@ -30,7 +33,10 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     SIGNAL debug_pc, debug_inst, debug_alu : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_if_pc, debug_id_pc, debug_ex_pc, debug_mem_pc, debug_wb_pc : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_reg_w_en, debug_mem_w_en : std_logic;
-    SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"FFFFFFFF"; -- Default value from test case
+    SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000005"; -- Sample input
+    SIGNAL hw_int_sig : std_logic := '0';
+    SIGNAL output_port_sig : std_logic_vector(31 DOWNTO 0);
+    SIGNAL out_en_sig : std_logic;
 
     CONSTANT clk_period : time := 10 ns;
 
@@ -70,7 +76,10 @@ BEGIN
         debug_reg_w_en => debug_reg_w_en,
         debug_mem_w_en => debug_mem_w_en,
         debug_alu => debug_alu,
-        input_port => input_port_sig
+        input_port => input_port_sig,
+        hardware_interrupt => hw_int_sig,
+        output_port => output_port_sig,
+        out_en => out_en_sig
     );
 
     clk_process :process
@@ -105,6 +114,11 @@ BEGIN
                    to_hex_string(debug_alu) & " | " & 
                    std_logic'image(debug_reg_w_en) & " | " & 
                    std_logic'image(debug_mem_w_en);
+            IF i = 9 THEN
+                hw_int_sig <= '1';
+            ELSIF i = 10 THEN
+                hw_int_sig <= '0';
+            END IF;
         END LOOP;
         
         REPORT "--- Simulation Finished ---";

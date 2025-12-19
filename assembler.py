@@ -53,7 +53,7 @@ def assemble_line(line):
         
     if is_raw_num and mnemonic not in OPCODES:
         # Return as a 32-bit hex word
-        return f'x"{raw_val:08X}"'
+        return f"{raw_val:08X}"
 
     if mnemonic not in OPCODES:
         return f"ERROR: Unknown Opcode {mnemonic}"
@@ -139,13 +139,15 @@ def assemble_line(line):
     # [15:0]  Imm
     if mnemonic == 'INT':
         unused = "01"
+    elif mnemonic == 'RTI':
+        unused = "10"
     else:
         unused = "00"
     
     binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}{unused}{imm}"
     hex_str = f"{int(binary_str, 2):08X}"
     
-    return f'x"{hex_str}"'
+    return hex_str
 
 def main():
     if len(sys.argv) < 2:

@@ -26,9 +26,13 @@ ENTITY ControlUnit IS
         
         -- Stack / Special
         sp_write    : OUT std_logic;
-        is_stack    : OUT std_logic
+        is_stack    : OUT std_logic;
         
-        rti_en      : OUT std_logic  -- New: To restore flags from stack   
+        rti_en      : OUT std_logic;  -- New: To restore flags from stack   
+
+        ccr_z_en    : OUT std_logic;
+        ccr_n_en    : OUT std_logic;
+        ccr_c_en    : OUT std_logic
     );
 END ControlUnit;
 
@@ -51,6 +55,10 @@ BEGIN
         out_en      <= '0';
         port_sel    <= '0';
         rti_en      <= '0';
+        
+        ccr_z_en    <= '0';
+        ccr_n_en    <= '0';
+        ccr_c_en    <= '0';
 
         CASE opcode IS
             WHEN OP_NOP =>
@@ -63,14 +71,20 @@ BEGIN
 
             WHEN OP_SETC =>
                 alu_sel <= "111"; -- ALU SETC
+                ccr_c_en <= '1';
             
             WHEN OP_NOT =>
                 reg_write <= '1';
                 alu_sel   <= "101"; -- ALU NOT
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
             
             WHEN OP_INC =>
                 reg_write <= '1';
                 alu_sel   <= "110"; -- ALU INC
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
+                ccr_c_en <= '1';
                 
             WHEN OP_OUT =>
                 alu_sel   <= "000"; -- MOV (Pass A to output port?) - TODO: Add Output Port
@@ -95,19 +109,29 @@ BEGIN
             WHEN OP_ADD =>
                 reg_write <= '1';
                 alu_sel   <= "010"; -- ADD
-            
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
+                ccr_c_en <= '1';
             WHEN OP_SUB =>
                 reg_write <= '1';
                 alu_sel   <= "011"; -- SUB
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
+                ccr_c_en <= '1';
             
             WHEN OP_AND =>
                 reg_write <= '1';
                 alu_sel   <= "100"; -- AND
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
             
             WHEN OP_IADD =>
                 reg_write <= '1';
                 alu_src_b <= '1'; -- Imm
                 alu_sel   <= "010"; -- ADD
+                ccr_z_en <= '1';
+                ccr_n_en <= '1';
+                ccr_c_en <= '1';
             
             WHEN OP_PUSH =>
                 mem_write <= '1';
