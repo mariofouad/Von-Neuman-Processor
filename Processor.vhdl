@@ -22,8 +22,16 @@ ENTITY Processor IS
         debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
         
         -- I/O Ports
+<<<<<<< HEAD
         input_port    : IN  std_logic_vector(31 DOWNTO 0);
         output_port   : OUT std_logic_vector(31 DOWNTO 0)
+=======
+        input_port    : IN  std_logic_vector(31 DOWNTO 0)
+
+        -- Output Port
+        output_port   : OUT std_logic_vector(31 DOWNTO 0)
+        out_en        : OUT std_logic
+>>>>>>> main
     );
 END Processor;
 

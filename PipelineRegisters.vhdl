@@ -2,31 +2,30 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
 -- =============================================================================
--- IF/ID REGISTER
+-- IF/ID REGISTER (Fetch -> Decode)
 -- =============================================================================
-ENTITY IF_ID_Reg IS
+ENTITY IF_ID_Reg is
     PORT (
         clk         : IN  std_logic;
         rst         : IN  std_logic;
-        en          : IN  std_logic; -- Enable (for Stalling)
+        en          : IN  std_logic; -- 0: Freeze (Stall)
+        clr         : IN  std_logic; -- 1: Flush (Branch Taken)
         
-        -- Inputs
         pc_in       : IN  std_logic_vector(31 DOWNTO 0);
         inst_in     : IN  std_logic_vector(31 DOWNTO 0);
         
-        -- Outputs
         pc_out      : OUT std_logic_vector(31 DOWNTO 0);
         inst_out    : OUT std_logic_vector(31 DOWNTO 0)
     );
 END IF_ID_Reg;
 
-ARCHITECTURE Behavior OF IF_ID_Reg IS
+ARCHITECTURE Behavior OF IF_ID_Reg is
 BEGIN
     PROCESS(clk, rst)
     BEGIN
-        IF rst = '1' THEN
+        IF rst = '1' OR clr = '1' THEN
             pc_out   <= (others => '0');
-            inst_out <= (others => '0');
+            inst_out <= (others => '0'); -- Becomes NOP
         ELSIF rising_edge(clk) THEN
             IF en = '1' THEN
                 pc_out   <= pc_in;
@@ -37,12 +36,12 @@ BEGIN
 END Behavior;
 
 -- =============================================================================
--- ID/EX REGISTER
+-- ID/EX REGISTER (Decode -> Execute)
 -- =============================================================================
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
-ENTITY ID_EX_Reg IS
+ENTITY ID_EX_Reg is
     PORT (
         clk, rst, en : IN std_logic;
         -- Control Inputs
@@ -85,7 +84,7 @@ ENTITY ID_EX_Reg IS
     );
 END ID_EX_Reg;
 
-ARCHITECTURE Behavior OF ID_EX_Reg IS
+ARCHITECTURE Behavior OF ID_EX_Reg is
 BEGIN
     PROCESS(clk, rst)
     BEGIN
@@ -117,12 +116,12 @@ BEGIN
     END PROCESS;
 END Behavior;
 -- =============================================================================
--- EX/MEM REGISTER
+-- EX/MEM REGISTER (Execute -> Memory)
 -- =============================================================================
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
-ENTITY EX_MEM_Reg IS
+ENTITY EX_MEM_Reg is
     PORT (
         clk, rst, en : IN std_logic;
         
@@ -167,7 +166,7 @@ ENTITY EX_MEM_Reg IS
     );
 END EX_MEM_Reg;
 
-ARCHITECTURE Behavior OF EX_MEM_Reg IS
+ARCHITECTURE Behavior OF EX_MEM_Reg is
 BEGIN
     PROCESS(clk, rst)
     BEGIN
@@ -199,12 +198,12 @@ BEGIN
     END PROCESS;
 END Behavior;
 -- =============================================================================
--- MEM/WB REGISTER
+-- MEM/WB REGISTER (Memory -> Write Back)
 -- =============================================================================
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
-ENTITY MEM_WB_Reg IS
+ENTITY MEM_WB_Reg is
     PORT (
         clk, rst, en : IN std_logic;
         
@@ -238,7 +237,7 @@ ENTITY MEM_WB_Reg IS
     );
 END MEM_WB_Reg;
 
-ARCHITECTURE Behavior OF MEM_WB_Reg IS
+ARCHITECTURE Behavior OF MEM_WB_Reg is
 BEGIN
     PROCESS(clk, rst)
     BEGIN
