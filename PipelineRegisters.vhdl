@@ -104,7 +104,6 @@ BEGIN
                 branch_type_out <= branch_type_in;
                 port_sel_out <= port_sel_in;
                 flags_en_out <= flags_en_in;
-                port_sel_out <= port_sel_in;
                 pc_out <= pc_in;
                 r_data1_out <= r_data1_in; r_data2_out <= r_data2_in;
                 imm_out <= imm_in; sp_val_out <= sp_val_in;
@@ -159,7 +158,7 @@ ENTITY EX_MEM_Reg is
         sp_new_val_out: OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
-        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0)
     );
 END EX_MEM_Reg;
 
@@ -212,11 +211,11 @@ ENTITY MEM_WB_Reg is
         pc_in          : IN std_logic_vector(31 DOWNTO 0);
         mem_data_in    : IN std_logic_vector(31 DOWNTO 0);
         alu_res_in  : IN std_logic_vector(31 DOWNTO 0);
+        r_data2_in   : IN std_logic_vector(31 DOWNTO 0);
         rdst_addr_in   : IN std_logic_vector(2 DOWNTO 0);
         
         -- SWAP Data Inputs (Added)
         rsrc_addr_in   : IN std_logic_vector(2 DOWNTO 0);
-        swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
         
         -- Control Outputs
         reg_write_out, reg_write_2_out : OUT std_logic;
