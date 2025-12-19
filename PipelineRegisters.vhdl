@@ -9,7 +9,6 @@ ENTITY IF_ID_Reg is
         clk         : IN  std_logic;
         rst         : IN  std_logic;
         en          : IN  std_logic; -- 0: Freeze (Stall)
-        clr         : IN  std_logic; -- 1: Flush (Branch Taken)
         
         pc_in       : IN  std_logic_vector(31 DOWNTO 0);
         inst_in     : IN  std_logic_vector(31 DOWNTO 0);
@@ -23,7 +22,7 @@ ARCHITECTURE Behavior OF IF_ID_Reg is
 BEGIN
     PROCESS(clk, rst)
     BEGIN
-        IF rst = '1' OR clr = '1' THEN
+        IF rst = '1'THEN
             pc_out   <= (others => '0');
             inst_out <= (others => '0'); -- Becomes NOP
         ELSIF rising_edge(clk) THEN
@@ -54,14 +53,13 @@ ENTITY ID_EX_Reg is
         out_en_in    : IN std_logic;
         rti_en_in    : IN std_logic;
         branch_type_in : IN std_logic_vector(2 DOWNTO 0);
-        
-        -- *** NEW ***
+        port_sel_in     : IN  std_logic; -- Choose IN.PORT
         flags_en_in  : IN std_logic;
         
         -- Data Inputs
         pc_in, r_data1_in, r_data2_in, imm_extended_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in    : IN std_logic_vector(31 DOWNTO 0);
-        r_addr1_in, r_addr2_in, w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
+        r_addr1_in, r_addr2_in, rdst_addr_in : IN std_logic_vector(2 DOWNTO 0);
         
         -- Control Outputs
         reg_write_out, reg_write_2_out, wb_sel_out, mem_write_out, mem_read_out : OUT std_logic;
@@ -73,14 +71,14 @@ ENTITY ID_EX_Reg is
         out_en_out    : OUT std_logic;
         rti_en_out    : OUT std_logic;
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
-        
         -- *** NEW ***
         flags_en_out  : OUT std_logic;
         
         -- Data Outputs
+        port_sel_out : OUT std_logic;
         pc_out, r_data1_out, r_data2_out, imm_extended_out : OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
-        r_addr1_out, r_addr2_out, w_addr_dest_out : OUT std_logic_vector(2 DOWNTO 0)
+        r_addr1_out, r_addr2_out, rdst_addr_out : OUT std_logic_vector(2 DOWNTO 0)
     );
 END ID_EX_Reg;
 
@@ -103,14 +101,14 @@ BEGIN
                 is_stack_out <= is_stack_in;
                 out_en_out <= out_en_in; rti_en_out <= rti_en_in;
                 branch_type_out <= branch_type_in;
-                
+                port_sel_out <= port_sel_in;
                 flags_en_out <= flags_en_in;
-
+                port_sel_out <= port_sel_in;
                 pc_out <= pc_in;
                 r_data1_out <= r_data1_in; r_data2_out <= r_data2_in;
                 imm_extended_out <= imm_extended_in; sp_val_out <= sp_val_in;
                 r_addr1_out <= r_addr1_in; r_addr2_out <= r_addr2_in;
-                w_addr_dest_out <= w_addr_dest_in;
+                rdst_addr_out <= rdst_addr_in;
             END IF;
         END IF;
     END PROCESS;
@@ -138,11 +136,11 @@ ENTITY EX_MEM_Reg is
 
         -- Data Inputs
         pc_in         : IN std_logic_vector(31 DOWNTO 0);
-        alu_result_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
+        alu_res_in, write_data_in : IN std_logic_vector(31 DOWNTO 0);
         sp_new_val_in : IN std_logic_vector(31 DOWNTO 0);
         sp_val_in     : IN std_logic_vector(31 DOWNTO 0);
-        w_addr_dest_in: IN std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_in : IN std_logic_vector(2 DOWNTO 0);
+        rdst_addr_in: IN std_logic_vector(2 DOWNTO 0);
+        rsrc_addr_in : IN std_logic_vector(2 DOWNTO 0);
         swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
         
         -- Outputs
@@ -157,12 +155,12 @@ ENTITY EX_MEM_Reg is
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
         
         pc_out        : OUT std_logic_vector(31 DOWNTO 0);
-        alu_result_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
+        alu_res_out, write_data_out : OUT std_logic_vector(31 DOWNTO 0);
         sp_new_val_out: OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
-        w_addr_dest_out: OUT std_logic_vector(2 DOWNTO 0);
-        w_addr_swap_out : OUT std_logic_vector(2 DOWNTO 0);
-        swap_data_out   : OUT std_logic_vector(31 DOWNTO 0)
+        rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
+        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
     );
 END EX_MEM_Reg;
 
@@ -186,13 +184,12 @@ BEGIN
                 -- Pass Branch Type
                 branch_type_out <= branch_type_in;
                 
-                pc_out <= pc_in; alu_result_out <= alu_result_in;
+                pc_out <= pc_in; alu_res_out <= alu_res_in;
                 write_data_out <= write_data_in; sp_new_val_out <= sp_new_val_in;
                 sp_val_out <= sp_val_in;
-                w_addr_dest_out <= w_addr_dest_in;
-                
-                w_addr_swap_out <= w_addr_swap_in;
-                swap_data_out <= swap_data_in;
+                rdst_addr_out <= rdst_addr_in;
+                rsrc_addr_out <= rsrc_addr_in;
+                r_data2_out <= r_data2_in;
             END IF;
         END IF;
     END PROCESS;
@@ -214,11 +211,11 @@ ENTITY MEM_WB_Reg is
         -- Data Inputs
         pc_in          : IN std_logic_vector(31 DOWNTO 0);
         mem_data_in    : IN std_logic_vector(31 DOWNTO 0);
-        alu_result_in  : IN std_logic_vector(31 DOWNTO 0);
-        w_addr_dest_in : IN std_logic_vector(2 DOWNTO 0);
+        alu_res_in  : IN std_logic_vector(31 DOWNTO 0);
+        rdst_addr_in   : IN std_logic_vector(2 DOWNTO 0);
         
         -- SWAP Data Inputs (Added)
-        w_addr_swap_in : IN std_logic_vector(2 DOWNTO 0);
+        rsrc_addr_in   : IN std_logic_vector(2 DOWNTO 0);
         swap_data_in   : IN std_logic_vector(31 DOWNTO 0);
         
         -- Control Outputs
@@ -228,12 +225,12 @@ ENTITY MEM_WB_Reg is
         -- Data Outputs
         pc_out         : OUT std_logic_vector(31 DOWNTO 0);
         mem_data_out   : OUT std_logic_vector(31 DOWNTO 0);
-        alu_result_out : OUT std_logic_vector(31 DOWNTO 0);
-        w_addr_dest_out: OUT std_logic_vector(2 DOWNTO 0);
+        alu_res_out : OUT std_logic_vector(31 DOWNTO 0);
+        rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
         
         -- SWAP Data Outputs (Added)
-        w_addr_swap_out : OUT std_logic_vector(2 DOWNTO 0);
-        swap_data_out   : OUT std_logic_vector(31 DOWNTO 0)
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
+        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
     );
 END MEM_WB_Reg;
 
@@ -246,10 +243,10 @@ BEGIN
             wb_sel_out <= '0';
             pc_out <= (others => '0');
             mem_data_out <= (others => '0');
-            alu_result_out <= (others => '0');
-            w_addr_dest_out <= (others => '0');
-            w_addr_swap_out <= (others => '0');
-            swap_data_out <= (others => '0');
+            alu_res_out <= (others => '0');
+            rdst_addr_out <= (others => '0');
+            rsrc_addr_out <= (others => '0');
+            r_data2_out <= (others => '0');
         ELSIF rising_edge(clk) THEN
             IF en = '1' THEN
                 reg_write_out <= reg_write_in; reg_write_2_out <= reg_write_2_in;
@@ -257,11 +254,11 @@ BEGIN
                 
                 pc_out <= pc_in;
                 mem_data_out <= mem_data_in;
-                alu_result_out <= alu_result_in;
-                w_addr_dest_out <= w_addr_dest_in;
+                alu_res_out <= alu_res_in;
+                rdst_addr_out <= rdst_addr_in;
                 
-                w_addr_swap_out <= w_addr_swap_in;
-                swap_data_out <= swap_data_in;
+                rsrc_addr_out <= rsrc_addr_in;
+                r_data2_out <= r_data2_in;
             END IF;
         END IF;
     END PROCESS;
