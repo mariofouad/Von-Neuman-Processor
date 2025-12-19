@@ -54,7 +54,13 @@ begin
     end process;
 
     -- Read Process (Asynchronous)
-    read_data1 <= registers(to_integer(unsigned(read_addr1)));
-    read_data2 <= registers(to_integer(unsigned(read_addr2)));
+    -- for hanlding write after read hazard we use write data
+    read_data1 <= write_data1 when (reg_write_en1 = '1' and read_addr1 = write_addr1) else
+                  write_data2 when (reg_write_en2 = '1' and read_addr1 = write_addr2) else
+                  registers(to_integer(unsigned(read_addr1)));
+
+    read_data2 <= write_data1 when (reg_write_en1 = '1' and read_addr2 = write_addr1) else
+                  write_data2 when (reg_write_en2 = '1' and read_addr2 = write_addr2) else
+                  registers(to_integer(unsigned(read_addr2)));
 
 end Behavioral;
