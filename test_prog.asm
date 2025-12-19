@@ -1,37 +1,10 @@
-# Sample Program for Von Neumann Processor
-# ----------------------------------------
-# This program initializes registers, performs math,
-# and stores the result to memory.
-
-# 1. Initialize R1 = 10, R2 = 20
-LDM R1, 10
-LDM R2, 20
-
-# 2. Arithmetic: R3 = R1 + R2 (should be 30)
-ADD R3, R1, R2
-
-# 3. Store Result: Mem[R2 + 0] = R3
-# (Stores value 30 to Address 20)
-STD R3, R2, 0
-
-# 4. Modify R1: R1 = R1 + 1 (INC)
-# Note: INC uses Format "INC Rdst" -> logic says opcode+rdst.
-# Wait, assembler logic for INC: "Op Rdst".
-INC R1
-
-# 5. Logical: R4 = NOT R1
-NOT R4
-
-# 6. Infinite Loop (Jump to self)
-# JMP Address (Relative or Absolute? Assembler logic: J-Type takes Imm)
-# Assuming Absolute Jump.
-# If code starts at 16 (0x10), 
-# Instructions:
-# 16: LDM R1, 10
-# 17: LDM R2, 20
-# 18: ADD R3...
-# 19: STD...
-# 20: INC...
-# 21: NOT...
-# 22: JMP 22
-JMP 22
+LDM R1, 10      ; R1 = 10
+JMP 2           ; Jump to (PC+1) + 2 = (1+1)+2 = 4. Skips addr 2 and 3.
+LDM R1, 0xDEAD  ; [TRAP] Should be skipped. If executed, R1 dies.
+LDM R1, 0xDEAD  ; [TRAP] Should be skipped.
+LDM R2, 20      ; R2 = 20. (Success Target of JMP)
+SUB R3, R1, R1  ; R3 = R1 - R1 = 0. Sets ZERO Flag.
+JZ  1           ; Jump to (PC+1) + 1 = (6+1)+1 = 8. Skips addr 7.
+LDM R4, 0xBAD   ; [TRAP] Should be FLUSHED. If executed, R4 becomes BAD.
+LDM R4, 0xGOOD  ; R4 = 0xGOOD (Target of JZ).
+LDM R5, 50      ; R5 = 50. End of test.
