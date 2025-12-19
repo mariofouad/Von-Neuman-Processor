@@ -10,7 +10,8 @@ ENTITY ControlUnit IS
         reg_write   : OUT std_logic;
         reg_write_2 : OUT std_logic; -- For SWAP
         wb_sel      : OUT std_logic; -- 0: ALU, 1: MEM
-        
+        out_en      : OUT std_logic; -- Output Enable
+
         -- M Stage
         mem_write   : OUT std_logic;
         mem_read    : OUT std_logic; -- Useful for Hazard Detection
@@ -18,13 +19,16 @@ ENTITY ControlUnit IS
         -- EX Stage
         alu_sel     : OUT std_logic_vector(2 DOWNTO 0);
         alu_src_b   : OUT std_logic; -- 0: Reg, 1: Imm
-        
+        port_sel    : OUT std_logic; -- 0: Immediate, 1: IN.PORT
+
         -- Branching (Handled in EX/MEM usually, but decoding happens here)
         branch_type : OUT std_logic_vector(2 DOWNTO 0); -- 0: None, 1: JZ, 2: JN, 3: JC, 4: JMP, 5: CALL, 6: RET
         
         -- Stack / Special
         sp_write    : OUT std_logic;
         is_stack    : OUT std_logic
+        
+        rti_en      : OUT std_logic  -- New: To restore flags from stack   
     );
 END ControlUnit;
 
@@ -44,6 +48,10 @@ BEGIN
         sp_write    <= '0';
         is_stack    <= '0';
         
+        out_en      <= '0';
+        port_sel    <= '0';
+        rti_en      <= '0';
+
         CASE opcode IS
             WHEN OP_NOP =>
                 NULL;
@@ -66,11 +74,13 @@ BEGIN
                 
             WHEN OP_OUT =>
                 alu_sel   <= "000"; -- MOV (Pass A to output port?) - TODO: Add Output Port
+                out_en    <= '1';
             
             WHEN OP_IN =>
                 reg_write <= '1';
                 alu_src_b <= '1'; -- Use Input (Routed via Imm path)
                 alu_sel   <= "001"; -- Pass B
+                port_sel  <= '1';
 
             WHEN OP_MOV =>
                 reg_write <= '1';
@@ -117,6 +127,7 @@ BEGIN
                 reg_write <= '1';
                 alu_src_b <= '1'; -- Imm
                 alu_sel   <= "001"; -- Pass B (Pass Imm)
+                port_sel  <= '0'; -- Use Immediate
             
             WHEN OP_LDD =>
                 reg_write <= '1';
@@ -165,6 +176,7 @@ BEGIN
                 sp_write    <= '1';
                 mem_read    <= '1';
                 is_stack    <= '1';
+                rti_en      <= '1';
 
             WHEN OTHERS =>
                 NULL;

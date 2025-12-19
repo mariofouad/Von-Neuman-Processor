@@ -1,6 +1,8 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
+USE std.textio.all;
+USE ieee.std_logic_textio.all;
 
 ENTITY Memory IS
     GENERIC (
@@ -8,61 +10,49 @@ ENTITY Memory IS
     );
     PORT (
         clk     : IN  std_logic;
-        rst     : IN  std_logic;
-        
-        -- Ports
         addr    : IN  std_logic_vector(31 DOWNTO 0);
-        data_in : IN  std_logic_vector(31 DOWNTO 0); -- Keep 32-bit for instructions
+        data_in : IN  std_logic_vector(31 DOWNTO 0);
         we      : IN  std_logic;
-        
         data_out: OUT std_logic_vector(31 DOWNTO 0)
     );
 END Memory;
 
 ARCHITECTURE Behavior OF Memory IS
-    -- Memory array: 4K x 32-bit
     TYPE ram_type IS ARRAY (0 TO MEM_SIZE-1) OF std_logic_vector(31 DOWNTO 0);
-    
-    -- --- PROGRAM LOADER (Hardcoded for Simulation) ---
-    -- 1. Assemble your code.
-    -- 2. Place it here.
-    -- Assembling test_case.asm to VHDL Init Format --
-    CONSTANT INIT_RAM : ram_type := (
-    0 => x"00000000",
-    1 => x"00000030", -- Vector 0 -> PC 20 (0x14)
-    2 => x"00000014", -- Vector 1 -> PC 32 (0x20)
-    3 => x"00000020", -- Vector 0 -> PC 20 (0x14)
-    4 => x"C0020000", -- INT 0 -> Jump to PC 20
-    20 => x"78040010", -- LDM R1, 0x0010
-    21 => x"00000000", -- NOP
-    22 => x"00000000", -- NOP
-    23 => x"00000000", -- NOP
-    24 => x"78080010", -- LDM R2, 10
-    25 => x"39100000", -- MOV R1, R4
 
-    OTHERS => (others => '0')
-);
+    -- Function to load memory from a text file
+    impure function InitRamFromFile (RamFileName : in string) return ram_type is
+        FILE ramfile : text is in RamFileName;
+        variable ramfile_line : line;
+        variable temp_word : std_logic_vector(31 downto 0);
+        variable temp_ram : ram_type := (others => (others => '0'));
+    begin
+        for i in 0 to MEM_SIZE-1 loop
+            if not endfile(ramfile) then
+                readline(ramfile, ramfile_line);
+                hread(ramfile_line, temp_word); -- Reads Hexadecimal
+                temp_ram(i) := temp_word;
+            end if;
+        end loop;
+        return temp_ram;
+    end function;
 
+    -- The RAM signal initialized from file
+    SIGNAL ram : ram_type := InitRamFromFile("program.mem");
 
-    SIGNAL ram : ram_type := INIT_RAM;
-    
-    CONSTANT ZEROS : std_logic_vector(31 DOWNTO 0) := (OTHERS => '0');
 BEGIN 
 
-    PROCESS(clk, rst)
+    PROCESS(clk)
     BEGIN
-        IF rst = '1' THEN
-            -- Optional reset
-            NULL; 
-        ELSIF rising_edge(clk) THEN
+        IF rising_edge(clk) THEN
             IF we = '1' THEN
-                -- Write Operation
+                -- Physical addressing: use lower 12 bits
                 ram(to_integer(unsigned(addr(11 DOWNTO 0)))) <= data_in;
             END IF;
         END IF;
     END PROCESS;
 
-    -- Asynchronous Read
+    -- Asynchronous Read (Crucial for Fetch stage speed)
     data_out <= ram(to_integer(unsigned(addr(11 DOWNTO 0))));
 
 END Behavior;

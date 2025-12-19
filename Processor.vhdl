@@ -25,6 +25,9 @@ ENTITY Processor IS
         input_port    : IN  std_logic_vector(31 DOWNTO 0);
         -- Hardware interrupt
         hardware_interrupt : IN std_logic
+        -- Output Port
+        output_port   : OUT std_logic_vector(31 DOWNTO 0)
+        out_en        : OUT std_logic
     );
 END Processor;
 
