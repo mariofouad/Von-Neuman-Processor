@@ -28,13 +28,18 @@ ARCHITECTURE Behavior OF Memory IS
     -- 2. Place it here.
     -- Assembling test_case.asm to VHDL Init Format --
     CONSTANT INIT_RAM : ram_type := (
-    0 => x"78040005", -- LDM R1, 0x0005  -- Load 5 into R1
-    1 => x"00000000", -- NOP             -- Fillers to avoid RAW hazards for now
-    2 => x"00000000", -- NOP
-    3 => x"00000000", -- NOP
-    4 => x"69200000", -- PUSH R1         -- Memory[0x03FF] should become 5, SP should become 0x03FE
-    5 => x"00000000",   
-    6 => x"70080000", -- POP R2          -- SP should become 0x03FF, R2 should become 5
+    0 => x"00000000",
+    1 => x"00000030", -- Vector 0 -> PC 20 (0x14)
+    2 => x"00000014", -- Vector 1 -> PC 32 (0x20)
+    3 => x"00000020", -- Vector 0 -> PC 20 (0x14)
+    4 => x"C0020000", -- INT 0 -> Jump to PC 20
+    20 => x"78040010", -- LDM R1, 0x0010
+    21 => x"00000000", -- NOP
+    22 => x"00000000", -- NOP
+    23 => x"00000000", -- NOP
+    24 => x"78080010", -- LDM R2, 10
+    25 => x"39100000", -- MOV R1, R4
+
     OTHERS => (others => '0')
 );
 

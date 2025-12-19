@@ -7,16 +7,14 @@
 .org 0			# means the code start at address zero, this could be written in 
 			# several places in the file and the assembler should handle it
 
-LDM R0, 1
-LDM R1, AAAA
-LDM R2, FFFF
-INC R0
+LDM R1, 5
+NOP
+INT 0
+LDM R1, 10
+NOP
+NOP
+NOP
+LDM R2, 10
 MOV R1, R4
-NOT R1
-MOV R0, R3
-IN R0	# R0 = FFFF_FFFF
-OUT R0
-AND R5, R1, R0
-MOV R0, R6
-NOT R6
-INC R0
+
+

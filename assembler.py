@@ -80,6 +80,19 @@ def assemble_line(line):
     if mnemonic == '.ORG':
         return line # Special case handled in main
     
+    # Check if the line is just a raw number (for vectors)
+    is_raw_num = False
+    try:
+        # Check if it's hex (prefixed or raw hex) or decimal
+        raw_val = int(parts[0].replace('0x', ''), 16)
+        is_raw_num = True
+    except ValueError:
+        pass
+        
+    if is_raw_num and mnemonic not in OPCODES:
+        # Return as a 32-bit hex word
+        return f'x"{raw_val:08X}"'
+
     if mnemonic not in OPCODES:
         return f"ERROR: Unknown Opcode {mnemonic}"
         
@@ -176,11 +189,13 @@ def assemble_line(line):
             imm = parse_imm(args[0])
 
     elif mnemonic == 'INT':
-        # INT index (bit 0)
+        # Format: INT index (index is 0 or 1)
         if args:
-            val = int(args[0])
-            # Assuming Index is put into bit 0 of Imm or unused bits?
-            # User Table: "index(0 or 1)--> bit 0". Use Imm[0].
+            try:
+                # We interpret index as hex as per requirement
+                val = int(args[0].strip(), 16)
+            except ValueError:
+                val = 0
             imm = f"{val:016b}"
 
     # Construct 32-bit Binary
@@ -188,9 +203,12 @@ def assemble_line(line):
     # [26:24] Rsrc1
     # [23:21] Rsrc2
     # [20:18] Rdst
-    # [17:16] Unused/OpExtension
+    # [17:16] Unused/OpExtension -> Using 01 for INT Pre-decode
     # [15:0]  Imm
-    unused = "00"
+    if mnemonic == 'INT':
+        unused = "01"
+    else:
+        unused = "00"
     
     binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}{unused}{imm}"
     hex_str = f"{int(binary_str, 2):08X}"
