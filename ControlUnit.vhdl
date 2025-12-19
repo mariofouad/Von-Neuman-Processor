@@ -22,8 +22,11 @@ ENTITY ControlUnit IS
         port_sel    : OUT std_logic;
         branch_type : OUT std_logic_vector(2 DOWNTO 0);
         
-        -- *** NEW: Flags Enable (Prevents NOPs from messing up Zero Flag) ***
+        -- Flags Control
         flags_en    : OUT std_logic;
+        ccr_z_en    : OUT std_logic;
+        ccr_n_en    : OUT std_logic;
+        ccr_c_en    : OUT std_logic;
         
         -- Stack / Special
         sp_write    : OUT std_logic;
@@ -44,19 +47,23 @@ BEGIN
         out_en      <= '0'; port_sel <= '0'; rti_en <= '0';
         
         flags_en    <= '0'; -- Default: Don't update flags
+        ccr_z_en    <= '0'; ccr_n_en    <= '0'; ccr_c_en    <= '0';
 
         CASE opcode IS
             WHEN OP_NOP => NULL;
             WHEN OP_HLT => branch_type <= "100"; -- Trap
             
             WHEN OP_SETC =>
-                alu_sel <= "111"; flags_en <= '1'; -- Update Flags
+                alu_sel <= "111"; 
+                flags_en <= '1'; ccr_c_en <= '1'; -- Update ONLY Carry
             
             WHEN OP_NOT =>
-                reg_write <= '1'; alu_sel <= "101"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_sel <= "101"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1';
             
             WHEN OP_INC =>
-                reg_write <= '1'; alu_sel <= "110"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_sel <= "110"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1'; ccr_c_en <= '1';
                 
             WHEN OP_OUT =>
                 alu_sel <= "000"; out_en <= '1';
@@ -66,22 +73,25 @@ BEGIN
 
             WHEN OP_MOV =>
                 reg_write <= '1'; alu_sel <= "000"; 
-                -- MOV usually doesn't update flags in this ISA
             
             WHEN OP_SWAP =>
                 reg_write <= '1'; reg_write_2 <= '1';
             
             WHEN OP_ADD =>
-                reg_write <= '1'; alu_sel <= "010"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_sel <= "010"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1'; ccr_c_en <= '1';
             
             WHEN OP_SUB =>
-                reg_write <= '1'; alu_sel <= "011"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_sel <= "011"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1'; ccr_c_en <= '1';
             
             WHEN OP_AND =>
-                reg_write <= '1'; alu_sel <= "100"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_sel <= "100"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1';
             
             WHEN OP_IADD =>
-                reg_write <= '1'; alu_src_b <= '1'; alu_sel <= "010"; flags_en <= '1'; -- Update Flags
+                reg_write <= '1'; alu_src_b <= '1'; alu_sel <= "010"; 
+                flags_en <= '1'; ccr_z_en <= '1'; ccr_n_en <= '1'; ccr_c_en <= '1';
             
             WHEN OP_PUSH =>
                 mem_write <= '1'; sp_write <= '1'; is_stack <= '1';

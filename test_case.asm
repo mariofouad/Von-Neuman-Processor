@@ -1,22 +1,28 @@
-#	All numbers are in hex format
-#	We always start by reset signal
-# 	This is a commented line
-#	You should ignore empty lines and commented ones
+# all numbers in hex format
+# we always start by reset signal
+# this is a commented line
+# You should ignore empty lines
+
 # ---------- Don't forget to Reset before you start anything ---------- #
 
-.org 0			# means the code start at address zero, this could be written in 
-			# several places in the file and the assembler should handle it
+.ORG 0          #this means the the following line would be  at address  0 , and this is the reset address
+10
 
-LDM R0, 1
-LDM R1, AAAA
-LDM R2, FFFF
-INC R0
-MOV R1, R4
-NOT R1
-MOV R0, R3
-IN R0	# R0 = FFFF_FFFF
-OUT R0
-AND R5, R1, R0
-MOV R0, R6
-NOT R6
-INC R0
+.ORG 1         #this hw interrupt handler
+900
+
+.ORG 900 #this is hw int
+IN R7 # R7=5
+AND R0,R0,R0     #N=0,Z=1
+OUT R3
+RTI              #POP PC and flags restored
+IADD R1, R2, R3  # Try Hardware interrupt when fetching this (in a second run) - infinite loop?
+
+.ORG 10
+IN R1            #R1=30
+IN R2            #R2=50
+IN R3            #R3=100
+IN R4            #R4=300
+Push R4          #SP=FFE, M[FFF]=300
+JMP 30           #taken
+INC R1	 

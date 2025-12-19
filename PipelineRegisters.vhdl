@@ -55,6 +55,7 @@ ENTITY ID_EX_Reg is
         branch_type_in : IN std_logic_vector(2 DOWNTO 0);
         port_sel_in     : IN  std_logic; -- Choose IN.PORT
         flags_en_in  : IN std_logic;
+        ccr_z_en_in, ccr_n_en_in, ccr_c_en_in : IN std_logic;
         
         -- Data Inputs
         pc_in, r_data1_in, r_data2_in, imm_in : IN std_logic_vector(31 DOWNTO 0);
@@ -73,6 +74,7 @@ ENTITY ID_EX_Reg is
         branch_type_out : OUT std_logic_vector(2 DOWNTO 0);
         -- *** NEW ***
         flags_en_out  : OUT std_logic;
+        ccr_z_en_out, ccr_n_en_out, ccr_c_en_out : OUT std_logic;
         
         -- Data Outputs
         port_sel_out : OUT std_logic;
@@ -104,6 +106,9 @@ BEGIN
                 branch_type_out <= branch_type_in;
                 port_sel_out <= port_sel_in;
                 flags_en_out <= flags_en_in;
+                ccr_z_en_out <= ccr_z_en_in;
+                ccr_n_en_out <= ccr_n_en_in;
+                ccr_c_en_out <= ccr_c_en_in;
                 port_sel_out <= port_sel_in;
                 pc_out <= pc_in;
                 r_data1_out <= r_data1_in; r_data2_out <= r_data2_in;
@@ -159,7 +164,7 @@ ENTITY EX_MEM_Reg is
         sp_new_val_out: OUT std_logic_vector(31 DOWNTO 0);
         sp_val_out    : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
-        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
+        rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0)
     );
 END EX_MEM_Reg;
 
@@ -258,7 +263,7 @@ BEGIN
                 rdst_addr_out <= rdst_addr_in;
                 
                 rsrc_addr_out <= rsrc_addr_in;
-                r_data2_out <= r_data2_in;
+                r_data2_out <= swap_data_in;
             END IF;
         END IF;
     END PROCESS;

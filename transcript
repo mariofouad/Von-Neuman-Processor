@@ -1584,3 +1584,105 @@ run
 quit -sim
 # End time: 19:56:29 on Dec 19,2025, Elapsed time: 0:04:28
 # Errors: 0, Warnings: 11
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl failed with 2 errors.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl failed with 1 errors.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 2 failed with 3 errors.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl failed with 2 errors.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl failed with 1 errors.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 2 failed with 3 errors.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl failed with 2 errors.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl failed with 1 errors.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 2 failed with 3 errors.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl failed with 6 errors.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 1 failed with 6 errors.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl failed with 1 errors.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 1 failed with 1 error.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of Processor.vhdl was successful.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of ALU.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of PC.vhdl was successful.
+# Compile of SP.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of CCR.vhd was successful.
+# Compile of Sequencer.vhd was successful.
+# 16 compiles, 0 failed with no errors.
