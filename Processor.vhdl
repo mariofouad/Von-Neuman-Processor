@@ -289,6 +289,10 @@ ARCHITECTURE Structure OF Processor IS
     -- CCR Signals
     SIGNAL ccr : std_logic_vector(2 DOWNTO 0) := (others => '0');
 
+    -- CALL instruction detection (for pushing PC+1)
+    SIGNAL ex_is_call : std_logic;
+    SIGNAL ex_return_addr : std_logic_vector(31 DOWNTO 0);  -- PC+1 for CALL
+
     -- BRANCH LOGIC SIGNALS
     SIGNAL ex_branch_taken : std_logic;
     SIGNAL mem_branch_taken : std_logic;
@@ -355,7 +359,7 @@ BEGIN
     if_opcode <= if_inst(31 DOWNTO 27);
     if_imm <= std_logic_vector(resize(unsigned(if_inst(15 DOWNTO 0)), 32));
     
-    if_is_uncond_jmp <= '1' WHEN (if_opcode = "10101" OR if_opcode = "10110") ELSE '0';
+    if_is_uncond_jmp <= '1' WHEN (if_opcode = "10101" OR if_opcode = "10110" OR if_opcode = "10111") ELSE '0';
     if_jmp_target <= if_imm; 
 
     -- Calculate Reset Signals (Flush)
@@ -603,8 +607,17 @@ BEGIN
                          std_logic_vector(unsigned(ex_sp_val) - 1) WHEN (ex_mem_write = '1' AND ex_is_stack = '1') ELSE -- PUSH
                          ex_sp_val;
 
+    -- CALL detection: branch_type = "101" means CALL instruction
+    ex_is_call <= '1' WHEN ex_branch_type = "101" ELSE '0';
+    
+    -- Return address for CALL: PC+1 (address after the CALL instruction)
+    ex_return_addr <= std_logic_vector(unsigned(ex_pc) + 1);
+
     -- For PUSH: use ex_src_a (with forwarding) instead of ex_r_data1 (raw register)
-    ex_write_data <= ex_src_a WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE ex_r2_forwarded;
+    -- For CALL: push the return address (PC+1) instead of register value
+    ex_write_data <= ex_return_addr WHEN ex_is_call = '1' ELSE
+                     ex_src_a WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE 
+                     ex_r2_forwarded;
 
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, 
@@ -646,7 +659,6 @@ BEGIN
     mem_read_data <= memory_data_out;
     -- For swap operations, use the r_data2_out from EX_MEM (which is mem_write_data)
     mem_swap_data <= mem_write_data;
-
     -- Check for RET/RTI
     mem_branch_taken <= '1' WHEN (mem_branch_type = "110") ELSE '0';
 
