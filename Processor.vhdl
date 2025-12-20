@@ -246,7 +246,9 @@ ARCHITECTURE Structure OF Processor IS
     -- IF Branch Optimization
     SIGNAL if_opcode : std_logic_vector(4 DOWNTO 0);
     SIGNAL if_is_uncond_jmp : std_logic;
+    SIGNAL if_is_int : std_logic;  -- INT detected in IF stage
     SIGNAL if_jmp_target : std_logic_vector(31 DOWNTO 0);
+    SIGNAL if_int_target : std_logic_vector(31 DOWNTO 0);  -- INT jump target: 2 + index
     SIGNAL if_imm : std_logic_vector(31 DOWNTO 0);
     
     -- STAGE: ID
@@ -293,10 +295,12 @@ ARCHITECTURE Structure OF Processor IS
     
     -- CCR Signals
     SIGNAL ccr : std_logic_vector(2 DOWNTO 0) := (others => '0');
+    SIGNAL ccr_shadow : std_logic_vector(2 DOWNTO 0) := (others => '0');  -- Shadow register for INT
 
     -- CALL instruction detection (for pushing PC+1)
     SIGNAL ex_is_call : std_logic;
-    SIGNAL ex_return_addr : std_logic_vector(31 DOWNTO 0);  -- PC+1 for CALL
+    SIGNAL ex_is_int : std_logic;  -- INT detection in EX stage (for pushing PC and saving flags)
+    SIGNAL ex_return_addr : std_logic_vector(31 DOWNTO 0);  -- PC+1 for CALL/INT
 
     -- BRANCH LOGIC SIGNALS
     SIGNAL ex_branch_taken : std_logic;
@@ -372,7 +376,18 @@ BEGIN
     if_opcode <= if_inst(31 DOWNTO 27);
     if_imm <= std_logic_vector(resize(unsigned(if_inst(15 DOWNTO 0)), 32));
     
-    if_is_uncond_jmp <= '1' WHEN (if_opcode = "10101" OR if_opcode = "10110" OR if_opcode = "10111") ELSE '0';
+    -- Detect unconditional jumps: JMP (10101), CALL (10110)
+    -- Note: RET (10111) needs stack read, not handled here
+    if_is_uncond_jmp <= '1' WHEN (if_opcode = "10101" OR if_opcode = "10110") ELSE '0';
+    
+    -- Detect INT instruction (11000) - jumps to address (2 + index)
+    if_is_int <= '1' WHEN (if_opcode = "11000") ELSE '0';
+    
+    -- INT target: address 2 + index (bit 0 of instruction)
+    -- INT 0 -> address 2, INT 1 -> address 3
+    if_int_target <= x"00000003" WHEN if_inst(0) = '1' ELSE x"00000002";
+    
+    -- Jump target for JMP/CALL uses immediate
     if_jmp_target <= if_imm; 
 
     -- Calculate Reset Signals (Flush)
@@ -401,7 +416,7 @@ BEGIN
     rst_ex_mem <= rst;
     
     -- MASTER PC MUX
-    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, 
+    PROCESS(pc_plus_1, if_is_uncond_jmp, if_is_int, if_jmp_target, if_int_target, ex_branch_taken, ex_alu_result, 
             flush_mem, mem_read_data, reset_state, memory_data_out, ret_stall)
     BEGIN
         IF reset_state = '1' THEN
@@ -415,8 +430,12 @@ BEGIN
         -- Conditional branches resolved in EX stage
         ELSIF ex_branch_taken = '1' THEN
             pc_next <= ex_alu_result; 
+        
+        -- INT detected in IF stage - jump to address (2 + index)
+        ELSIF if_is_int = '1' THEN
+            pc_next <= if_int_target;
             
-        -- Unconditional jumps detected in IF stage
+        -- Unconditional jumps (JMP, CALL) detected in IF stage
         ELSIF if_is_uncond_jmp = '1' THEN
             pc_next <= if_jmp_target;
         
@@ -585,15 +604,19 @@ BEGIN
         IF rst = '1' THEN
             ccr <= (OTHERS => '0');
         ELSIF rising_edge(clk) THEN
-            -- PRIORITY 1: Handle the Branch Clear SYNCHRONOUSLY
-            IF ex_branch_taken = '1' THEN
-            ccr <= (OTHERS => '0'); -- Clear flags for the NEXT cycle
+            -- PRIORITY 1: RTI - Restore flags from shadow register
+            IF mem_rti_en = '1' THEN
+                ccr <= ccr_shadow;
             
-        -- PRIORITY 2: Normal Flag Update from ALU
-        ELSIF ex_flags_en = '1' THEN
-            ccr <= ex_zero & ex_neg & ex_carry;
+            -- PRIORITY 2: Handle the Branch Clear SYNCHRONOUSLY
+            ELSIF ex_branch_taken = '1' THEN
+                ccr <= (OTHERS => '0'); -- Clear flags for the NEXT cycle
+            
+            -- PRIORITY 3: Normal Flag Update from ALU
+            ELSIF ex_flags_en = '1' THEN
+                ccr <= ex_zero & ex_neg & ex_carry;
+            END IF;
         END IF;
-    END IF;
     END PROCESS;
 
     -- Branch Resolution
@@ -646,12 +669,28 @@ BEGIN
     -- CALL detection: branch_type = "101" means CALL instruction
     ex_is_call <= '1' WHEN ex_branch_type = "101" ELSE '0';
     
-    -- Return address for CALL: PC+1 (address after the CALL instruction)
+    -- INT detection: branch_type = "111" means INT instruction
+    ex_is_int <= '1' WHEN ex_branch_type = "111" ELSE '0';
+    
+    -- Return address for CALL/INT: PC+1 (address after the instruction)
     ex_return_addr <= std_logic_vector(unsigned(ex_pc) + 1);
+    
+    -- Shadow CCR: Save flags on INT, Restore on RTI
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            ccr_shadow <= (others => '0');
+        ELSIF rising_edge(clk) THEN
+            -- Save CCR to shadow register when INT is in EX stage
+            IF ex_is_int = '1' THEN
+                ccr_shadow <= ccr;
+            END IF;
+        END IF;
+    END PROCESS;
 
     -- For PUSH: use ex_src_a (with forwarding) instead of ex_r_data1 (raw register)
-    -- For CALL: push the return address (PC+1) instead of register value
-    ex_write_data <= ex_return_addr WHEN ex_is_call = '1' ELSE
+    -- For CALL/INT: push the return address (PC+1) instead of register value
+    ex_write_data <= ex_return_addr WHEN (ex_is_call = '1' OR ex_is_int = '1') ELSE
                      ex_src_a WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE 
                      ex_r2_forwarded;
 

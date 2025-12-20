@@ -14,14 +14,14 @@ IN R2            #R2=50
 IN R3            #R3=100
 IN R4            #R4=300
 Push R4          #SP=FFE, M[FFF]=300
-JMP 30           #taken
+INT 0           #taken
 INC R1	         #this statement shouldn't be executed
  
 #check flag fowarding  
-.ORG 30
+.ORG 2
 AND R5,R1,R5     #R5=0 , Z = 1
-JZ  50           #Jump taken, Z = 0
 SETC             #this statement shouldn't be executed, C-->1
+RTI
 
 #check on flag updated on jump
 .ORG 50
