@@ -39,7 +39,15 @@ def assemble_line(line):
     mnemonic = parts[0].upper()
     
     if mnemonic == '.ORG': return line
-    if mnemonic not in OPCODES: return f"ERROR: {mnemonic}"
+    
+    # Handle raw hex data (for reset vectors, interrupt vectors, etc.)
+    if mnemonic not in OPCODES:
+        # Check if it's a valid hex number (raw data)
+        try:
+            val = int(mnemonic, 16)
+            return f"{val:08X}"  # Return as 32-bit hex value
+        except ValueError:
+            return f"ERROR: {mnemonic}"
         
     opcode_bin = OPCODES[mnemonic]
     rsrc1, rsrc2, rdst, imm = "000", "000", "000", "0000000000000000"

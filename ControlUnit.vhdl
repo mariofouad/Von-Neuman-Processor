@@ -28,7 +28,8 @@ ENTITY ControlUnit IS
         -- Stack / Special
         sp_write    : OUT std_logic;
         is_stack    : OUT std_logic;
-        rti_en      : OUT std_logic   
+        rti_en      : OUT std_logic;
+        hlt_en      : OUT std_logic   -- HLT instruction signal
     );
 END ControlUnit;
 
@@ -42,12 +43,13 @@ BEGIN
         alu_sel     <= "000"; alu_src_b <= '0';
         branch_type <= "000"; sp_write <= '0'; is_stack <= '0';
         out_en      <= '0'; port_sel <= '0'; rti_en <= '0';
+        hlt_en      <= '0';  -- Default: not halting
         
         flags_en    <= '0'; -- Default: Don't update flags
 
         CASE opcode IS
             WHEN OP_NOP => NULL;
-            WHEN OP_HLT => branch_type <= "100"; -- Trap
+            WHEN OP_HLT => hlt_en <= '1'; -- Halt the processor
             
             WHEN OP_SETC =>
                 alu_sel <= "111"; flags_en <= '1'; -- Update Flags

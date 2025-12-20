@@ -39,6 +39,8 @@ begin
         -- Default: Clear Carry/Result
         result_temp <= (others => '0');
         c_flag <= '0'; 
+        z_flag <= '0';
+        n_flag <= '0';
 
         case ALU_Sel is
             -- 000: MOV / NOP / OUT (Pass SrcA)

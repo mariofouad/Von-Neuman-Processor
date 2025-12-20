@@ -2536,3 +2536,533 @@ run -all
 #    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: --- Simulation Finished ---
 #    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+quit -sim
+# End time: 03:14:27 on Dec 20,2025, Elapsed time: 0:04:36
+# Errors: 0, Warnings: 11
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 03:14:38 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wave.do
+run -all
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '0' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 00000000 | 00000000 | '0' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000000 | '0' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000000 | '0' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 00000000 | 00000000 | '0' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 00000000 | 00000000 | '0' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000000 | '0' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 00000000 | 00000000 | '0' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 00000000 | 00000000 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 00000000 | 00000000 | '0' | '0'
+#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | 00000000 | '0' | '0'
+#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '0' | '0'
+#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | 00000000 | '0' | '0'
+#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | 00000000 | '0' | '0'
+#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C30 | 32 | 31 | 30 | 29 | 28 | 00000000 | 00000000 | '0' | '0'
+#    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C31 | 33 | 32 | 31 | 30 | 29 | 00000000 | 00000000 | '0' | '0'
+#    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C32 | 34 | 33 | 32 | 31 | 30 | 00000000 | 00000000 | '0' | '0'
+#    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C33 | 35 | 34 | 33 | 32 | 31 | 00000000 | 00000000 | '0' | '0'
+#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C34 | 36 | 35 | 34 | 33 | 32 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C35 | 37 | 36 | 35 | 34 | 33 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C36 | 38 | 37 | 36 | 35 | 34 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C37 | 39 | 38 | 37 | 36 | 35 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C38 | 40 | 39 | 38 | 37 | 36 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C39 | 41 | 40 | 39 | 38 | 37 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C40 | 42 | 41 | 40 | 39 | 38 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C41 | 43 | 42 | 41 | 40 | 39 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C42 | 44 | 43 | 42 | 41 | 40 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C43 | 45 | 44 | 43 | 42 | 41 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C44 | 46 | 45 | 44 | 43 | 42 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C45 | 47 | 46 | 45 | 44 | 43 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C46 | 48 | 47 | 46 | 45 | 44 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C47 | 49 | 48 | 47 | 46 | 45 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C48 | 50 | 49 | 48 | 47 | 46 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C49 | 51 | 50 | 49 | 48 | 47 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C50 | 52 | 51 | 50 | 49 | 48 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C51 | 53 | 52 | 51 | 50 | 49 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C52 | 54 | 53 | 52 | 51 | 50 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C53 | 55 | 54 | 53 | 52 | 51 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C54 | 56 | 55 | 54 | 53 | 52 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C55 | 57 | 56 | 55 | 54 | 53 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C56 | 58 | 57 | 56 | 55 | 54 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C57 | 59 | 58 | 57 | 56 | 55 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C58 | 60 | 59 | 58 | 57 | 56 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C59 | 61 | 60 | 59 | 58 | 57 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C60 | 62 | 61 | 60 | 59 | 58 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C61 | 63 | 62 | 61 | 60 | 59 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C62 | 64 | 63 | 62 | 61 | 60 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C63 | 65 | 64 | 63 | 62 | 61 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C64 | 66 | 65 | 64 | 63 | 62 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C65 | 67 | 66 | 65 | 64 | 63 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C66 | 68 | 67 | 66 | 65 | 64 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C67 | 69 | 68 | 67 | 66 | 65 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C68 | 70 | 69 | 68 | 67 | 66 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C69 | 71 | 70 | 69 | 68 | 67 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C70 | 72 | 71 | 70 | 69 | 68 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C71 | 73 | 72 | 71 | 70 | 69 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C72 | 74 | 73 | 72 | 71 | 70 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C73 | 75 | 74 | 73 | 72 | 71 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C74 | 76 | 75 | 74 | 73 | 72 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C75 | 77 | 76 | 75 | 74 | 73 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C76 | 78 | 77 | 76 | 75 | 74 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C77 | 79 | 78 | 77 | 76 | 75 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C78 | 80 | 79 | 78 | 77 | 76 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C79 | 81 | 80 | 79 | 78 | 77 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C80 | 82 | 81 | 80 | 79 | 78 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C81 | 83 | 82 | 81 | 80 | 79 | 00000000 | 00000000 | '0' | '0'
+#    Time: 840 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C82 | 84 | 83 | 82 | 81 | 80 | 00000000 | 00000000 | '0' | '0'
+#    Time: 850 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C83 | 85 | 84 | 83 | 82 | 81 | 00000000 | 00000000 | '0' | '0'
+#    Time: 860 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C84 | 86 | 85 | 84 | 83 | 82 | 00000000 | 00000000 | '0' | '0'
+#    Time: 870 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C85 | 87 | 86 | 85 | 84 | 83 | 00000000 | 00000000 | '0' | '0'
+#    Time: 880 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C86 | 88 | 87 | 86 | 85 | 84 | 00000000 | 00000000 | '0' | '0'
+#    Time: 890 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C87 | 89 | 88 | 87 | 86 | 85 | 00000000 | 00000000 | '0' | '0'
+#    Time: 900 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C88 | 90 | 89 | 88 | 87 | 86 | 00000000 | 00000000 | '0' | '0'
+#    Time: 910 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C89 | 91 | 90 | 89 | 88 | 87 | 00000000 | 00000000 | '0' | '0'
+#    Time: 920 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C90 | 92 | 91 | 90 | 89 | 88 | 00000000 | 00000000 | '0' | '0'
+#    Time: 930 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C91 | 93 | 92 | 91 | 90 | 89 | 00000000 | 00000000 | '0' | '0'
+#    Time: 940 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C92 | 94 | 93 | 92 | 91 | 90 | 00000000 | 00000000 | '0' | '0'
+#    Time: 950 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C93 | 95 | 94 | 93 | 92 | 91 | 00000000 | 00000000 | '0' | '0'
+#    Time: 960 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C94 | 96 | 95 | 94 | 93 | 92 | 00000000 | 00000000 | '0' | '0'
+#    Time: 970 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C95 | 97 | 96 | 95 | 94 | 93 | 00000000 | 00000000 | '0' | '0'
+#    Time: 980 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C96 | 98 | 97 | 96 | 95 | 94 | 00000000 | 00000000 | '0' | '0'
+#    Time: 990 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C97 | 99 | 98 | 97 | 96 | 95 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1 us  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C98 | 100 | 99 | 98 | 97 | 96 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1010 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C99 | 101 | 100 | 99 | 98 | 97 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1020 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C100 | 102 | 101 | 100 | 99 | 98 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: --- Simulation Finished ---
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+quit -sim
+# End time: 03:24:19 on Dec 20,2025, Elapsed time: 0:09:41
+# Errors: 0, Warnings: 11
+# Compile of ALU.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of ForwardingUnit.vhdl was successful.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of PC.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
+# Compile of Processor.vhdl was successful.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of SP.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# 15 compiles, 0 failed with no errors.
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 03:24:40 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wave.do
+run -all
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 161 | 160 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C1 | 162 | 161 | 160 | 0 | 0 | 18040000 | 00000000 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C2 | 163 | 162 | 161 | 160 | 0 | 20040000 | 00000000 | '0' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C3 | 164 | 163 | 162 | 161 | 160 | 30040000 | FFFFFFFF | '0' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C4 | 165 | 164 | 163 | 162 | 161 | 30080000 | 00000000 | '1' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C5 | 166 | 165 | 164 | 163 | 162 | 18080000 | FFFFFFFF | '1' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C6 | 167 | 166 | 165 | 164 | 163 | 20040000 | FFFFFFFF | '1' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C7 | 168 | 167 | 166 | 165 | 164 | 28040000 | 00000000 | '1' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C8 | 169 | 168 | 167 | 166 | 165 | 28080000 | 00000000 | '1' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C9 | 170 | 169 | 168 | 167 | 166 | 10000000 | 00000000 | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C10 | 171 | 170 | 169 | 168 | 167 | 20080000 | 00000000 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C11 | 172 | 171 | 170 | 169 | 168 | 28080000 | 00000000 | '0' | '0'
+#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C12 | 173 | 172 | 171 | 170 | 169 | 08000000 | 00000001 | '0' | '0'
+#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C13 | 174 | 173 | 172 | 171 | 170 | 00000000 | 00000001 | '1' | '0'
+#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C14 | 175 | 174 | 173 | 172 | 171 | 00000000 | 00000000 | '0' | '0'
+#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C15 | 176 | 175 | 174 | 173 | 172 | 00000000 | 00000000 | '0' | '0'
+#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C16 | 177 | 176 | 175 | 174 | 173 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C17 | 178 | 177 | 176 | 175 | 174 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C18 | 179 | 178 | 177 | 176 | 175 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C19 | 180 | 179 | 178 | 177 | 176 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C20 | 181 | 180 | 179 | 178 | 177 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C21 | 182 | 181 | 180 | 179 | 178 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C22 | 183 | 182 | 181 | 180 | 179 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C23 | 184 | 183 | 182 | 181 | 180 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C24 | 185 | 184 | 183 | 182 | 181 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C25 | 186 | 185 | 184 | 183 | 182 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C26 | 187 | 186 | 185 | 184 | 183 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C27 | 188 | 187 | 186 | 185 | 184 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C28 | 189 | 188 | 187 | 186 | 185 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C29 | 190 | 189 | 188 | 187 | 186 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C30 | 191 | 190 | 189 | 188 | 187 | 00000000 | 00000000 | '0' | '0'
+#    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C31 | 192 | 191 | 190 | 189 | 188 | 00000000 | 00000000 | '0' | '0'
+#    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C32 | 193 | 192 | 191 | 190 | 189 | 00000000 | 00000000 | '0' | '0'
+#    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C33 | 194 | 193 | 192 | 191 | 190 | 00000000 | 00000000 | '0' | '0'
+#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C34 | 195 | 194 | 193 | 192 | 191 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C35 | 196 | 195 | 194 | 193 | 192 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C36 | 197 | 196 | 195 | 194 | 193 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C37 | 198 | 197 | 196 | 195 | 194 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C38 | 199 | 198 | 197 | 196 | 195 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C39 | 200 | 199 | 198 | 197 | 196 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C40 | 201 | 200 | 199 | 198 | 197 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C41 | 202 | 201 | 200 | 199 | 198 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C42 | 203 | 202 | 201 | 200 | 199 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C43 | 204 | 203 | 202 | 201 | 200 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C44 | 205 | 204 | 203 | 202 | 201 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C45 | 206 | 205 | 204 | 203 | 202 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C46 | 207 | 206 | 205 | 204 | 203 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C47 | 208 | 207 | 206 | 205 | 204 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C48 | 209 | 208 | 207 | 206 | 205 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C49 | 210 | 209 | 208 | 207 | 206 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C50 | 211 | 210 | 209 | 208 | 207 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C51 | 212 | 211 | 210 | 209 | 208 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C52 | 213 | 212 | 211 | 210 | 209 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C53 | 214 | 213 | 212 | 211 | 210 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C54 | 215 | 214 | 213 | 212 | 211 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C55 | 216 | 215 | 214 | 213 | 212 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C56 | 217 | 216 | 215 | 214 | 213 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C57 | 218 | 217 | 216 | 215 | 214 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C58 | 219 | 218 | 217 | 216 | 215 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C59 | 220 | 219 | 218 | 217 | 216 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C60 | 221 | 220 | 219 | 218 | 217 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C61 | 222 | 221 | 220 | 219 | 218 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C62 | 223 | 222 | 221 | 220 | 219 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C63 | 224 | 223 | 222 | 221 | 220 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C64 | 225 | 224 | 223 | 222 | 221 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C65 | 226 | 225 | 224 | 223 | 222 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C66 | 227 | 226 | 225 | 224 | 223 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C67 | 228 | 227 | 226 | 225 | 224 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C68 | 229 | 228 | 227 | 226 | 225 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C69 | 230 | 229 | 228 | 227 | 226 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C70 | 231 | 230 | 229 | 228 | 227 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C71 | 232 | 231 | 230 | 229 | 228 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C72 | 233 | 232 | 231 | 230 | 229 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C73 | 234 | 233 | 232 | 231 | 230 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C74 | 235 | 234 | 233 | 232 | 231 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C75 | 236 | 235 | 234 | 233 | 232 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C76 | 237 | 236 | 235 | 234 | 233 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C77 | 238 | 237 | 236 | 235 | 234 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C78 | 239 | 238 | 237 | 236 | 235 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C79 | 240 | 239 | 238 | 237 | 236 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C80 | 241 | 240 | 239 | 238 | 237 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C81 | 242 | 241 | 240 | 239 | 238 | 00000000 | 00000000 | '0' | '0'
+#    Time: 840 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C82 | 243 | 242 | 241 | 240 | 239 | 00000000 | 00000000 | '0' | '0'
+#    Time: 850 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C83 | 244 | 243 | 242 | 241 | 240 | 00000000 | 00000000 | '0' | '0'
+#    Time: 860 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C84 | 245 | 244 | 243 | 242 | 241 | 00000000 | 00000000 | '0' | '0'
+#    Time: 870 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C85 | 246 | 245 | 244 | 243 | 242 | 00000000 | 00000000 | '0' | '0'
+#    Time: 880 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C86 | 247 | 246 | 245 | 244 | 243 | 00000000 | 00000000 | '0' | '0'
+#    Time: 890 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C87 | 248 | 247 | 246 | 245 | 244 | 00000000 | 00000000 | '0' | '0'
+#    Time: 900 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C88 | 249 | 248 | 247 | 246 | 245 | 00000000 | 00000000 | '0' | '0'
+#    Time: 910 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C89 | 250 | 249 | 248 | 247 | 246 | 00000000 | 00000000 | '0' | '0'
+#    Time: 920 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C90 | 251 | 250 | 249 | 248 | 247 | 00000000 | 00000000 | '0' | '0'
+#    Time: 930 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C91 | 252 | 251 | 250 | 249 | 248 | 00000000 | 00000000 | '0' | '0'
+#    Time: 940 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C92 | 253 | 252 | 251 | 250 | 249 | 00000000 | 00000000 | '0' | '0'
+#    Time: 950 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C93 | 254 | 253 | 252 | 251 | 250 | 00000000 | 00000000 | '0' | '0'
+#    Time: 960 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C94 | 255 | 254 | 253 | 252 | 251 | 00000000 | 00000000 | '0' | '0'
+#    Time: 970 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C95 | 256 | 255 | 254 | 253 | 252 | 00000000 | 00000000 | '0' | '0'
+#    Time: 980 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C96 | 257 | 256 | 255 | 254 | 253 | 00000000 | 00000000 | '0' | '0'
+#    Time: 990 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C97 | 258 | 257 | 256 | 255 | 254 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1 us  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C98 | 259 | 258 | 257 | 256 | 255 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1010 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C99 | 260 | 259 | 258 | 257 | 256 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1020 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C100 | 261 | 260 | 259 | 258 | 257 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: --- Simulation Finished ---
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline

@@ -45,10 +45,11 @@ ARCHITECTURE Structure OF Processor IS
         alu_src_b   : OUT std_logic;
         port_sel    : OUT std_logic; 
         branch_type : OUT std_logic_vector(2 DOWNTO 0);
-        flags_en    : OUT std_logic; -- NEW
+        flags_en    : OUT std_logic;
         sp_write    : OUT std_logic;
         is_stack    : OUT std_logic;
-        rti_en      : OUT std_logic
+        rti_en      : OUT std_logic;
+        hlt_en      : OUT std_logic
     );
     END COMPONENT;
 
@@ -253,11 +254,14 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL id_imm_or_port : std_logic_vector(31 DOWNTO 0); 
     
     SIGNAL c_reg_write, c_reg_write_2, c_wb_sel, c_mem_write, c_mem_read, c_alu_src_b : std_logic;
-    SIGNAL c_out_en, c_port_sel, c_rti_en, c_flags_en : std_logic;
+    SIGNAL c_out_en, c_port_sel, c_rti_en, c_flags_en, c_hlt_en : std_logic;
     SIGNAL c_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_branch_type : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_is_std, c_sp_write, c_is_stack : std_logic;
     SIGNAL id_out_en_mux : std_logic;
+    
+    -- Halt signal latch
+    SIGNAL halted : std_logic := '0';
 
     -- For Hazard detection unit
     SIGNAL stall : std_logic;
@@ -320,6 +324,9 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL rst_id_ex  : std_logic;
     SIGNAL rst_ex_mem : std_logic;
 
+    -- Reset Vector State Machine
+    SIGNAL reset_state : std_logic := '1';  -- '1' = reading reset vector, '0' = normal operation
+
 BEGIN
 
     ----------------------------------------------------------------------------
@@ -364,10 +371,13 @@ BEGIN
 
     -- 3. EX/MEM: Only flush if global reset (or potentially MEM branch depending on ISA)
     rst_ex_mem <= rst OR flush_mem;
-    -- MASTER PC MUX
-    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, mem_branch_taken, mem_read_data)
+    -- MASTER PC MUX - Now includes reset vector handling
+    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, mem_branch_taken, mem_read_data, reset_state, memory_data_out)
     BEGIN
-        IF mem_branch_taken = '1' THEN
+        IF reset_state = '1' THEN
+            -- After reset, PC=0, memory_data_out contains the reset vector address
+            pc_next <= memory_data_out;  -- Jump to reset vector address
+        ELSIF mem_branch_taken = '1' THEN
             pc_next <= mem_read_data; 
         ELSIF ex_branch_taken = '1' THEN
             pc_next <= ex_alu_result; 
@@ -378,9 +388,21 @@ BEGIN
         END IF;
     END PROCESS;
 
-    -- Allow PC update if not stalled, OR if we are branching (Branch overrides Stall)
-    pc_write_sig <= (NOT if_stall) OR ex_branch_taken OR mem_branch_taken;
-    if_id_en_sig <= NOT if_stall;
+    -- Reset state machine - clears after first cycle
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            reset_state <= '1';  -- Enter reset vector fetch state
+        ELSIF rising_edge(clk) THEN
+            IF reset_state = '1' THEN
+                reset_state <= '0';  -- Clear after one cycle (vector has been read)
+            END IF;
+        END IF;
+    END PROCESS;
+
+    -- Allow PC update if not stalled, OR if we are branching, OR if in reset state
+    pc_write_sig <= (NOT if_stall) OR ex_branch_taken OR mem_branch_taken OR reset_state;
+    if_id_en_sig <= NOT if_stall AND NOT reset_state;  -- Don't pass reset vector to IF/ID
 
     U_PC: PC PORT MAP (
         clk => clk, rst => rst,
@@ -422,8 +444,12 @@ BEGIN
 
     -- Master PC and IF/ID Enable Logic
     -- Freeze if we have a Hazard (stall), but allow branches to override
-    pc_write_sig <= (NOT if_stall AND NOT stall) OR ex_branch_taken OR mem_branch_taken;
-    if_id_en_sig <= NOT if_stall AND NOT stall;
+    -- Also reset_state keeps PC updating and IF/ID frozen during reset vector fetch
+    -- Freeze completely when halted
+    pc_write_sig <= '0' WHEN halted = '1' ELSE
+                    ((NOT if_stall AND NOT stall) OR ex_branch_taken OR mem_branch_taken OR reset_state);
+    if_id_en_sig <= '0' WHEN halted = '1' ELSE
+                    (NOT if_stall AND NOT stall AND NOT reset_state);
 
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
                  ELSE id_r1;
@@ -437,10 +463,23 @@ BEGIN
         mem_write => c_mem_write, mem_read => c_mem_read,
         alu_sel => c_alu_sel, alu_src_b => c_alu_src_b,
         port_sel => c_port_sel, branch_type => c_branch_type,
-        flags_en => c_flags_en, -- New Signal
+        flags_en => c_flags_en,
         sp_write => c_sp_write, is_stack => c_is_stack,
-        rti_en => c_rti_en
+        rti_en => c_rti_en,
+        hlt_en => c_hlt_en
     );
+    
+    -- Halt latch - once HLT is decoded, freeze the processor until reset
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            halted <= '0';
+        ELSIF rising_edge(clk) THEN
+            IF c_hlt_en = '1' THEN
+                halted <= '1';
+            END IF;
+        END IF;
+    END PROCESS;
     
     id_imm_or_port <= input_port WHEN c_port_sel = '1' ELSE id_imm_ext;
     c_is_std <= '1' WHEN id_opcode = OP_STD ELSE '0';

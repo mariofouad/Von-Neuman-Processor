@@ -1,22 +1,25 @@
-#	All numbers are in hex format
-#	We always start by reset signal
-# 	This is a commented line
-#	You should ignore empty lines and commented ones
+# all numbers in hex format
+# we always start by reset signal
+# this is a commented line
+# You should ignore empty lines
+
 # ---------- Don't forget to Reset before you start anything ---------- #
 
-.org 0			# means the code start at address zero, this could be written in 
-			# several places in the file and the assembler should handle it
+.ORG 0  #this means the the following line would be  at address  0 , and this is the reset address
+A0
 
-LDM R0, 1
-LDM R1, AAAA
-LDM R2, FFFF
-INC R0
-MOV R1, R4
-NOT R1
-MOV R0, R3
-IN R0	# R0 = FFFF_FFFF
-OUT R0
-AND R5, R1, R2
-MOV R0, R6
-NOT R6
-INC R0
+.ORG A0
+NOP            #No change
+NOT R1         #R1 =FFFFFFFF , C--> no change, N --> 1, Z --> 0
+INC R1	       #R1 =00000000 , C --> 1 , N --> 0 , Z --> 1
+IN R1	       #R1= 5,add 5 on the in port,flags no change	
+IN R2          #R2= 10,add 10 on the in port, flags no change
+NOT R2	       #R2= FFFFFFEF, C --> no change, N -->1,Z --> 0
+INC R1         #R1= 6, C --> 0, N --> 0, Z--> 0
+OUT R1
+OUT R2
+SETC	       C --> 1, N --> no change, Z --> no change
+INC R2	       #R2= FFFFFFF0, C --> 0, N -->1, Z --> 0
+OUT R2
+
+HLT
