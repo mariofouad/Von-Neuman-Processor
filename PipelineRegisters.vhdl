@@ -217,6 +217,9 @@ ENTITY MEM_WB_Reg is
         
         -- SWAP Data Inputs (Added)
         rsrc_addr_in   : IN std_logic_vector(2 DOWNTO 0);
+
+        sp_write_in   : IN std_logic; -- Add this
+        branch_type_in: IN std_logic_vector(2 DOWNTO 0); -- Add this
         
         -- Control Outputs
         reg_write_out, reg_write_2_out : OUT std_logic;
@@ -231,7 +234,10 @@ ENTITY MEM_WB_Reg is
         
         -- SWAP Data Outputs (Added)
         rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
-        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
+        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0);
+
+        sp_write_out  : OUT std_logic; -- Add this
+        branch_type_out: OUT std_logic_vector(2 DOWNTO 0) -- Add this
     );
 END MEM_WB_Reg;
 

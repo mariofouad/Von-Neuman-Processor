@@ -216,6 +216,8 @@ ARCHITECTURE Structure OF Processor IS
         rdst_addr_in : IN std_logic_vector(2 DOWNTO 0);
         rsrc_addr_in : IN std_logic_vector(2 DOWNTO 0);
         r_data2_in   : IN std_logic_vector(31 DOWNTO 0);
+        sp_write_in   : IN std_logic; -- Add this
+        branch_type_in: IN std_logic_vector(2 DOWNTO 0); -- Add this
         
         reg_write_out, reg_write_2_out, wb_sel_out : OUT std_logic;
         out_en_out   : OUT std_logic;
@@ -225,7 +227,10 @@ ARCHITECTURE Structure OF Processor IS
         alu_res_out : OUT std_logic_vector(31 DOWNTO 0);
         rdst_addr_out: OUT std_logic_vector(2 DOWNTO 0);
         rsrc_addr_out : OUT std_logic_vector(2 DOWNTO 0);
-        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0)
+        r_data2_out   : OUT std_logic_vector(31 DOWNTO 0);
+
+        sp_write_out  : OUT std_logic; -- Add this
+        branch_type_out: OUT std_logic_vector(2 DOWNTO 0)-- Add this
     );
     END COMPONENT;
 
@@ -332,6 +337,14 @@ ARCHITECTURE Structure OF Processor IS
     -- Reset Vector State Machine
     SIGNAL reset_state : std_logic := '1';  -- '1' = reading reset vector, '0' = normal operation
 
+    SIGNAL wb_branch_type : std_logic_vector(2 DOWNTO 0);
+    SIGNAL wb_sp_write    : std_logic;
+    SIGNAL wb_ret_taken   : std_logic;
+    
+    -- RET stall logic: stall pipeline while RET is being processed
+    SIGNAL ret_in_ex      : std_logic;
+    SIGNAL ret_stall      : std_logic;
+
 BEGIN
 
     ----------------------------------------------------------------------------
@@ -364,30 +377,53 @@ BEGIN
 
     -- Calculate Reset Signals (Flush)
     flush_ex  <= ex_branch_taken;
-    flush_mem <= mem_branch_taken;
+    
+    -- RET detection: stall when RET is in EX stage (need to wait for MEM read)
+    ret_in_ex <= '1' WHEN (ex_branch_type = "110") ELSE '0';
+    ret_stall <= ret_in_ex;  -- Stall pipeline when RET is in EX
+    
+    -- MEM stage RET detection (memory read is complete, data is valid)
+    -- This is the REAL branch taken signal for RET
+    flush_mem <= '1' WHEN (mem_branch_type = "110") ELSE '0';
+    
+    -- WB stage detection no longer needed for simple RET
+    wb_ret_taken <= '0';  -- Disabled
+    
     flush_pipeline <= flush_ex OR flush_mem;
 
     -- 1. IF/ID: Must be flushed for ANY branch (EX or MEM).
     rst_if_id  <= rst OR flush_ex OR flush_mem; 
 
-    -- 2. ID/EX: Only flush if the branch is in MEM stage. 
-    --    DO NOT flush if the branch is in EX stage (don't kill the JZ!)
-    rst_id_ex  <= rst OR flush_mem;  -- CHANGED (Removed flush_ex)
+    -- 2. ID/EX: Flush when MEM stage has RET 
+    rst_id_ex  <= rst OR flush_mem;
 
-    -- 3. EX/MEM: Only flush if global reset (or potentially MEM branch depending on ISA)
-    rst_ex_mem <= rst OR flush_mem;
-    -- MASTER PC MUX - Now includes reset vector handling
-    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, mem_branch_taken, mem_read_data, reset_state, memory_data_out)
+    -- 3. EX/MEM: Only flush on global reset
+    rst_ex_mem <= rst;
+    
+    -- MASTER PC MUX
+    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, 
+            flush_mem, mem_read_data, reset_state, memory_data_out, ret_stall)
     BEGIN
         IF reset_state = '1' THEN
             -- After reset, PC=0, memory_data_out contains the reset vector address
-            pc_next <= memory_data_out;  -- Jump to reset vector address
-        ELSIF mem_branch_taken = '1' THEN
+            pc_next <= memory_data_out;
+            
+        -- RET/RTI: When detected in MEM stage, use memory read data (return address)
+        ELSIF flush_mem = '1' THEN
             pc_next <= mem_read_data; 
+            
+        -- Conditional branches resolved in EX stage
         ELSIF ex_branch_taken = '1' THEN
             pc_next <= ex_alu_result; 
+            
+        -- Unconditional jumps detected in IF stage
         ELSIF if_is_uncond_jmp = '1' THEN
             pc_next <= if_jmp_target;
+        
+        -- Stall for RET: hold PC
+        ELSIF ret_stall = '1' THEN
+            pc_next <= pc_plus_1;  -- Will be blocked by pc_write anyway
+            
         ELSE
             pc_next <= pc_plus_1;
         END IF;
@@ -405,9 +441,7 @@ BEGIN
         END IF;
     END PROCESS;
 
-    -- Allow PC update if not stalled, OR if we are branching, OR if in reset state
-    pc_write_sig <= (NOT if_stall) OR ex_branch_taken OR mem_branch_taken OR reset_state;
-    if_id_en_sig <= NOT if_stall AND NOT reset_state;  -- Don't pass reset vector to IF/ID
+    -- pc_write_sig and if_id_en_sig are assigned in the DECODE section below
 
     U_PC: PC PORT MAP (
         clk => clk, rst => rst,
@@ -448,12 +482,14 @@ BEGIN
     id_out_en_mux      <= c_out_en      WHEN stall = '0' ELSE '0'; -- ADDED
 
     -- Master PC and IF/ID Enable Logic
-    -- Freeze if we have a Hazard (stall), but allow branches to override
-    -- Also reset_state keeps PC updating and IF/ID frozen during reset vector fetch
+    -- Freeze if we have a Hazard (stall) or RET in EX (ret_stall), but allow branches to override
+    -- When RET is in MEM (flush_mem), update PC with return address
     -- Freeze completely when halted
     pc_write_sig <= '0' WHEN halted = '1' ELSE
-                    ((NOT if_stall AND NOT stall) OR ex_branch_taken OR mem_branch_taken OR reset_state);
+                    '0' WHEN ret_stall = '1' ELSE  -- Stall PC when RET is in EX
+                    ((NOT if_stall AND NOT stall) OR ex_branch_taken OR flush_mem OR reset_state);
     if_id_en_sig <= '0' WHEN halted = '1' ELSE
+                    '0' WHEN ret_stall = '1' ELSE  -- Stall IF/ID when RET is in EX
                     (NOT if_stall AND NOT stall AND NOT reset_state);
 
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
@@ -659,8 +695,9 @@ BEGIN
     mem_read_data <= memory_data_out;
     -- For swap operations, use the r_data2_out from EX_MEM (which is mem_write_data)
     mem_swap_data <= mem_write_data;
-    -- Check for RET/RTI
-    mem_branch_taken <= '1' WHEN (mem_branch_type = "110") ELSE '0';
+    -- RET is now handled via flush_mem signal (set in flush logic section above)
+    -- This signal is no longer used directly
+    mem_branch_taken <= '0';
 
     U_MEM_WB: MEM_WB_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',
@@ -669,12 +706,14 @@ BEGIN
         out_en_in => mem_out_en,
         pc_in => mem_pc, mem_data_in => mem_read_data, alu_res_in => mem_alu_result,
         rdst_addr_in => mem_w_addr_dest, rsrc_addr_in => mem_w_addr_swap, r_data2_in => mem_swap_data,
+        sp_write_in => mem_sp_write, branch_type_in => mem_branch_type,
         
         reg_write_out => wb_reg_write, reg_write_2_out => wb_reg_write_2,
         wb_sel_out => wb_wb_sel,
         out_en_out => wb_out_en,
         pc_out => wb_pc, mem_data_out => wb_mem_data, alu_res_out => wb_alu_result,
-        rdst_addr_out => wb_w_addr_dest, rsrc_addr_out => wb_w_addr_swap, r_data2_out => wb_swap_data
+        rdst_addr_out => wb_w_addr_dest, rsrc_addr_out => wb_w_addr_swap, r_data2_out => wb_swap_data,
+        sp_write_out => wb_sp_write, branch_type_out => wb_branch_type
     );
 
     ----------------------------------------------------------------------------
