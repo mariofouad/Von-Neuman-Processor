@@ -1,96 +1,38 @@
+# Compile of ALU.vhdl was successful.
+# Compile of ControlUnit.vhdl failed with 3 errors.
+# Compile of ForwardingUnit.vhdl was successful.
 # Compile of Memory.vhdl was successful with warnings.
 # Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl failed with 1 errors.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
 # Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl failed with 2 errors.
-# Compile of tb_Pipeline.vhdl failed with 6 errors.
-# 14 compiles, 3 failed with 9 errors.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl failed with 1 errors.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl failed with 2 errors.
-# Compile of tb_Pipeline.vhdl failed with 6 errors.
-# 14 compiles, 3 failed with 9 errors.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl failed with 1 errors.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl failed with 2 errors.
-# Compile of tb_Pipeline.vhdl failed with 6 errors.
-# 14 compiles, 3 failed with 9 errors.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl failed with 1 errors.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
 # Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 1 failed with 1 error.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl failed with 2 errors.
+# Compile of Processor.vhdl failed with 3 errors.
 # Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
 # Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
 # Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
 # Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 1 failed with 2 errors.
+# Compile of tb_RegisterFile.vhd was successful.
+# 15 compiles, 2 failed with 6 errors.
+# Compile of ALU.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of ForwardingUnit.vhdl was successful.
 # Compile of Memory.vhdl was successful with warnings.
 # Compile of Memory_tb.vhdl was successful.
+# Compile of PC.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
 # Compile of Processor.vhdl was successful.
 # Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
 # Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
 # Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
 # Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
+# Compile of tb_RegisterFile.vhd was successful.
+# 15 compiles, 0 failed with no errors.
 vsim -gui work.tb_pipeline
 # vsim -gui work.tb_pipeline 
-# Start time: 20:06:26 on Dec 18,2025
+# Start time: 00:58:40 on Dec 20,2025
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -102,135 +44,937 @@ vsim -gui work.tb_pipeline
 # Loading work.if_id_reg(behavior)
 # Loading work.controlunit(behavior)
 # Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
 # Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
 # Loading work.alu(behavioral)
 # Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
 # Loading work.memory(behavior)
 # Loading work.mem_wb_reg(behavior)
-# Trace back: Error QStructure::sort: invalid command name ""
-#   <6:C:/mtitcl/vsim/qstructure.tc_:2478: ::QStructure::sort .main_pane.structure 0 descending
-#   <5:eval:1: ::QStructure::structsort .main_pane.structure 0 descending
-#   <4:eval:1: ::namespace inscope ::QStructure {structsort .main_pane.structure} 0 descending
-#   >3:proc:26: ::.main_pane.structure.interior.cs.body.struct sort 0 descending
-#   >2:proc:10: ::.main_pane.structure.interior.cs.body.struct _initializeSortColumn
-#   <1:eval:1: ::namespace inscope ::vsimwidgets::Hierarchy {::.main_pane.structure.interior.cs.body.struct _initializeSortColumn}
-add wave -position insertpoint sim:/tb_pipeline/*
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/clk \
+sim:/tb_pipeline/uut/rst \
+sim:/tb_pipeline/uut/input_port \
+sim:/tb_pipeline/uut/output_port \
+sim:/tb_pipeline/uut/out_en
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_PC/pc_in \
+sim:/tb_pipeline/uut/U_PC/pc_out \
+sim:/tb_pipeline/uut/U_PC/pc_reg
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_Control/opcode \
+sim:/tb_pipeline/uut/U_Control/reg_write \
+sim:/tb_pipeline/uut/U_Control/reg_write_2 \
+sim:/tb_pipeline/uut/U_Control/branch_type
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_RegFile/write_addr1 \
+sim:/tb_pipeline/uut/U_RegFile/write_addr2 \
+sim:/tb_pipeline/uut/U_RegFile/read_data1 \
+sim:/tb_pipeline/uut/U_RegFile/read_data2 \
+sim:/tb_pipeline/uut/U_RegFile/registers
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_SP/sp_reg
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_ForwardingUnit/forward_a \
+sim:/tb_pipeline/uut/U_ForwardingUnit/forward_b
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_ALU/SrcA \
+sim:/tb_pipeline/uut/U_ALU/SrcB \
+sim:/tb_pipeline/uut/U_ALU/ALU_Sel \
+sim:/tb_pipeline/uut/U_ALU/ALU_Result \
+sim:/tb_pipeline/uut/U_ALU/Zero \
+sim:/tb_pipeline/uut/U_ALU/Negative \
+sim:/tb_pipeline/uut/U_ALU/Carry
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_Memory/data_in \
+sim:/tb_pipeline/uut/U_Memory/data_out \
+sim:/tb_pipeline/uut/U_Memory/ram
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf {D:/CUFE/Fall 2025/Computer Architecture/Project/Von-Neuman-Processor/wave.do}
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | FFFFAAAA | '1' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | FFFFFFFF | '1' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 00000000 | '1' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFFFFFF | '1' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000000 | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000002 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 20000000 | FFFFFFFF | '1' | '0'
+#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '1' | '0'
+#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | FFFFFFFF | '0' | '0'
+#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C30 | 32 | 31 | 30 | 29 | 28 | 00000000 | 00000000 | '0' | '0'
+#    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C31 | 33 | 32 | 31 | 30 | 29 | 00000000 | 00000000 | '0' | '0'
+#    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C32 | 34 | 33 | 32 | 31 | 30 | 00000000 | 00000000 | '0' | '0'
+#    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C33 | 35 | 34 | 33 | 32 | 31 | 00000000 | 00000000 | '0' | '0'
+#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C34 | 36 | 35 | 34 | 33 | 32 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C35 | 37 | 36 | 35 | 34 | 33 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C36 | 38 | 37 | 36 | 35 | 34 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C37 | 39 | 38 | 37 | 36 | 35 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C38 | 40 | 39 | 38 | 37 | 36 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C39 | 41 | 40 | 39 | 38 | 37 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C40 | 42 | 41 | 40 | 39 | 38 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C41 | 43 | 42 | 41 | 40 | 39 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C42 | 44 | 43 | 42 | 41 | 40 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C43 | 45 | 44 | 43 | 42 | 41 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C44 | 46 | 45 | 44 | 43 | 42 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C45 | 47 | 46 | 45 | 44 | 43 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C46 | 48 | 47 | 46 | 45 | 44 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C47 | 49 | 48 | 47 | 46 | 45 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C48 | 50 | 49 | 48 | 47 | 46 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C49 | 51 | 50 | 49 | 48 | 47 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C50 | 52 | 51 | 50 | 49 | 48 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C51 | 53 | 52 | 51 | 50 | 49 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C52 | 54 | 53 | 52 | 51 | 50 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C53 | 55 | 54 | 53 | 52 | 51 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C54 | 56 | 55 | 54 | 53 | 52 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C55 | 57 | 56 | 55 | 54 | 53 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C56 | 58 | 57 | 56 | 55 | 54 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C57 | 59 | 58 | 57 | 56 | 55 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C58 | 60 | 59 | 58 | 57 | 56 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C59 | 61 | 60 | 59 | 58 | 57 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C60 | 62 | 61 | 60 | 59 | 58 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C61 | 63 | 62 | 61 | 60 | 59 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C62 | 64 | 63 | 62 | 61 | 60 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C63 | 65 | 64 | 63 | 62 | 61 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C64 | 66 | 65 | 64 | 63 | 62 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C65 | 67 | 66 | 65 | 64 | 63 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C66 | 68 | 67 | 66 | 65 | 64 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C67 | 69 | 68 | 67 | 66 | 65 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C68 | 70 | 69 | 68 | 67 | 66 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C69 | 71 | 70 | 69 | 68 | 67 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C70 | 72 | 71 | 70 | 69 | 68 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C71 | 73 | 72 | 71 | 70 | 69 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C72 | 74 | 73 | 72 | 71 | 70 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C73 | 75 | 74 | 73 | 72 | 71 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C74 | 76 | 75 | 74 | 73 | 72 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C75 | 77 | 76 | 75 | 74 | 73 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C76 | 78 | 77 | 76 | 75 | 74 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C77 | 79 | 78 | 77 | 76 | 75 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C78 | 80 | 79 | 78 | 77 | 76 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C79 | 81 | 80 | 79 | 78 | 77 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C80 | 82 | 81 | 80 | 79 | 78 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+quit -sim
+# End time: 01:19:40 on Dec 20,2025, Elapsed time: 0:21:00
+# Errors: 0, Warnings: 16
+# Compile of ALU.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of ForwardingUnit.vhdl was successful.
+# Compile of Memory.vhdl was successful with warnings.
+# Compile of Memory_tb.vhdl was successful.
+# Compile of PC.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
+# Compile of Processor.vhdl was successful.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of RegisterFile.vhd was successful.
+# Compile of SP.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
+# Compile of tb_Pipeline.vhdl was successful.
+# Compile of tb_RegisterFile.vhd was successful.
+# 15 compiles, 0 failed with no errors.
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 01:19:59 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wave.do
+add wave -position insertpoint  \
+sim:/tb_pipeline/uut/U_EX_MEM/reg_write_in \
+sim:/tb_pipeline/uut/U_EX_MEM/reg_write_2_in \
+sim:/tb_pipeline/uut/U_EX_MEM/rdst_addr_in \
+sim:/tb_pipeline/uut/U_EX_MEM/rsrc_addr_in
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | FFFFAAAA | '1' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | FFFFFFFF | '1' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | FFFFAAAA | '1' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | 00005555 | '1' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | FFFFAAAA | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000000 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf {D:/CUFE/Fall 2025/Computer Architecture/Project/Von-Neuman-Processor/wave.do}
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf {D:/CUFE/Fall 2025/Computer Architecture/Project/Von-Neuman-Processor/wave.do}
+quit -sim
+# End time: 01:27:51 on Dec 20,2025, Elapsed time: 0:07:52
+# Errors: 0, Warnings: 12
+# Compile of Processor.vhdl was successful.
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 01:28:05 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wa
+# Cannot open macro file: wa
+do wave.do
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 0000AAAA | '1' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFF5555 | '1' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 0000AAAA | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+quit -sim
+# End time: 01:33:55 on Dec 20,2025, Elapsed time: 0:05:50
+# Errors: 0, Warnings: 12
+# Compile of Processor.vhdl was successful.
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 01:34:08 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wav
+# Cannot open macro file: wav
+do wave.do
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+# ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
+#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
+#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
+#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 0000AAAA | '1' | '0'
+#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFF5555 | '1' | '0'
+#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
+#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
+#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000002 | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000000 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 20000000 | FFFFFFFF | '1' | '0'
+#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '1' | '0'
+#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | FFFFFFFF | '0' | '0'
+#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+run
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+quit -sim
+# End time: 02:09:52 on Dec 20,2025, Elapsed time: 0:35:44
+# Errors: 0, Warnings: 12
+# Compile of Processor.vhdl was successful.
+# Compile of Processor_Pkg.vhdl was successful.
+# Compile of Processor.vhdl failed with 6 errors.
+# Compile of Processor.vhdl was successful.
+vsim -gui work.tb_pipeline
+# vsim -gui work.tb_pipeline 
+# Start time: 02:16:49 on Dec 20,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_pipeline(behavior)
+# Loading work.processor_pkg
+# Loading work.processor(structure)
+# Loading work.pc(behavior)
+# Loading work.if_id_reg(behavior)
+# Loading work.controlunit(behavior)
+# Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
+# Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
+# Loading work.alu(behavioral)
+# Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavior)
+# Loading work.mem_wb_reg(behavior)
+do wave.do
 run -all
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
 # ** Note: --- Starting Pipeline Simulation ---
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: -----------------------------------------------------------------------------
+#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
+#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
 #    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle | PC (Fetch) | Inst (Hex) | ALU Res | RegW | MemW
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: --------------------------------------------------------
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 1 | 7804AAAA | 0 | '0' | '0'
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
 #    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C1 | 2 | 7808FFFF | 1 | '0' | '0'
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
 #    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -21846 is not in bounds of subtype NATURAL.
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 0000AAAA | '1' | '0'
 #    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C2 | 3 | 20000000 | -21846 | '0' | '0'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFF5555 | '1' | '0'
 #    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C3 | 4 | 39100000 | -1 | '1' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C4 | 5 | 18040000 | 1 | '1' | '0'
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
 #    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C5 | 6 | 380C0000 | 0 | '1' | '0'
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
 #    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000002 | '1' | '0'
 #    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C6 | 7 | 30000000 | -2 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C7 | 8 | 28000000 | 1 | '1' | '0'
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000000 | '0' | '0'
 #    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 20000000 | FFFFFFFF | '1' | '0'
 #    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C8 | 9 | 59140000 | -1 | '1' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C9 | 10 | 38180000 | 1 | '1' | '0'
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | FFFFFFFF | '1' | '0'
 #    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C10 | 11 | 18180000 | 0 | '1' | '0'
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '1' | '0'
 #    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C11 | 12 | 20000000 | 1 | '0' | '0'
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | FFFFFFFF | '1' | '0'
 #    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C12 | 13 | 00000000 | 0 | '1' | '0'
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | FFFFFFFF | '0' | '0'
 #    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C13 | 14 | 00000000 | 0 | '1' | '0'
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
 #    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
 #    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C14 | 15 | 00000000 | -1 | '1' | '0'
-#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
 #    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C15 | 16 | 00000000 | -1 | '1' | '0'
-#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
 #    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C16 | 17 | 00000000 | -1 | '0' | '0'
-#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C17 | 18 | 00000000 | 0 | '0' | '0'
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
 #    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C18 | 19 | 00000000 | 0 | '0' | '0'
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
 #    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C19 | 20 | 00000000 | 0 | '0' | '0'
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
 #    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C20 | 21 | 00000000 | 0 | '0' | '0'
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
 #    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C21 | 22 | 00000000 | 0 | '0' | '0'
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
 #    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C22 | 23 | 00000000 | 0 | '0' | '0'
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
 #    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C23 | 24 | 00000000 | 0 | '0' | '0'
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
 #    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C24 | 25 | 00000000 | 0 | '0' | '0'
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
 #    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C25 | 26 | 00000000 | 0 | '0' | '0'
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
 #    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C26 | 27 | 00000000 | 0 | '0' | '0'
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
 #    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C27 | 28 | 00000000 | 0 | '0' | '0'
+# ** Note: C30 | 32 | 31 | 30 | 29 | 28 | 00000000 | 00000000 | '0' | '0'
 #    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C28 | 29 | 00000000 | 0 | '0' | '0'
+# ** Note: C31 | 33 | 32 | 31 | 30 | 29 | 00000000 | 00000000 | '0' | '0'
 #    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C29 | 30 | 00000000 | 0 | '0' | '0'
+# ** Note: C32 | 34 | 33 | 32 | 31 | 30 | 00000000 | 00000000 | '0' | '0'
 #    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C30 | 31 | 00000000 | 0 | '0' | '0'
+# ** Note: C33 | 35 | 34 | 33 | 32 | 31 | 00000000 | 00000000 | '0' | '0'
 #    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C34 | 36 | 35 | 34 | 33 | 32 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C35 | 37 | 36 | 35 | 34 | 33 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C36 | 38 | 37 | 36 | 35 | 34 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C37 | 39 | 38 | 37 | 36 | 35 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C38 | 40 | 39 | 38 | 37 | 36 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C39 | 41 | 40 | 39 | 38 | 37 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C40 | 42 | 41 | 40 | 39 | 38 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C41 | 43 | 42 | 41 | 40 | 39 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C42 | 44 | 43 | 42 | 41 | 40 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C43 | 45 | 44 | 43 | 42 | 41 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C44 | 46 | 45 | 44 | 43 | 42 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C45 | 47 | 46 | 45 | 44 | 43 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C46 | 48 | 47 | 46 | 45 | 44 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C47 | 49 | 48 | 47 | 46 | 45 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C48 | 50 | 49 | 48 | 47 | 46 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C49 | 51 | 50 | 49 | 48 | 47 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C50 | 52 | 51 | 50 | 49 | 48 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C51 | 53 | 52 | 51 | 50 | 49 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C52 | 54 | 53 | 52 | 51 | 50 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C53 | 55 | 54 | 53 | 52 | 51 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C54 | 56 | 55 | 54 | 53 | 52 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C55 | 57 | 56 | 55 | 54 | 53 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C56 | 58 | 57 | 56 | 55 | 54 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C57 | 59 | 58 | 57 | 56 | 55 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C58 | 60 | 59 | 58 | 57 | 56 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C59 | 61 | 60 | 59 | 58 | 57 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C60 | 62 | 61 | 60 | 59 | 58 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C61 | 63 | 62 | 61 | 60 | 59 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C62 | 64 | 63 | 62 | 61 | 60 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C63 | 65 | 64 | 63 | 62 | 61 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C64 | 66 | 65 | 64 | 63 | 62 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C65 | 67 | 66 | 65 | 64 | 63 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C66 | 68 | 67 | 66 | 65 | 64 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C67 | 69 | 68 | 67 | 66 | 65 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C68 | 70 | 69 | 68 | 67 | 66 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C69 | 71 | 70 | 69 | 68 | 67 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C70 | 72 | 71 | 70 | 69 | 68 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C71 | 73 | 72 | 71 | 70 | 69 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C72 | 74 | 73 | 72 | 71 | 70 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C73 | 75 | 74 | 73 | 72 | 71 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C74 | 76 | 75 | 74 | 73 | 72 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C75 | 77 | 76 | 75 | 74 | 73 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C76 | 78 | 77 | 76 | 75 | 74 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C77 | 79 | 78 | 77 | 76 | 75 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C78 | 80 | 79 | 78 | 77 | 76 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C79 | 81 | 80 | 79 | 78 | 77 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C80 | 82 | 81 | 80 | 79 | 78 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C81 | 83 | 82 | 81 | 80 | 79 | 00000000 | 00000000 | '0' | '0'
+#    Time: 840 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C82 | 84 | 83 | 82 | 81 | 80 | 00000000 | 00000000 | '0' | '0'
+#    Time: 850 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C83 | 85 | 84 | 83 | 82 | 81 | 00000000 | 00000000 | '0' | '0'
+#    Time: 860 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C84 | 86 | 85 | 84 | 83 | 82 | 00000000 | 00000000 | '0' | '0'
+#    Time: 870 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C85 | 87 | 86 | 85 | 84 | 83 | 00000000 | 00000000 | '0' | '0'
+#    Time: 880 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C86 | 88 | 87 | 86 | 85 | 84 | 00000000 | 00000000 | '0' | '0'
+#    Time: 890 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C87 | 89 | 88 | 87 | 86 | 85 | 00000000 | 00000000 | '0' | '0'
+#    Time: 900 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C88 | 90 | 89 | 88 | 87 | 86 | 00000000 | 00000000 | '0' | '0'
+#    Time: 910 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C89 | 91 | 90 | 89 | 88 | 87 | 00000000 | 00000000 | '0' | '0'
+#    Time: 920 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C90 | 92 | 91 | 90 | 89 | 88 | 00000000 | 00000000 | '0' | '0'
+#    Time: 930 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C91 | 93 | 92 | 91 | 90 | 89 | 00000000 | 00000000 | '0' | '0'
+#    Time: 940 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C92 | 94 | 93 | 92 | 91 | 90 | 00000000 | 00000000 | '0' | '0'
+#    Time: 950 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C93 | 95 | 94 | 93 | 92 | 91 | 00000000 | 00000000 | '0' | '0'
+#    Time: 960 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C94 | 96 | 95 | 94 | 93 | 92 | 00000000 | 00000000 | '0' | '0'
+#    Time: 970 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C95 | 97 | 96 | 95 | 94 | 93 | 00000000 | 00000000 | '0' | '0'
+#    Time: 980 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C96 | 98 | 97 | 96 | 95 | 94 | 00000000 | 00000000 | '0' | '0'
+#    Time: 990 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C97 | 99 | 98 | 97 | 96 | 95 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1 us  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C98 | 100 | 99 | 98 | 97 | 96 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1010 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C99 | 101 | 100 | 99 | 98 | 97 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1020 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C100 | 102 | 101 | 100 | 99 | 98 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: --- Simulation Finished ---
-#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
 # Break key hit
-# Simulation stop requested.
 quit -sim
-# End time: 20:14:31 on Dec 18,2025, Elapsed time: 0:08:05
-# Errors: 0, Warnings: 19
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
+# End time: 02:19:55 on Dec 20,2025, Elapsed time: 0:03:06
+# Errors: 0, Warnings: 15
 # Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
 vsim -gui work.tb_pipeline
 # vsim -gui work.tb_pipeline 
-# Start time: 20:14:58 on Dec 18,2025
+# Start time: 02:20:08 on Dec 20,2025
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -242,489 +986,269 @@ vsim -gui work.tb_pipeline
 # Loading work.if_id_reg(behavior)
 # Loading work.controlunit(behavior)
 # Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
 # Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
 # Loading work.alu(behavioral)
 # Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
 # Loading work.memory(behavior)
 # Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_IF_ID/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_ID_EX/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_EX_MEM/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_MEM_WB/*
-run
+do wave.do
+# Break key hit
+run -all
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
-run
-run
-run
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle | PC (Fetch) | Inst (Hex) | ALU Res | RegW | MemW
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: --------------------------------------------------------
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C0 | 1 | 7804AAAA | 0 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 2 | 7808FFFF | 1 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -21846 is not in bounds of subtype NATURAL.
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C2 | 3 | 20000000 | -21846 | '0' | '0'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C3 | 4 | 39100000 | -1 | '1' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 5 | 18040000 | 1 | '1' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 6 | 380C0000 | 0 | '1' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C6 | 7 | 30000000 | -2 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 28000000 | 1 | '1' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: (vsim-151) NUMERIC_STD.TO_INTEGER: Value -2 is not in bounds of subtype NATURAL.
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C8 | 9 | 59140000 | -1 | '1' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 38180000 | 1 | '1' | '0'
-#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 11 | 18180000 | 0 | '1' | '0'
-#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 12 | 20000000 | 1 | '0' | '0'
-#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C12 | 13 | 00000000 | 0 | '1' | '0'
-#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-# WARNING: No extended dataflow license exists
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-quit -sim
-# End time: 20:28:28 on Dec 18,2025, Elapsed time: 0:13:30
-# Errors: 0, Warnings: 10
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 20:31:02 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
-run
-run
-run
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C0 | 1 | 0 | 0 | 0 | 0 | 78000001 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 4 | 3 | 2 | 1 | 0 | 20000000 | FFFFAAAA | '1' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 5 | 4 | 3 | 2 | 1 | 39100000 | FFFFFFFF | '1' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-# WARNING: No extended dataflow license exists
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-run
-# ** Note: C5 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000001 | '1' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-run
-# ** Note: C6 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 00000000 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-quit -sim
-# End time: 20:43:00 on Dec 18,2025, Elapsed time: 0:11:58
-# Errors: 0, Warnings: 6
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 20:43:14 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
-run
-run
-run
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C0 | 1 | 0 | 0 | 0 | 0 | 78000001 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000001 | '1' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 00000000 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFFFFFE | '1' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000001 | '1' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
-#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000001 | '1' | '0'
-#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 20:50:04 on Dec 18,2025, Elapsed time: 0:06:50
-# Errors: 0, Warnings: 6
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 20:50:19 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
-# Compile of tb_Pipeline.vhdl was successful.
-run
-# Compile of tb_Pipeline.vhdl was successful.
-run
-run
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C0 | 1 | 0 | 0 | 0 | 0 | 78000001 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 5 | 4 | 3 | 2 | 1 | 00000000 | 0000FFFF | '1' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000001 | '1' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000001 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 5 | 4 | 00000000 | 00000001 | '0' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 5 | 00000000 | 00000001 | '0' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000001 | '0' | '0'
-#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 11 | 10 | 9 | 8 | 7 | 00000000 | 00000001 | '0' | '0'
-#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 12 | 11 | 10 | 9 | 8 | 00000000 | 00000001 | '0' | '0'
-#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C12 | 13 | 12 | 11 | 10 | 9 | 00000000 | 00000001 | '0' | '0'
-#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 20:57:25 on Dec 18,2025, Elapsed time: 0:07:06
-# Errors: 0, Warnings: 8
-# Compile of Memory.vhdl failed with 1 errors.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 1 failed with 1 error.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 20:57:54 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
 # ** Note: --- Starting Pipeline Simulation ---
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: -----------------------------------------------------------------------------
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
 #    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
 # ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
 #    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 7808FFFF | 0000AAAA | '1' | '0'
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
 #    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 20000000 | 0000FFFF | '1' | '0'
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
 #    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 0000FFFF | '1' | '0'
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
 #    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000002 | '1' | '0'
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 0000AAAA | '1' | '0'
 #    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 00000000 | 00000001 | '1' | '0'
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFF5555 | '1' | '0'
 #    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 00000000 | 00000001 | '0' | '0'
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
 #    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000001 | '0' | '0'
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
 #    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-# WARNING: No extended dataflow license exists
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
-# WARNING: No extended dataflow license exists
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000002 | '1' | '0'
+#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000000 | '0' | '0'
+#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 20000000 | FFFFFFFF | '1' | '0'
+#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '1' | '0'
+#    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | FFFFFFFF | '1' | '0'
+#    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | FFFFFFFF | '0' | '0'
+#    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C30 | 32 | 31 | 30 | 29 | 28 | 00000000 | 00000000 | '0' | '0'
+#    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C31 | 33 | 32 | 31 | 30 | 29 | 00000000 | 00000000 | '0' | '0'
+#    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C32 | 34 | 33 | 32 | 31 | 30 | 00000000 | 00000000 | '0' | '0'
+#    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C33 | 35 | 34 | 33 | 32 | 31 | 00000000 | 00000000 | '0' | '0'
+#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C34 | 36 | 35 | 34 | 33 | 32 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C35 | 37 | 36 | 35 | 34 | 33 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C36 | 38 | 37 | 36 | 35 | 34 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C37 | 39 | 38 | 37 | 36 | 35 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C38 | 40 | 39 | 38 | 37 | 36 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C39 | 41 | 40 | 39 | 38 | 37 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C40 | 42 | 41 | 40 | 39 | 38 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C41 | 43 | 42 | 41 | 40 | 39 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C42 | 44 | 43 | 42 | 41 | 40 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C43 | 45 | 44 | 43 | 42 | 41 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C44 | 46 | 45 | 44 | 43 | 42 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C45 | 47 | 46 | 45 | 44 | 43 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C46 | 48 | 47 | 46 | 45 | 44 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C47 | 49 | 48 | 47 | 46 | 45 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C48 | 50 | 49 | 48 | 47 | 46 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C49 | 51 | 50 | 49 | 48 | 47 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C50 | 52 | 51 | 50 | 49 | 48 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C51 | 53 | 52 | 51 | 50 | 49 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C52 | 54 | 53 | 52 | 51 | 50 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C53 | 55 | 54 | 53 | 52 | 51 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C54 | 56 | 55 | 54 | 53 | 52 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C55 | 57 | 56 | 55 | 54 | 53 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C56 | 58 | 57 | 56 | 55 | 54 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C57 | 59 | 58 | 57 | 56 | 55 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C58 | 60 | 59 | 58 | 57 | 56 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C59 | 61 | 60 | 59 | 58 | 57 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C60 | 62 | 61 | 60 | 59 | 58 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C61 | 63 | 62 | 61 | 60 | 59 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C62 | 64 | 63 | 62 | 61 | 60 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C63 | 65 | 64 | 63 | 62 | 61 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C64 | 66 | 65 | 64 | 63 | 62 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C65 | 67 | 66 | 65 | 64 | 63 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C66 | 68 | 67 | 66 | 65 | 64 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C67 | 69 | 68 | 67 | 66 | 65 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C68 | 70 | 69 | 68 | 67 | 66 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C69 | 71 | 70 | 69 | 68 | 67 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C70 | 72 | 71 | 70 | 69 | 68 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C71 | 73 | 72 | 71 | 70 | 69 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C72 | 74 | 73 | 72 | 71 | 70 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C73 | 75 | 74 | 73 | 72 | 71 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C74 | 76 | 75 | 74 | 73 | 72 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C75 | 77 | 76 | 75 | 74 | 73 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C76 | 78 | 77 | 76 | 75 | 74 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C77 | 79 | 78 | 77 | 76 | 75 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C78 | 80 | 79 | 78 | 77 | 76 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C79 | 81 | 80 | 79 | 78 | 77 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C80 | 82 | 81 | 80 | 79 | 78 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C81 | 83 | 82 | 81 | 80 | 79 | 00000000 | 00000000 | '0' | '0'
+#    Time: 840 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C82 | 84 | 83 | 82 | 81 | 80 | 00000000 | 00000000 | '0' | '0'
+#    Time: 850 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C83 | 85 | 84 | 83 | 82 | 81 | 00000000 | 00000000 | '0' | '0'
+#    Time: 860 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C84 | 86 | 85 | 84 | 83 | 82 | 00000000 | 00000000 | '0' | '0'
+#    Time: 870 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C85 | 87 | 86 | 85 | 84 | 83 | 00000000 | 00000000 | '0' | '0'
+#    Time: 880 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C86 | 88 | 87 | 86 | 85 | 84 | 00000000 | 00000000 | '0' | '0'
+#    Time: 890 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C87 | 89 | 88 | 87 | 86 | 85 | 00000000 | 00000000 | '0' | '0'
+#    Time: 900 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C88 | 90 | 89 | 88 | 87 | 86 | 00000000 | 00000000 | '0' | '0'
+#    Time: 910 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C89 | 91 | 90 | 89 | 88 | 87 | 00000000 | 00000000 | '0' | '0'
+#    Time: 920 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C90 | 92 | 91 | 90 | 89 | 88 | 00000000 | 00000000 | '0' | '0'
+#    Time: 930 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C91 | 93 | 92 | 91 | 90 | 89 | 00000000 | 00000000 | '0' | '0'
+#    Time: 940 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C92 | 94 | 93 | 92 | 91 | 90 | 00000000 | 00000000 | '0' | '0'
+#    Time: 950 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C93 | 95 | 94 | 93 | 92 | 91 | 00000000 | 00000000 | '0' | '0'
+#    Time: 960 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C94 | 96 | 95 | 94 | 93 | 92 | 00000000 | 00000000 | '0' | '0'
+#    Time: 970 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C95 | 97 | 96 | 95 | 94 | 93 | 00000000 | 00000000 | '0' | '0'
+#    Time: 980 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C96 | 98 | 97 | 96 | 95 | 94 | 00000000 | 00000000 | '0' | '0'
+#    Time: 990 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C97 | 99 | 98 | 97 | 96 | 95 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1 us  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C98 | 100 | 99 | 98 | 97 | 96 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1010 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C99 | 101 | 100 | 99 | 98 | 97 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1020 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C100 | 102 | 101 | 100 | 99 | 98 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: --- Simulation Finished ---
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
 quit -sim
+# End time: 02:27:23 on Dec 20,2025, Elapsed time: 0:07:15
+# Errors: 0, Warnings: 12
+# Compile of ALU.vhdl was successful.
+# Compile of ControlUnit.vhdl was successful.
+# Compile of ForwardingUnit.vhdl was successful.
 # Compile of Memory.vhdl was successful with warnings.
 # Compile of Memory_tb.vhdl was successful.
+# Compile of PC.vhdl was successful.
+# Compile of PipelineRegisters.vhdl was successful.
 # Compile of Processor.vhdl was successful.
 # Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
 # Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
 # Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
+# Compile of tb_ALU.vhd was successful.
+# Compile of tb_Integration.vhd was successful.
 # Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-# End time: 21:03:24 on Dec 18,2025, Elapsed time: 0:05:30
-# Errors: 0, Warnings: 8
+# Compile of tb_RegisterFile.vhd was successful.
+# 15 compiles, 0 failed with no errors.
 vsim -gui work.tb_pipeline
 # vsim -gui work.tb_pipeline 
-# Start time: 21:03:36 on Dec 18,2025
+# Start time: 02:27:42 on Dec 20,2025
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -736,608 +1260,243 @@ vsim -gui work.tb_pipeline
 # Loading work.if_id_reg(behavior)
 # Loading work.controlunit(behavior)
 # Loading work.registerfile(behavioral)
+# Loading work.sp(behavior)
 # Loading work.id_ex_reg(behavior)
+# Loading work.forwardingunit(behavior)
 # Loading work.alu(behavioral)
 # Loading work.ex_mem_reg(behavior)
+# Loading ieee.std_logic_textio(body)
 # Loading work.memory(behavior)
 # Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint sim:/tb_pipeline/uut/U_RegFile/*
-run
+do wave.do
+run -all
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
 # ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-run
+#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
 # ** Note: --- Starting Pipeline Simulation ---
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: -----------------------------------------------------------------------------
 #    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
 # ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 7804AAAA | 00000000 | '0' | '0'
 #    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
 # ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 7808FFFF | 00000001 | '0' | '0'
 #    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 7808FFFF | 0000AAAA | '1' | '0'
+# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 20000000 | 0000AAAA | '1' | '0'
 #    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 20000000 | 0000FFFF | '1' | '0'
+# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 39100000 | 0000FFFF | '1' | '0'
 #    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 39100000 | 0000FFFF | '1' | '0'
+# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 18040000 | 00000002 | '1' | '0'
 #    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000002 | '1' | '0'
+# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 380C0000 | 0000AAAA | '1' | '0'
 #    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 00000000 | 0000AAAA | '1' | '0'
+# ** Note: C6 | 8 | 7 | 6 | 5 | 4 | 30000000 | FFFF5555 | '1' | '0'
 #    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 00000000 | 00000001 | '1' | '0'
+# ** Note: C7 | 9 | 8 | 7 | 6 | 5 | 28000000 | 00000002 | '1' | '0'
 #    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000001 | '0' | '0'
+# ** Note: C8 | 10 | 9 | 8 | 7 | 6 | 59140000 | FFFFFFFF | '1' | '0'
 #    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 23:00:54 on Dec 18,2025, Elapsed time: 1:57:18
-# Errors: 0, Warnings: 5
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 23:01:16 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.sp(behavior)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_SP/sp_in \
-sim:/tb_pipeline/uut/U_SP/sp_out \
-sim:/tb_pipeline/uut/U_SP/sp_reg
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_RegFile/registers
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/ram
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-run
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000005 | '0' | '0'
-#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '1' | '0'
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 68040000 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000005 | '0' | '1'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 6 | 5 | 4 | 00000000 | 00000000 | '0' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 6 | 5 | 00000000 | 00000000 | '0' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 6 | 70080000 | 00000000 | '0' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C9 | 11 | 10 | 9 | 8 | 7 | 38180000 | 00000002 | '1' | '0'
 #    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/addr \
-sim:/tb_pipeline/uut/U_Memory/data_in
-quit -sim
-# End time: 23:03:55 on Dec 18,2025, Elapsed time: 0:02:39
-# Errors: 0, Warnings: 7
-vsim -gui work.tb_processor
-# vsim -gui work.tb_processor 
-# Start time: 23:04:04 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_processor(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# ** Fatal: (vsim-3817) Port "input_port" of entity "processor" is not in the component being instantiated.
-#    Time: 0 ps  Iteration: 0  Instance: /tb_processor/uut File: E:/Von-Neuman-Processor/Processor.vhdl Line: 25
-# FATAL ERROR while loading design
-# Error loading design
-# End time: 23:04:04 on Dec 18,2025, Elapsed time: 0:00:00
-# Errors: 1, Warnings: 1
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 23:04:15 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.sp(behavior)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_RegFile/registers
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_SP/sp_in \
-sim:/tb_pipeline/uut/U_SP/sp_out \
-sim:/tb_pipeline/uut/U_SP/sp_reg
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/addr \
-sim:/tb_pipeline/uut/U_Memory/data_in \
-sim:/tb_pipeline/uut/U_Memory/ram
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-run
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000005 | '0' | '0'
-#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '1' | '0'
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 68040000 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000005 | '0' | '1'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 6 | 5 | 4 | 00000000 | 00000000 | '0' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 6 | 5 | 00000000 | 00000000 | '0' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 6 | 70080000 | 00000000 | '0' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 11 | 10 | 9 | 8 | 7 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C10 | 12 | 11 | 10 | 9 | 8 | 18180000 | 00000000 | '0' | '0'
 #    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 11 | 10 | 10 | 9 | 8 | 00000000 | 00000000 | '1' | '0'
+# ** Note: C11 | 13 | 12 | 11 | 10 | 9 | 20000000 | FFFFFFFF | '1' | '0'
 #    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 23:11:54 on Dec 18,2025, Elapsed time: 0:07:39
-# Errors: 0, Warnings: 6
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 23:12:02 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.sp(behavior)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/addr \
-sim:/tb_pipeline/uut/U_Memory/data_in \
-sim:/tb_pipeline/uut/U_Memory/ram
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_RegFile/registers
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_SP/sp_in \
-sim:/tb_pipeline/uut/U_SP/sp_out \
-sim:/tb_pipeline/uut/U_SP/sp_reg
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
-run
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000005 | '0' | '0'
-#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '1' | '0'
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 69200000 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000000 | '0' | '1'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 6 | 5 | 4 | 00000000 | 00000000 | '0' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 6 | 5 | 00000000 | 00000000 | '0' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 6 | 70080000 | 00000000 | '0' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 11 | 10 | 9 | 8 | 7 | 00000000 | 00000000 | '0' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 11 | 10 | 10 | 9 | 8 | 00000000 | 00000000 | '1' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C12 | 12 | 11 | 10 | 10 | 9 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C12 | 14 | 13 | 12 | 11 | 10 | 00000000 | FFFFFFFF | '1' | '0'
 #    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 23:14:21 on Dec 18,2025, Elapsed time: 0:02:19
-# Errors: 0, Warnings: 10
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 23:15:21 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.sp(behavior)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_RegFile/registers
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/addr \
-sim:/tb_pipeline/uut/U_Memory/data_in \
-sim:/tb_pipeline/uut/U_Memory/ram
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
-run
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000005 | '0' | '0'
-#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '1' | '0'
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 69200000 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 70080000 | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 00000000 | 00000000 | '0' | '1'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 6 | 5 | 4 | 00000000 | 00000000 | '0' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 7 | 6 | 6 | 6 | 5 | 00000000 | 00000000 | '1' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 8 | 7 | 6 | 6 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 9 | 8 | 7 | 6 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 10 | 9 | 8 | 7 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 11 | 10 | 9 | 8 | 7 | 00000000 | 00000000 | '0' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C12 | 12 | 11 | 10 | 9 | 8 | 00000000 | 00000000 | '0' | '0'
-#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-quit -sim
-# End time: 23:17:16 on Dec 18,2025, Elapsed time: 0:01:55
-# Errors: 0, Warnings: 10
-# Compile of Memory.vhdl failed with 1 errors.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Load canceled
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 1 failed with 1 error.
-# Compile of Memory.vhdl was successful with warnings.
-# Compile of Memory_tb.vhdl was successful.
-# Compile of Processor.vhdl was successful.
-# Compile of Processor_Pkg.vhdl was successful.
-# Compile of ALU.vhdl was successful.
-# Compile of tb_ALU.vhd was successful.
-# Compile of RegisterFile.vhd was successful.
-# Compile of tb_RegisterFile.vhd was successful.
-# Compile of tb_Integration.vhd was successful.
-# Compile of PC.vhdl was successful.
-# Compile of SP.vhdl was successful.
-# Compile of ControlUnit.vhdl was successful.
-# Compile of PipelineRegisters.vhdl was successful.
-# Compile of tb_Pipeline.vhdl was successful.
-# 14 compiles, 0 failed with no errors.
-vsim -gui work.tb_pipeline
-# vsim -gui work.tb_pipeline 
-# Start time: 23:17:40 on Dec 18,2025
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.numeric_std(body)
-# Loading work.tb_pipeline(behavior)
-# Loading work.processor_pkg
-# Loading work.processor(structure)
-# Loading work.pc(behavior)
-# Loading work.if_id_reg(behavior)
-# Loading work.controlunit(behavior)
-# Loading work.registerfile(behavioral)
-# Loading work.sp(behavior)
-# Loading work.id_ex_reg(behavior)
-# Loading work.alu(behavioral)
-# Loading work.ex_mem_reg(behavior)
-# Loading work.memory(behavior)
-# Loading work.mem_wb_reg(behavior)
-add wave -position insertpoint sim:/tb_pipeline/*
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_RegFile/registers
-add wave -position insertpoint  \
-sim:/tb_pipeline/uut/U_Memory/addr \
-sim:/tb_pipeline/uut/U_Memory/data_in \
-sim:/tb_pipeline/uut/U_Memory/ram
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_Memory
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 0  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 2  Instance: /tb_pipeline/uut/U_RegFile
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 0 ps  Iteration: 3  Instance: /tb_pipeline/uut/U_RegFile
-run
-# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
-#    Time: 15 ns  Iteration: 3  Instance: /tb_pipeline/uut/U_ALU
-# ** Note: --- Starting Pipeline Simulation ---
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: Cycle |  IF  |  ID  |  EX  | MEM |  WB  | Inst(Hex) | ALU Res | RegW | MemW
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: -----------------------------------------------------------------------------
-#    Time: 20 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-# ** Note: C0 | 2 | 1 | 0 | 0 | 0 | 00000000 | 00000000 | '0' | '0'
-#    Time: 30 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C1 | 3 | 2 | 1 | 0 | 0 | 00000000 | 00000005 | '0' | '0'
-#    Time: 40 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C2 | 4 | 3 | 2 | 1 | 0 | 00000000 | 00000000 | '1' | '0'
-#    Time: 50 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C3 | 5 | 4 | 3 | 2 | 1 | 69200000 | 00000000 | '0' | '0'
-#    Time: 60 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C4 | 6 | 5 | 4 | 3 | 2 | 00000000 | 00000000 | '0' | '0'
-#    Time: 70 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C5 | 7 | 6 | 5 | 4 | 3 | 70080000 | 00000000 | '0' | '1'
-#    Time: 80 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C6 | 7 | 6 | 6 | 5 | 4 | 70080000 | 00000000 | '0' | '0'
-#    Time: 90 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C7 | 8 | 7 | 6 | 6 | 5 | 00000000 | 00000000 | '0' | '0'
-#    Time: 100 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C8 | 9 | 8 | 7 | 6 | 6 | 00000000 | 00000000 | '0' | '0'
-#    Time: 110 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C9 | 9 | 8 | 8 | 7 | 6 | 00000000 | 00000000 | '1' | '0'
-#    Time: 120 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C10 | 10 | 9 | 8 | 8 | 7 | 00000000 | 00000000 | '0' | '0'
-#    Time: 130 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C11 | 11 | 10 | 9 | 8 | 8 | 00000000 | 00000000 | '0' | '0'
-#    Time: 140 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C12 | 12 | 11 | 10 | 9 | 8 | 00000000 | 00000000 | '0' | '0'
-#    Time: 150 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C13 | 13 | 12 | 11 | 10 | 9 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C13 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '1' | '0'
 #    Time: 160 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C14 | 14 | 13 | 12 | 11 | 10 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C14 | 16 | 15 | 14 | 13 | 12 | 00000000 | FFFFFFFF | '1' | '0'
 #    Time: 170 ns  Iteration: 0  Instance: /tb_pipeline
-run
-# ** Note: C15 | 15 | 14 | 13 | 12 | 11 | 00000000 | 00000000 | '0' | '0'
+# ** Note: C15 | 17 | 16 | 15 | 14 | 13 | 00000000 | FFFFFFFF | '0' | '0'
 #    Time: 180 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C16 | 18 | 17 | 16 | 15 | 14 | 00000000 | 00000000 | '0' | '0'
+#    Time: 190 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C17 | 19 | 18 | 17 | 16 | 15 | 00000000 | 00000000 | '0' | '0'
+#    Time: 200 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C18 | 20 | 19 | 18 | 17 | 16 | 00000000 | 00000000 | '0' | '0'
+#    Time: 210 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C19 | 21 | 20 | 19 | 18 | 17 | 00000000 | 00000000 | '0' | '0'
+#    Time: 220 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C20 | 22 | 21 | 20 | 19 | 18 | 00000000 | 00000000 | '0' | '0'
+#    Time: 230 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C21 | 23 | 22 | 21 | 20 | 19 | 00000000 | 00000000 | '0' | '0'
+#    Time: 240 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C22 | 24 | 23 | 22 | 21 | 20 | 00000000 | 00000000 | '0' | '0'
+#    Time: 250 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C23 | 25 | 24 | 23 | 22 | 21 | 00000000 | 00000000 | '0' | '0'
+#    Time: 260 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C24 | 26 | 25 | 24 | 23 | 22 | 00000000 | 00000000 | '0' | '0'
+#    Time: 270 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C25 | 27 | 26 | 25 | 24 | 23 | 00000000 | 00000000 | '0' | '0'
+#    Time: 280 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C26 | 28 | 27 | 26 | 25 | 24 | 00000000 | 00000000 | '0' | '0'
+#    Time: 290 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C27 | 29 | 28 | 27 | 26 | 25 | 00000000 | 00000000 | '0' | '0'
+#    Time: 300 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C28 | 30 | 29 | 28 | 27 | 26 | 00000000 | 00000000 | '0' | '0'
+#    Time: 310 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C29 | 31 | 30 | 29 | 28 | 27 | 00000000 | 00000000 | '0' | '0'
+#    Time: 320 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C30 | 32 | 31 | 30 | 29 | 28 | 00000000 | 00000000 | '0' | '0'
+#    Time: 330 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C31 | 33 | 32 | 31 | 30 | 29 | 00000000 | 00000000 | '0' | '0'
+#    Time: 340 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C32 | 34 | 33 | 32 | 31 | 30 | 00000000 | 00000000 | '0' | '0'
+#    Time: 350 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C33 | 35 | 34 | 33 | 32 | 31 | 00000000 | 00000000 | '0' | '0'
+#    Time: 360 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C34 | 36 | 35 | 34 | 33 | 32 | 00000000 | 00000000 | '0' | '0'
+#    Time: 370 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C35 | 37 | 36 | 35 | 34 | 33 | 00000000 | 00000000 | '0' | '0'
+#    Time: 380 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C36 | 38 | 37 | 36 | 35 | 34 | 00000000 | 00000000 | '0' | '0'
+#    Time: 390 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C37 | 39 | 38 | 37 | 36 | 35 | 00000000 | 00000000 | '0' | '0'
+#    Time: 400 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C38 | 40 | 39 | 38 | 37 | 36 | 00000000 | 00000000 | '0' | '0'
+#    Time: 410 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C39 | 41 | 40 | 39 | 38 | 37 | 00000000 | 00000000 | '0' | '0'
+#    Time: 420 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C40 | 42 | 41 | 40 | 39 | 38 | 00000000 | 00000000 | '0' | '0'
+#    Time: 430 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C41 | 43 | 42 | 41 | 40 | 39 | 00000000 | 00000000 | '0' | '0'
+#    Time: 440 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C42 | 44 | 43 | 42 | 41 | 40 | 00000000 | 00000000 | '0' | '0'
+#    Time: 450 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C43 | 45 | 44 | 43 | 42 | 41 | 00000000 | 00000000 | '0' | '0'
+#    Time: 460 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C44 | 46 | 45 | 44 | 43 | 42 | 00000000 | 00000000 | '0' | '0'
+#    Time: 470 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C45 | 47 | 46 | 45 | 44 | 43 | 00000000 | 00000000 | '0' | '0'
+#    Time: 480 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C46 | 48 | 47 | 46 | 45 | 44 | 00000000 | 00000000 | '0' | '0'
+#    Time: 490 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C47 | 49 | 48 | 47 | 46 | 45 | 00000000 | 00000000 | '0' | '0'
+#    Time: 500 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C48 | 50 | 49 | 48 | 47 | 46 | 00000000 | 00000000 | '0' | '0'
+#    Time: 510 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C49 | 51 | 50 | 49 | 48 | 47 | 00000000 | 00000000 | '0' | '0'
+#    Time: 520 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C50 | 52 | 51 | 50 | 49 | 48 | 00000000 | 00000000 | '0' | '0'
+#    Time: 530 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C51 | 53 | 52 | 51 | 50 | 49 | 00000000 | 00000000 | '0' | '0'
+#    Time: 540 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C52 | 54 | 53 | 52 | 51 | 50 | 00000000 | 00000000 | '0' | '0'
+#    Time: 550 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C53 | 55 | 54 | 53 | 52 | 51 | 00000000 | 00000000 | '0' | '0'
+#    Time: 560 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C54 | 56 | 55 | 54 | 53 | 52 | 00000000 | 00000000 | '0' | '0'
+#    Time: 570 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C55 | 57 | 56 | 55 | 54 | 53 | 00000000 | 00000000 | '0' | '0'
+#    Time: 580 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C56 | 58 | 57 | 56 | 55 | 54 | 00000000 | 00000000 | '0' | '0'
+#    Time: 590 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C57 | 59 | 58 | 57 | 56 | 55 | 00000000 | 00000000 | '0' | '0'
+#    Time: 600 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C58 | 60 | 59 | 58 | 57 | 56 | 00000000 | 00000000 | '0' | '0'
+#    Time: 610 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C59 | 61 | 60 | 59 | 58 | 57 | 00000000 | 00000000 | '0' | '0'
+#    Time: 620 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C60 | 62 | 61 | 60 | 59 | 58 | 00000000 | 00000000 | '0' | '0'
+#    Time: 630 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C61 | 63 | 62 | 61 | 60 | 59 | 00000000 | 00000000 | '0' | '0'
+#    Time: 640 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C62 | 64 | 63 | 62 | 61 | 60 | 00000000 | 00000000 | '0' | '0'
+#    Time: 650 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C63 | 65 | 64 | 63 | 62 | 61 | 00000000 | 00000000 | '0' | '0'
+#    Time: 660 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C64 | 66 | 65 | 64 | 63 | 62 | 00000000 | 00000000 | '0' | '0'
+#    Time: 670 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C65 | 67 | 66 | 65 | 64 | 63 | 00000000 | 00000000 | '0' | '0'
+#    Time: 680 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C66 | 68 | 67 | 66 | 65 | 64 | 00000000 | 00000000 | '0' | '0'
+#    Time: 690 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C67 | 69 | 68 | 67 | 66 | 65 | 00000000 | 00000000 | '0' | '0'
+#    Time: 700 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C68 | 70 | 69 | 68 | 67 | 66 | 00000000 | 00000000 | '0' | '0'
+#    Time: 710 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C69 | 71 | 70 | 69 | 68 | 67 | 00000000 | 00000000 | '0' | '0'
+#    Time: 720 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C70 | 72 | 71 | 70 | 69 | 68 | 00000000 | 00000000 | '0' | '0'
+#    Time: 730 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C71 | 73 | 72 | 71 | 70 | 69 | 00000000 | 00000000 | '0' | '0'
+#    Time: 740 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C72 | 74 | 73 | 72 | 71 | 70 | 00000000 | 00000000 | '0' | '0'
+#    Time: 750 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C73 | 75 | 74 | 73 | 72 | 71 | 00000000 | 00000000 | '0' | '0'
+#    Time: 760 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C74 | 76 | 75 | 74 | 73 | 72 | 00000000 | 00000000 | '0' | '0'
+#    Time: 770 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C75 | 77 | 76 | 75 | 74 | 73 | 00000000 | 00000000 | '0' | '0'
+#    Time: 780 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C76 | 78 | 77 | 76 | 75 | 74 | 00000000 | 00000000 | '0' | '0'
+#    Time: 790 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C77 | 79 | 78 | 77 | 76 | 75 | 00000000 | 00000000 | '0' | '0'
+#    Time: 800 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C78 | 80 | 79 | 78 | 77 | 76 | 00000000 | 00000000 | '0' | '0'
+#    Time: 810 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C79 | 81 | 80 | 79 | 78 | 77 | 00000000 | 00000000 | '0' | '0'
+#    Time: 820 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C80 | 82 | 81 | 80 | 79 | 78 | 00000000 | 00000000 | '0' | '0'
+#    Time: 830 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C81 | 83 | 82 | 81 | 80 | 79 | 00000000 | 00000000 | '0' | '0'
+#    Time: 840 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C82 | 84 | 83 | 82 | 81 | 80 | 00000000 | 00000000 | '0' | '0'
+#    Time: 850 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C83 | 85 | 84 | 83 | 82 | 81 | 00000000 | 00000000 | '0' | '0'
+#    Time: 860 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C84 | 86 | 85 | 84 | 83 | 82 | 00000000 | 00000000 | '0' | '0'
+#    Time: 870 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C85 | 87 | 86 | 85 | 84 | 83 | 00000000 | 00000000 | '0' | '0'
+#    Time: 880 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C86 | 88 | 87 | 86 | 85 | 84 | 00000000 | 00000000 | '0' | '0'
+#    Time: 890 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C87 | 89 | 88 | 87 | 86 | 85 | 00000000 | 00000000 | '0' | '0'
+#    Time: 900 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C88 | 90 | 89 | 88 | 87 | 86 | 00000000 | 00000000 | '0' | '0'
+#    Time: 910 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C89 | 91 | 90 | 89 | 88 | 87 | 00000000 | 00000000 | '0' | '0'
+#    Time: 920 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C90 | 92 | 91 | 90 | 89 | 88 | 00000000 | 00000000 | '0' | '0'
+#    Time: 930 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C91 | 93 | 92 | 91 | 90 | 89 | 00000000 | 00000000 | '0' | '0'
+#    Time: 940 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C92 | 94 | 93 | 92 | 91 | 90 | 00000000 | 00000000 | '0' | '0'
+#    Time: 950 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C93 | 95 | 94 | 93 | 92 | 91 | 00000000 | 00000000 | '0' | '0'
+#    Time: 960 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C94 | 96 | 95 | 94 | 93 | 92 | 00000000 | 00000000 | '0' | '0'
+#    Time: 970 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C95 | 97 | 96 | 95 | 94 | 93 | 00000000 | 00000000 | '0' | '0'
+#    Time: 980 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C96 | 98 | 97 | 96 | 95 | 94 | 00000000 | 00000000 | '0' | '0'
+#    Time: 990 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C97 | 99 | 98 | 97 | 96 | 95 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1 us  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C98 | 100 | 99 | 98 | 97 | 96 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1010 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C99 | 101 | 100 | 99 | 98 | 97 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1020 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: C100 | 102 | 101 | 100 | 99 | 98 | 00000000 | 00000000 | '0' | '0'
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline
+# ** Note: --- Simulation Finished ---
+#    Time: 1030 ns  Iteration: 0  Instance: /tb_pipeline

@@ -206,6 +206,7 @@ ENTITY MEM_WB_Reg is
         -- Control Inputs
         reg_write_in, reg_write_2_in : IN std_logic; -- Added reg_write_2
         wb_sel_in : IN std_logic;
+        out_en_in : IN std_logic;
         
         -- Data Inputs
         pc_in          : IN std_logic_vector(31 DOWNTO 0);
@@ -220,6 +221,7 @@ ENTITY MEM_WB_Reg is
         -- Control Outputs
         reg_write_out, reg_write_2_out : OUT std_logic;
         wb_sel_out : OUT std_logic;
+        out_en_out : OUT std_logic;
         
         -- Data Outputs
         pc_out         : OUT std_logic_vector(31 DOWNTO 0);
@@ -240,6 +242,7 @@ BEGIN
         IF rst = '1' THEN
             reg_write_out <= '0'; reg_write_2_out <= '0';
             wb_sel_out <= '0';
+            out_en_out <= '0';
             pc_out <= (others => '0');
             mem_data_out <= (others => '0');
             alu_res_out <= (others => '0');
@@ -250,6 +253,7 @@ BEGIN
             IF en = '1' THEN
                 reg_write_out <= reg_write_in; reg_write_2_out <= reg_write_2_in;
                 wb_sel_out <= wb_sel_in;
+                out_en_out <= out_en_in;
                 
                 pc_out <= pc_in;
                 mem_data_out <= mem_data_in;

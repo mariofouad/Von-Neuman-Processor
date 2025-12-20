@@ -207,6 +207,7 @@ ARCHITECTURE Structure OF Processor IS
     PORT (
         clk, rst, en : IN std_logic;
         reg_write_in, reg_write_2_in, wb_sel_in : IN std_logic;
+        out_en_in    : IN std_logic;
         
         pc_in          : IN std_logic_vector(31 DOWNTO 0);
         mem_data_in    : IN std_logic_vector(31 DOWNTO 0);
@@ -216,6 +217,7 @@ ARCHITECTURE Structure OF Processor IS
         r_data2_in   : IN std_logic_vector(31 DOWNTO 0);
         
         reg_write_out, reg_write_2_out, wb_sel_out : OUT std_logic;
+        out_en_out   : OUT std_logic;
         
         pc_out         : OUT std_logic_vector(31 DOWNTO 0);
         mem_data_out   : OUT std_logic_vector(31 DOWNTO 0);
@@ -255,6 +257,8 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL c_alu_sel : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_branch_type : std_logic_vector(2 DOWNTO 0);
     SIGNAL c_is_std, c_sp_write, c_is_stack : std_logic;
+    SIGNAL id_out_en_mux : std_logic;
+
     -- For Hazard detection unit
     SIGNAL stall : std_logic;
     -- Intermediate signals to handle the "Bubble" (Control Mux)
@@ -298,6 +302,7 @@ ARCHITECTURE Structure OF Processor IS
     
     -- STAGE: WB
     SIGNAL wb_reg_write, wb_reg_write_2, wb_wb_sel : std_logic;
+    SIGNAL wb_out_en : std_logic;
     SIGNAL wb_pc, wb_mem_data, wb_alu_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL wb_w_addr_dest, wb_w_addr_swap : std_logic_vector(2 DOWNTO 0);
     SIGNAL wb_write_data, wb_swap_data : std_logic_vector(31 DOWNTO 0);
@@ -397,6 +402,7 @@ BEGIN
     id_opcode <= id_inst(31 DOWNTO 27);
     id_r1     <= id_inst(26 DOWNTO 24); 
     id_r2     <= id_inst(23 DOWNTO 21); 
+    id_w <= id_inst(20 DOWNTO 18);
 
     -- Hazard Detection Logic
     stall <= '1' WHEN (ex_mem_read = '1' AND 
@@ -412,32 +418,17 @@ BEGIN
     id_is_stack_mux    <= c_is_stack    WHEN stall = '0' ELSE '0';
     id_flags_en_mux    <= c_flags_en    WHEN stall = '0' ELSE '0';
     id_branch_type_mux <= c_branch_type WHEN stall = '0' ELSE "000";
+    id_out_en_mux      <= c_out_en      WHEN stall = '0' ELSE '0'; -- ADDED
 
     -- Master PC and IF/ID Enable Logic
     -- Freeze if we have a Hazard (stall), but allow branches to override
     pc_write_sig <= (NOT if_stall AND NOT stall) OR ex_branch_taken OR mem_branch_taken;
     if_id_en_sig <= NOT if_stall AND NOT stall;
-    
-    -- *** FIXED Rdst Logic ***
-    -- If R-Type (ADD, SUB, etc), Destination is 20-18.
-    -- If I-Type (LDM, LDD), Destination is 23-21 (per your Test Case Hex).
-    PROCESS(id_opcode, id_inst)
-    BEGIN
-        CASE id_opcode IS
-            -- List R-Type Opcodes that write to bits 20-18
-            -- Removed OP_DEC to fix the error
-            WHEN OP_ADD | OP_SUB | OP_AND | OP_NOT | OP_INC | OP_SETC | OP_OUT | OP_IN =>
-                id_w <= id_inst(20 DOWNTO 18);
-            
-            -- Default (LDM, IN, MOV, etc) uses bits 23-21
-            WHEN OTHERS =>
-                id_w <= id_inst(23 DOWNTO 21);
-        END CASE;
-    END PROCESS;
+
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
                  ELSE id_r1;
 
-    id_imm_ext <= std_logic_vector(resize(signed(id_inst(15 DOWNTO 0)), 32));
+    id_imm_ext <= std_logic_vector(resize(unsigned(id_inst(15 DOWNTO 0)), 32));
     
     U_Control: ControlUnit PORT MAP (
         opcode => id_opcode,
@@ -473,13 +464,15 @@ BEGIN
         clk => clk, 
         rst => rst_id_ex,
         en => '1',
-        reg_write_in => c_reg_write, reg_write_2_in => c_reg_write_2,
+        reg_write_in => id_reg_write_mux,
+        reg_write_2_in => id_reg_write_2_mux,
         wb_sel_in => c_wb_sel, mem_write_in => c_mem_write, mem_read_in => c_mem_read,
-        out_en_in => c_out_en, rti_en_in => c_rti_en,
-        alu_sel_in => c_alu_sel, alu_src_b_in => c_alu_src_b,
-        is_std_in => c_is_std, sp_write_in => c_sp_write, is_stack_in => c_is_stack,
-        branch_type_in => c_branch_type,
-        flags_en_in => c_flags_en, -- New
+        out_en_in => id_out_en_mux, rti_en_in => c_rti_en,
+        alu_sel_in => c_alu_sel, alu_src_b_in => id_alu_src_b_mux,
+        is_std_in => c_is_std, sp_write_in => id_sp_write_mux,
+        is_stack_in => id_is_stack_mux,
+        branch_type_in => id_branch_type_mux,
+        flags_en_in => id_flags_en_mux,
         port_sel_in => c_port_sel,
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2,
         imm_in => id_imm_or_port, sp_val_in => sp_current,
@@ -491,7 +484,7 @@ BEGIN
         alu_sel_out => ex_alu_sel, alu_src_b_out => ex_alu_src_b,
         is_std_out => ex_is_std, sp_write_out => ex_sp_write, is_stack_out => ex_is_stack,
         branch_type_out => ex_branch_type,
-        flags_en_out => ex_flags_en, -- New
+        flags_en_out => ex_flags_en,
         
         pc_out => ex_pc, r_data1_out => ex_r_data1, r_data2_out => ex_r_data2,
         imm_out => ex_imm_ext, sp_val_out => ex_sp_val,
@@ -567,14 +560,6 @@ BEGIN
 
     ex_write_data <= ex_r_data1 WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE ex_r_data2;
 
-    -- Output Port Latch
-    PROCESS(clk)
-    BEGIN
-        IF rising_edge(clk) THEN
-            IF ex_out_en = '1' THEN output_port <= ex_alu_result; END IF;
-        END IF;
-    END PROCESS;
-
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, 
         rst => rst_ex_mem,
@@ -605,6 +590,8 @@ BEGIN
     ----------------------------------------------------------------------------
     -- 4. MEMORY STAGE
     ----------------------------------------------------------------------------
+
+   
     U_Memory: Memory PORT MAP (
         clk => clk,
         addr => memory_addr, data_in => memory_data_in, we => memory_we,
@@ -621,18 +608,29 @@ BEGIN
         clk => clk, rst => rst, en => '1',
         reg_write_in => mem_reg_write, reg_write_2_in => mem_reg_write_2,
         wb_sel_in => mem_wb_sel,
+        out_en_in => mem_out_en,
         pc_in => mem_pc, mem_data_in => mem_read_data, alu_res_in => mem_alu_result,
         rdst_addr_in => mem_w_addr_dest, rsrc_addr_in => mem_w_addr_swap, r_data2_in => mem_swap_data,
         
         reg_write_out => wb_reg_write, reg_write_2_out => wb_reg_write_2,
         wb_sel_out => wb_wb_sel,
+        out_en_out => wb_out_en,
         pc_out => wb_pc, mem_data_out => wb_mem_data, alu_res_out => wb_alu_result,
         rdst_addr_out => wb_w_addr_dest, rsrc_addr_out => wb_w_addr_swap, r_data2_out => wb_swap_data
     );
 
     ----------------------------------------------------------------------------
     -- 5. WRITE BACK
-    ----------------------------------------------------------------------------
+    ---------------------------------------------------------------------------- 
+    PROCESS(clk)
+    BEGIN
+        IF rising_edge(clk) THEN
+            IF wb_out_en = '1' THEN 
+                output_port <= wb_alu_result; 
+            END IF;
+        END IF;
+    END PROCESS;
+    
     wb_write_data <= wb_mem_data WHEN wb_wb_sel = '1' ELSE wb_alu_result;
     
     -- Debugs
@@ -646,5 +644,6 @@ BEGIN
     debug_reg_w_en <= wb_reg_write;
     debug_mem_w_en <= mem_mem_write;
     debug_alu <= mem_alu_result;
+    out_en <= wb_out_en;
 
 END Structure;

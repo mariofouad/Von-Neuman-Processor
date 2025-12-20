@@ -29,7 +29,7 @@ PACKAGE Processor_Pkg IS
     CONSTANT OP_LDD  : std_logic_vector(4 DOWNTO 0) := "10000";
     CONSTANT OP_STD  : std_logic_vector(4 DOWNTO 0) := "10001";
     CONSTANT OP_JZ   : std_logic_vector(4 DOWNTO 0) := "10010";
-    CONSTANT OP_JN   : std_logic_vector(4 DOWNTO 0) := "10011"; -- Assumed based on sequence, User listed 10111 which conflicts with RET
+    CONSTANT OP_JN   : std_logic_vector(4 DOWNTO 0) := "10011";
     CONSTANT OP_JC   : std_logic_vector(4 DOWNTO 0) := "10100";
     CONSTANT OP_JMP  : std_logic_vector(4 DOWNTO 0) := "10101";
     CONSTANT OP_CALL : std_logic_vector(4 DOWNTO 0) := "10110";
