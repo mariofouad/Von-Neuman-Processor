@@ -6,20 +6,36 @@
 # ---------- Don't forget to Reset before you start anything ---------- #
 
 .ORG 0  #this means the the following line would be  at address  0 , and this is the reset address
-A0
+300
 
-.ORG A0
-NOP            #No change
-NOT R1         #R1 =FFFFFFFF , C--> no change, N --> 1, Z --> 0
-INC R1	       #R1 =00000000 , C --> 1 , N --> 0 , Z --> 1
-IN R1	       #R1= 5,add 5 on the in port,flags no change	
-IN R2          #R2= 10,add 10 on the in port, flags no change
-NOT R2	       #R2= FFFFFFEF, C --> no change, N -->1,Z --> 0
-INC R1         #R1= 6, C --> 0, N --> 0, Z--> 0
-OUT R1
-OUT R2
-SETC	       C --> 1, N --> no change, Z --> no change
-INC R2	       #R2= FFFFFFF0, C --> 0, N -->1, Z --> 0
-OUT R2
+.ORG 300
+
+IN R2            #R2=19 add 19 in R2
+IN R3            #R3=FFFFFFFF
+IN R4            #R4=FFFFF320
+LDM R1,5         #R1=5
+PUSH R1          #SP=FFE,M[FFF]=5
+PUSH R2          #SP=FFD,M[FFE]=19
+POP R1           #SP=FFE,R1=19
+POP R2           #SP=FFF,R2=5
+# Load use & Memory to ALU
+ADD R5, R2, R1   #R5=1E
+
+IN R5            #R5=10
+STD R2,200(R5)   #M[210]=5  (address is hexa)
+
+STD R1,201(R5)   #M[211]=19 (address is hexa)
+LDD R3,201(R5)   #R3=19
+LDD R4,200(R5)   #R4=5
+# Load use & memory to ALU
+ADD R5, R4, R3   #R5=1E
+
+# Load use & Load use at load & mem2alu
+IN R5            #R5= 10
+IN R2            #R2=19
+STD R4, 200(R2)  #M[219]=5
+LDD R3, 201(R5)  #R3=19
+LDD R2, 200(R3)  #R2=5
+ADD R2, R2, R3   #R2=1E
 
 HLT

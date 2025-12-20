@@ -317,6 +317,7 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL memory_data_in, memory_data_out : std_logic_vector(31 DOWNTO 0);
     
     SIGNAL sp_current : std_logic_vector(31 DOWNTO 0);
+    SIGNAL sp_forwarded : std_logic_vector(31 DOWNTO 0);  -- SP with forwarding
     SIGNAL pc_write_sig, if_id_en_sig : std_logic;
 
     -- Intermediate Reset Signals
@@ -499,6 +500,11 @@ BEGIN
         sp_write => mem_sp_write, sp_in => mem_sp_new_val, sp_out => sp_current
     );
 
+    -- SP Forwarding: Use newest SP value from pipeline if stack op is in flight
+    sp_forwarded <= ex_sp_side_result WHEN (ex_sp_write = '1') ELSE  -- Forward from EX stage
+                    mem_sp_new_val    WHEN (mem_sp_write = '1') ELSE -- Forward from MEM stage
+                    sp_current;                                       -- No forwarding needed
+
     U_ID_EX: ID_EX_Reg PORT MAP (
         clk => clk, 
         rst => rst_id_ex,
@@ -514,7 +520,7 @@ BEGIN
         flags_en_in => id_flags_en_mux,
         port_sel_in => c_port_sel,
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2,
-        imm_in => id_imm_or_port, sp_val_in => sp_current,
+        imm_in => id_imm_or_port, sp_val_in => sp_forwarded,  -- Use forwarded SP
         r_addr1_in => id_r1_mux, r_addr2_in => id_r2, rdst_addr_in => id_w,
         
         reg_write_out => ex_reg_write, reg_write_2_out => ex_reg_write_2,
@@ -597,7 +603,8 @@ BEGIN
                          std_logic_vector(unsigned(ex_sp_val) - 1) WHEN (ex_mem_write = '1' AND ex_is_stack = '1') ELSE -- PUSH
                          ex_sp_val;
 
-    ex_write_data <= ex_r_data1 WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE ex_r_data2;
+    -- For PUSH: use ex_src_a (with forwarding) instead of ex_r_data1 (raw register)
+    ex_write_data <= ex_src_a WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE ex_r2_forwarded;
 
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, 

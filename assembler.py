@@ -58,8 +58,8 @@ def assemble_line(line):
         if len(args) >= 1: rdst = parse_reg(args[0])
     elif mnemonic in ['MOV', 'SWAP']:
         if len(args) >= 2:
-            rsrc1 = parse_reg(args[0])
-            rdst  = parse_reg(args[1])
+            rsrc1 = parse_reg(args[0])  # First arg -> source (Rsrc)
+            rdst  = parse_reg(args[1])  # Second arg -> destination (Rdst)
     elif mnemonic in ['ADD', 'SUB', 'AND']:
         if len(args) >= 3:
             rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1]); rsrc2 = parse_reg(args[2])
