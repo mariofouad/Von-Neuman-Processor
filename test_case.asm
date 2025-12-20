@@ -5,37 +5,81 @@
 
 # ---------- Don't forget to Reset before you start anything ---------- #
 
-.ORG 0  #this means the the following line would be  at address  0 , and this is the reset address
-300
+.ORG 0          #this means the the following line would be  at address  0 , and this is the reset address
+10
+
+.ORG 1          #this is hw interrupt handler address (at M[1])
+900
+    
+.ORG 900 #this is hw int handler
+IN R7 # R7=5
+AND R0,R0,R0     #N=0,Z=1
+OUT R3
+RTI              #POP PC and flags restored
+IADD R1, R2, R3  # Try Hardware interrupt when fetching this (in a second run) - infinite loop?
+
+.ORG 10
+IN R1            #R1=30
+IN R2            #R2=50
+IN R3            #R3=100
+IN R4            #R4=300
+Push R4          #SP=FFE, M[FFF]=300
+JMP 30           #taken
+INC R1	         #this statement shouldn't be executed
+ 
+#check flag fowarding  
+.ORG 30
+AND R5,R1,R5     #R5=0 , Z = 1
+JZ  50           #Jump taken, Z = 0
+SETC             #this statement shouldn't be executed, C-->1
+
+#check on flag updated on jump
+.ORG 50
+JZ 30            #shouldn't be taken
+
+# Check on flag updated on ALU operations
+NOT R5           #R5=FFFF_FFFF, Z= 0, C--> not change, N=1
+SUB R7, R5, R5   #Z=1, N=0
+IN R1            #R1=60
+JZ 60            #jump taken, Z=0
+ADD R1, R2, R3   #should not be executed
+
+.ORG 60
+IN R1            #R1=70
+JZ 70            #jump not taken
+JMP 70           #jump taken & TEST prediction=false then unconditional jump
+inc r1           #should not be executed 
+
+# Load use
+.ORG 70
+IADD R1, R1, 10 #R1=80
+SUB R7, R1, R1  # Z=1, N=0
+PUSH R1         # SP=FFD, M[FFE]=80
+POP R1          # SP=FFE, R1=80
+JZ 80           # Taken
+INC R1 		# try hardware interrupt when fetching this
+
+.ORG 80
+#check destination forwarding
+IN  R6           #R6=700, flag no change
+JMP 700          #jump taken
+
+#check on load use
+.ORG 700
+ADD R7, R0, R1   #R7=80
+POP R6           #R6=300, SP=FFF, try hardware interrupt here
+Call 300         #SP=FFE, M[FFF]=next PC
+INC R6	         #R6=401, this statement shouldn't be executed till call returns, C--> 0, N-->0, Z-->0
+NOP
+NOP
+HLT
 
 .ORG 300
+ADD R6,R3,R6     #R6=400
+ADD R1,R1,R2     #R1=D0, C->0, N=0, Z=0
+RET
+ADD R1, R1, R1   #this shouldnot be executed - try hardware interrupt when this is at fetch
 
-IN R2            #R2=19 add 19 in R2
-IN R3            #R3=FFFFFFFF
-IN R4            #R4=FFFFF320
-LDM R1,5         #R1=5
-PUSH R1          #SP=FFE,M[FFF]=5
-PUSH R2          #SP=FFD,M[FFE]=19
-POP R1           #SP=FFE,R1=19
-POP R2           #SP=FFF,R2=5
-# Load use & Memory to ALU
-ADD R5, R2, R1   #R5=1E
-
-IN R5            #R5=10
-STD R2,200(R5)   #M[210]=5  (address is hexa)
-
-STD R1,201(R5)   #M[211]=19 (address is hexa)
-LDD R3,201(R5)   #R3=19
-LDD R4,200(R5)   #R4=5
-# Load use & memory to ALU
-ADD R5, R4, R3   #R5=1E
-
-# Load use & Load use at load & mem2alu
-IN R5            #R5= 10
-IN R2            #R2=19
-STD R4, 200(R2)  #M[219]=5
-LDD R3, 201(R5)  #R3=19
-LDD R2, 200(R3)  #R2=5
-ADD R2, R2, R3   #R2=1E
-
-HLT
+.ORG 500
+NOP
+NOP

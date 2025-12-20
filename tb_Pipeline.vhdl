@@ -21,7 +21,10 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
         debug_reg_w_en: OUT std_logic;
         debug_mem_w_en: OUT std_logic;
         debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
-        input_port    : IN  std_logic_vector(31 DOWNTO 0)
+        input_port    : IN  std_logic_vector(31 DOWNTO 0);
+        irq_line      : IN  std_logic;
+        output_port   : OUT std_logic_vector(31 DOWNTO 0);
+        out_en        : OUT std_logic
     );
     END COMPONENT;
 
@@ -33,6 +36,13 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     
     -- Input Port Signal driven by Process
     SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000000";
+    
+    -- Hardware Interrupt Line
+    SIGNAL irq_line_sig : std_logic := '0';
+    
+    -- Output Port
+    SIGNAL output_port_sig : std_logic_vector(31 DOWNTO 0);
+    SIGNAL out_en_sig : std_logic;
 
     CONSTANT clk_period : time := 10 ns;
 
@@ -70,7 +80,10 @@ BEGIN
         debug_reg_w_en => debug_reg_w_en,
         debug_mem_w_en => debug_mem_w_en,
         debug_alu => debug_alu,
-        input_port => input_port_sig
+        input_port => input_port_sig,
+        irq_line => irq_line_sig,
+        output_port => output_port_sig,
+        out_en => out_en_sig
     );
 
     -- Clock Process
@@ -129,6 +142,11 @@ BEGIN
                    to_hex_string(debug_alu) & " | " & 
                    std_logic'image(debug_reg_w_en) & " | " & 
                    std_logic'image(debug_mem_w_en);
+            IF i = 5 then
+                irq_line_sig <= '1';  -- Assert interrupt earlier
+            ELSIF i = 6 then
+                irq_line_sig <= '0';  -- Keep high longer to ensure it's seen
+            END IF;                
         END LOOP;
         
         REPORT "--- Simulation Finished ---";

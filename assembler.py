@@ -50,7 +50,9 @@ def assemble_line(line):
             return f"ERROR: {mnemonic}"
         
     opcode_bin = OPCODES[mnemonic]
-    rsrc1, rsrc2, rdst, imm = "000", "000", "000", "0000000000000000"
+    rsrc1, rsrc2, rdst = "000", "000", "000"
+    imm15 = "000000000000000"  # 15-bit immediate (bits 14:0)
+    fast_bits = "00"           # Default fast bits (bits 16:15)
     args = parts[1:]
 
     # Formatting based on Instruction Type
@@ -65,22 +67,50 @@ def assemble_line(line):
             rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1]); rsrc2 = parse_reg(args[2])
     elif mnemonic == 'IADD':
         if len(args) >= 3:
-            rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1]); imm = parse_imm(args[2])
+            rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1])
+            imm16 = parse_imm(args[2])
+            imm15 = imm16[1:]  # Take lower 15 bits
     elif mnemonic == 'LDM':
         if len(args) >= 2:
-            rdst = parse_reg(args[0]); imm = parse_imm(args[1])
+            rdst = parse_reg(args[0])
+            imm16 = parse_imm(args[1])
+            imm15 = imm16[1:]  # Take lower 15 bits
     elif mnemonic == 'LDD':
         if len(args) >= 3:
-            rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1]); imm = parse_imm(args[2])
+            rdst = parse_reg(args[0]); rsrc1 = parse_reg(args[1])
+            imm16 = parse_imm(args[2])
+            imm15 = imm16[1:]  # Take lower 15 bits
     elif mnemonic == 'STD':
         if len(args) >= 3:
-            rsrc1 = parse_reg(args[0]); rsrc2 = parse_reg(args[1]); imm = parse_imm(args[2])
-    elif mnemonic in ['JZ', 'JN', 'JC', 'JMP', 'CALL']:
-        if len(args) >= 1: imm = parse_imm(args[0])
+            rsrc1 = parse_reg(args[0]); rsrc2 = parse_reg(args[1])
+            imm16 = parse_imm(args[2])
+            imm15 = imm16[1:]  # Take lower 15 bits
+    elif mnemonic in ['JZ', 'JN', 'JC', 'JMP']:
+        if len(args) >= 1:
+            imm16 = parse_imm(args[0])
+            imm15 = imm16[1:]  # Take lower 15 bits
+    
+    # ========== CONTROL FLOW WITH FAST BITS ==========
+    # Fast Bits (16:15): 11=CALL, 10=RET/RTI, 01=INT
+    elif mnemonic == 'CALL':
+        fast_bits = "11"  # CALL fast bits
+        if len(args) >= 1:
+            imm16 = parse_imm(args[0])
+            imm15 = imm16[1:]  # Target address in bits 14:0
+    elif mnemonic == 'RET':
+        fast_bits = "10"  # RET fast bits
+        # No immediate needed
+    elif mnemonic == 'RTI':
+        fast_bits = "10"  # RTI fast bits (same as RET for hazard detection)
+        # No immediate needed
     elif mnemonic == 'INT':
-        if len(args) >= 1: imm = f"{int(args[0]):016b}"
-
-    binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}00{imm}"
+        fast_bits = "01"  # INT fast bits
+        if len(args) >= 1:
+            index = int(args[0]) & 0x1  # Index is 0 or 1, goes in bit 0
+            imm15 = f"{'0'*14}{index}"
+    
+    # Instruction format: opcode(5) | rsrc1(3) | rsrc2(3) | rdst(3) | 0 | fast(2) | imm(15)
+    binary_str = f"{opcode_bin}{rsrc1}{rsrc2}{rdst}0{fast_bits}{imm15}"
     return f"{int(binary_str, 2):08X}"
 
 def main():

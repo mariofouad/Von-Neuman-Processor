@@ -24,6 +24,9 @@ ENTITY Processor IS
         -- I/O Ports
         input_port    : IN  std_logic_vector(31 DOWNTO 0);
 
+        -- Hardware Interrupt Line
+        irq_line      : IN  std_logic;
+
         -- Output Port
         output_port   : OUT std_logic_vector(31 DOWNTO 0);
         out_en        : OUT std_logic
@@ -229,6 +232,43 @@ ARCHITECTURE Structure OF Processor IS
     );
     END COMPONENT;
 
+    -- Interrupt Controller: Handles HW interrupt line
+    COMPONENT InterruptController
+    PORT (
+        clk            : IN  std_logic;
+        rst            : IN  std_logic;
+        irq_line       : IN  std_logic;
+        cpu_ack        : IN  std_logic;
+        pipeline_clear : IN  std_logic;
+        irq_req        : OUT std_logic;
+        irq_inst       : OUT std_logic_vector(31 DOWNTO 0)
+    );
+    END COMPONENT;
+
+    -- Stack Packer: Packs/unpacks PC and CCR for CALL/RET/INT/RTI
+    COMPONENT StackPacker
+    PORT (
+        is_call       : IN std_logic;
+        is_int        : IN std_logic;
+        pc_current    : IN std_logic_vector(31 DOWNTO 0);
+        pc_plus_1     : IN std_logic_vector(31 DOWNTO 0);
+        ccr_flags     : IN std_logic_vector(2 DOWNTO 0);
+        normal_data   : IN std_logic_vector(31 DOWNTO 0);
+        mem_write_data: OUT std_logic_vector(31 DOWNTO 0);
+        mem_read_data : IN  std_logic_vector(31 DOWNTO 0);
+        restored_pc   : OUT std_logic_vector(31 DOWNTO 0);
+        restored_ccr  : OUT std_logic_vector(2 DOWNTO 0)
+    );
+    END COMPONENT;
+
+    -- Interrupt Vector Unit: Computes vector address
+    COMPONENT InterruptVectorUnit
+    PORT (
+        int_index     : IN std_logic_vector(14 DOWNTO 0);
+        vector_addr   : OUT std_logic_vector(31 DOWNTO 0)
+    );
+    END COMPONENT;
+
     ----------------------------------------------------------------------------
     -- SIGNALS
     ----------------------------------------------------------------------------
@@ -278,9 +318,11 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL ex_branch_type : std_logic_vector(2 DOWNTO 0);
     
     SIGNAL ex_pc, ex_r_data1, ex_r_data2, ex_imm_ext : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_pc_plus_1 : std_logic_vector(31 DOWNTO 0);  -- PC+1 for CALL return address
     SIGNAL ex_r_addr1, ex_r_addr2, ex_w_addr_dest : std_logic_vector(2 DOWNTO 0);
     SIGNAL ex_write_data : std_logic_vector(31 DOWNTO 0);
     SIGNAL ex_src_a, ex_src_b, ex_alu_result : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_alu_result_muxed : std_logic_vector(31 DOWNTO 0);  -- ALU result or vector addr for INT
     SIGNAL ex_zero, ex_neg, ex_carry : std_logic;
     SIGNAL ex_sp_val, ex_sp_side_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL forward_a_sel, forward_b_sel : std_logic_vector(1 DOWNTO 0);
@@ -328,21 +370,94 @@ ARCHITECTURE Structure OF Processor IS
     -- Reset Vector State Machine
     SIGNAL reset_state : std_logic := '1';  -- '1' = reading reset vector, '0' = normal operation
 
+    -- =========================================================================
+    -- INTERRUPT AND CONTROL FLOW SIGNALS
+    -- =========================================================================
+    -- Fast bits from instruction at each stage (bits 16:15)
+    SIGNAL id_fast_bits  : std_logic_vector(1 DOWNTO 0);
+    SIGNAL ex_fast_bits  : std_logic_vector(1 DOWNTO 0);
+    SIGNAL mem_fast_bits : std_logic_vector(1 DOWNTO 0);
+    
+    -- Interrupt Controller signals
+    SIGNAL irq_req           : std_logic;
+    SIGNAL irq_inst          : std_logic_vector(31 DOWNTO 0);
+    SIGNAL irq_cpu_ack       : std_logic;
+    SIGNAL irq_pipeline_clear : std_logic;
+    
+    -- Hazard Unit outputs for control flow
+    SIGNAL ctrl_flow_stall : std_logic;
+    SIGNAL ctrl_flow_flush : std_logic;
+    
+    -- Stack Packer signals
+    SIGNAL is_call_sig   : std_logic;
+    SIGNAL is_int_sig    : std_logic;
+    SIGNAL packed_stack_data : std_logic_vector(31 DOWNTO 0);
+    SIGNAL restored_pc   : std_logic_vector(31 DOWNTO 0);
+    SIGNAL restored_ccr  : std_logic_vector(2 DOWNTO 0);
+    
+    -- Interrupt vector
+    SIGNAL int_vector_addr : std_logic_vector(31 DOWNTO 0);
+    SIGNAL ex_int_index    : std_logic_vector(14 DOWNTO 0);
+    
+    -- INT branch taken in MEM stage
+    SIGNAL mem_int_branch  : std_logic;
+    SIGNAL int_state       : std_logic := '0';  -- '0' = idle/push, '1' = read vector
+    SIGNAL int_vector_addr_latched : std_logic_vector(31 DOWNTO 0);
+    
+    -- Instruction mux for HW interrupt injection
+    SIGNAL if_inst_muxed   : std_logic_vector(31 DOWNTO 0);
+
 BEGIN
 
     ----------------------------------------------------------------------------
     -- 1. FETCH STAGE
     ----------------------------------------------------------------------------
     -- Memory Access Logic (Arbiter)
-    mem_busy <= '1' WHEN (mem_mem_write = '1' OR mem_mem_read = '1') ELSE '0';
+    -- INT requires: 1) Push PC+CCR to stack, 2) Read vector from memory
+    -- With single-port memory, these happen in sequence using int_state.
+    -- 
+    -- INT sequence:
+    -- Cycle N:   INT in MEM stage, mem_write=1, push PC+CCR to stack
+    --            int_state goes to '1', latch vector address
+    -- Cycle N+1: int_state='1', read from latched vector address
+    --            mem_int_branch='1', PC jumps to memory_data_out
     
-    memory_addr <= mem_sp_val      WHEN (mem_is_stack = '1' AND mem_mem_write = '1') ELSE -- PUSH
-                   mem_sp_new_val  WHEN (mem_is_stack = '1' AND mem_mem_read = '1')  ELSE -- POP
-                   mem_alu_result  WHEN (mem_busy = '1')                             ELSE 
-                   pc_current;
+    mem_busy <= '1' WHEN (mem_mem_write = '1' OR mem_mem_read = '1' OR int_state = '1') ELSE '0';
+    
+    -- Memory address selection:
+    memory_addr <= mem_sp_val            WHEN (mem_is_stack = '1' AND mem_mem_write = '1') ELSE -- PUSH/CALL/INT stack push
+                   int_vector_addr_latched WHEN (int_state = '1')                           ELSE -- INT vector read (2nd cycle)
+                   mem_sp_new_val        WHEN (mem_is_stack = '1' AND mem_mem_read = '1')  ELSE -- POP/RET/RTI stack pop
+                   mem_alu_result        WHEN (mem_mem_write = '1' OR mem_mem_read = '1')  ELSE -- LDD/STD
+                   pc_current;                                                                  -- Instruction fetch
                    
     memory_data_in <= mem_write_data;
     memory_we      <= mem_mem_write;
+    
+    -- INT state machine: handles 2-cycle INT operation
+    -- INT sequence:
+    -- When INT is in MEM stage: Push PC+CCR to stack, latch vector address, set int_state='1'
+    -- Next cycle: int_state='1', read vector from latched address, branch
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            int_state <= '0';
+            int_vector_addr_latched <= (others => '0');
+        ELSIF rising_edge(clk) THEN
+            -- State machine for INT read cycle
+            IF mem_branch_type = "111" AND mem_mem_write = '1' AND int_state = '0' THEN
+                -- INT is in MEM stage doing push, latch vector address NOW
+                -- (int_vector_addr is computed from ex_int_index which is stable at this point
+                --  since INT has already passed through EX and is now in MEM)
+                -- Actually we need to use mem stage signals - pass through alu_result
+                int_vector_addr_latched <= mem_alu_result;
+                int_state <= '1';
+            ELSIF int_state = '1' THEN
+                -- Vector read cycle complete, clear state
+                int_state <= '0';
+            END IF;
+        END IF;
+    END PROCESS;
     
     -- Stall IF if Memory is used by MEM stage
     if_stall <= mem_busy;
@@ -350,21 +465,50 @@ BEGIN
     -- Next PC Logic
     pc_plus_1 <= std_logic_vector(unsigned(pc_current) + 1);
     
-    -- FETCH STAGE OPTIMIZATION
-    if_inst <= memory_data_out; 
-    if_opcode <= if_inst(31 DOWNTO 27);
-    if_imm <= std_logic_vector(resize(unsigned(if_inst(15 DOWNTO 0)), 32));
+    -- =========================================================================
+    -- INTERRUPT CONTROLLER INSTANTIATION
+    -- =========================================================================
+    -- CPU acknowledges when INT opcode is being processed in ID stage
+    irq_cpu_ack <= '1' WHEN (id_opcode = OP_INT) ELSE '0';
     
-    if_is_uncond_jmp <= '1' WHEN (if_opcode = "10101" OR if_opcode = "10110") ELSE '0';
+    -- Pipeline is clear when no control flow ops in ID, EX, or MEM stages
+    -- This is the inverse of ctrl_flow_stall (which is based on fast bits)
+    irq_pipeline_clear <= '1' WHEN (id_fast_bits = "00" AND ex_fast_bits = "00" AND mem_fast_bits = "00") ELSE '0';
+    
+    U_InterruptController: InterruptController PORT MAP (
+        clk            => clk,
+        rst            => rst,
+        irq_line       => irq_line,
+        cpu_ack        => irq_cpu_ack,
+        pipeline_clear => irq_pipeline_clear,
+        irq_req        => irq_req,
+        irq_inst       => irq_inst
+    );
+    
+    -- Instruction Mux: Inject HW interrupt instruction when requested
+    if_inst_muxed <= irq_inst WHEN irq_req = '1' ELSE memory_data_out;
+    
+    -- FETCH STAGE OPTIMIZATION
+    if_inst <= if_inst_muxed; 
+    if_opcode <= if_inst(31 DOWNTO 27);
+    if_imm <= std_logic_vector(resize(unsigned(if_inst(14 DOWNTO 0)), 32)); -- Now 15 bits
+    
+    if_is_uncond_jmp <= '1' WHEN (if_opcode = OP_JMP OR if_opcode = OP_CALL) ELSE '0';
     if_jmp_target <= if_imm; 
+    
+    -- =========================================================================
+    -- FAST BITS EXTRACTION (bits 16:15 of instruction)
+    -- =========================================================================
+    id_fast_bits  <= id_inst(16 DOWNTO 15);
 
     -- Calculate Reset Signals (Flush)
     flush_ex  <= ex_branch_taken;
-    flush_mem <= mem_branch_taken;
+    flush_mem <= mem_branch_taken OR int_state;  -- Flush on RET/RTI or INT vector jump
     flush_pipeline <= flush_ex OR flush_mem;
 
-    -- 1. IF/ID: Must be flushed for ANY branch (EX or MEM).
-    rst_if_id  <= rst OR flush_ex OR flush_mem; 
+    -- 1. IF/ID: Must be flushed for ANY branch (EX or MEM) OR control flow flush
+    --    EXCEPT: Don't flush when irq_req is active (we're injecting INT instruction)
+    rst_if_id  <= rst OR flush_ex OR flush_mem OR (ctrl_flow_flush AND NOT irq_req); 
 
     -- 2. ID/EX: Only flush if the branch is in MEM stage. 
     --    DO NOT flush if the branch is in EX stage (don't kill the JZ!)
@@ -372,17 +516,34 @@ BEGIN
 
     -- 3. EX/MEM: Only flush if global reset (or potentially MEM branch depending on ISA)
     rst_ex_mem <= rst OR flush_mem;
-    -- MASTER PC MUX - Now includes reset vector handling
-    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, mem_branch_taken, mem_read_data, reset_state, memory_data_out)
+    
+    -- =========================================================================
+    -- INTERRUPT VECTOR UNIT
+    -- =========================================================================
+    ex_int_index <= ex_imm_ext(14 DOWNTO 0);  -- INT index from immediate field
+    
+    U_InterruptVectorUnit: InterruptVectorUnit PORT MAP (
+        int_index   => ex_int_index,
+        vector_addr => int_vector_addr
+    );
+    
+    -- MASTER PC MUX - Now includes reset vector and INT vector handling
+    PROCESS(pc_plus_1, if_is_uncond_jmp, if_jmp_target, ex_branch_taken, ex_alu_result, 
+            mem_branch_taken, mem_int_branch, mem_read_data, reset_state, memory_data_out,
+            restored_pc, ctrl_flow_stall, int_state)
     BEGIN
         IF reset_state = '1' THEN
             -- After reset, PC=0, memory_data_out contains the reset vector address
             pc_next <= memory_data_out;  -- Jump to reset vector address
+        ELSIF int_state = '1' THEN
+            -- INT: Jump to handler address (vector read from memory)
+            pc_next <= memory_data_out;
         ELSIF mem_branch_taken = '1' THEN
-            pc_next <= mem_read_data; 
+            -- RET/RTI: Jump to restored PC from stack
+            pc_next <= restored_pc; 
         ELSIF ex_branch_taken = '1' THEN
             pc_next <= ex_alu_result; 
-        ELSIF if_is_uncond_jmp = '1' THEN
+        ELSIF if_is_uncond_jmp = '1' AND ctrl_flow_stall = '0' THEN
             pc_next <= if_jmp_target;
         ELSE
             pc_next <= pc_plus_1;
@@ -401,9 +562,7 @@ BEGIN
         END IF;
     END PROCESS;
 
-    -- Allow PC update if not stalled, OR if we are branching, OR if in reset state
-    pc_write_sig <= (NOT if_stall) OR ex_branch_taken OR mem_branch_taken OR reset_state;
-    if_id_en_sig <= NOT if_stall AND NOT reset_state;  -- Don't pass reset vector to IF/ID
+    -- PC and IF/ID enable signals are defined later with halted logic
 
     U_PC: PC PORT MAP (
         clk => clk, rst => rst,
@@ -427,10 +586,13 @@ BEGIN
     id_r2     <= id_inst(23 DOWNTO 21); 
     id_w <= id_inst(20 DOWNTO 18);
 
-    -- Hazard Detection Logic
+    -- Data Hazard Detection Logic (Load-Use)
     stall <= '1' WHEN (ex_mem_read = '1' AND 
                     (id_r1 = ex_w_addr_dest OR id_r2 = ex_w_addr_dest)) 
             ELSE '0';
+    
+    -- Combined stall signal (data hazard OR control flow stall)
+    -- Note: ctrl_flow_stall already handled in pc_write_sig and if_id_en_sig
     
     id_reg_write_mux   <= c_reg_write   WHEN stall = '0' ELSE '0';
     id_reg_write_2_mux <= c_reg_write_2 WHEN stall = '0' ELSE '0';
@@ -441,16 +603,20 @@ BEGIN
     id_is_stack_mux    <= c_is_stack    WHEN stall = '0' ELSE '0';
     id_flags_en_mux    <= c_flags_en    WHEN stall = '0' ELSE '0';
     id_branch_type_mux <= c_branch_type WHEN stall = '0' ELSE "000";
-    id_out_en_mux      <= c_out_en      WHEN stall = '0' ELSE '0'; -- ADDED
+    id_out_en_mux      <= c_out_en      WHEN stall = '0' ELSE '0';
 
     -- Master PC and IF/ID Enable Logic
     -- Freeze if we have a Hazard (stall), but allow branches to override
     -- Also reset_state keeps PC updating and IF/ID frozen during reset vector fetch
     -- Freeze completely when halted
+    -- Also consider control flow stall and int_state
+    -- IMPORTANT: When irq_req='1', we need to HOLD PC but ALLOW IF/ID to capture the INT
     pc_write_sig <= '0' WHEN halted = '1' ELSE
-                    ((NOT if_stall AND NOT stall) OR ex_branch_taken OR mem_branch_taken OR reset_state);
+                    '0' WHEN irq_req = '1' ELSE  -- Hold PC when injecting interrupt
+                    ((NOT if_stall AND NOT stall AND NOT ctrl_flow_stall) OR ex_branch_taken OR mem_branch_taken OR int_state OR reset_state);
     if_id_en_sig <= '0' WHEN halted = '1' ELSE
-                    (NOT if_stall AND NOT stall AND NOT reset_state);
+                    '1' WHEN irq_req = '1' ELSE  -- Allow IF/ID to capture INT instruction when irq_req
+                    (NOT if_stall AND NOT stall AND NOT reset_state AND NOT ctrl_flow_stall AND NOT int_state);
 
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
                  ELSE id_r1;
@@ -599,12 +765,57 @@ BEGIN
         ALU_Result => ex_alu_result, Zero => ex_zero, Negative => ex_neg, Carry => ex_carry
     );
     
+    -- For INT, route vector address through ALU result path to MEM stage
+    -- This way mem_alu_result will contain the vector address when INT is in MEM stage
+    ex_alu_result_muxed <= int_vector_addr WHEN (ex_branch_type = "111") ELSE  -- INT: use vector addr
+                           ex_alu_result;                                       -- Normal: use ALU result
+    
     ex_sp_side_result <= std_logic_vector(unsigned(ex_sp_val) + 1) WHEN (ex_mem_read = '1' AND ex_is_stack = '1') ELSE -- POP
                          std_logic_vector(unsigned(ex_sp_val) - 1) WHEN (ex_mem_write = '1' AND ex_is_stack = '1') ELSE -- PUSH
                          ex_sp_val;
 
-    -- For PUSH: use ex_src_a (with forwarding) instead of ex_r_data1 (raw register)
-    ex_write_data <= ex_src_a WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE ex_r2_forwarded;
+    -- =========================================================================
+    -- STACK PACKER FOR CALL/INT
+    -- =========================================================================
+    -- Detect CALL and INT opcodes in EX stage
+    is_call_sig <= '1' WHEN (ex_branch_type = "101") ELSE '0';  -- CALL branch type
+    is_int_sig  <= '1' WHEN (ex_branch_type = "111") ELSE '0';  -- INT branch type
+    
+    -- Compute PC+1 for CALL return address
+    ex_pc_plus_1 <= std_logic_vector(unsigned(ex_pc) + 1);
+    
+    U_StackPacker: StackPacker PORT MAP (
+        is_call       => is_call_sig,
+        is_int        => is_int_sig,
+        pc_current    => ex_pc,
+        pc_plus_1     => ex_pc_plus_1,
+        ccr_flags     => ccr,
+        normal_data   => ex_src_a,  -- Normal push data (with forwarding)
+        mem_write_data => packed_stack_data,
+        mem_read_data => mem_read_data,
+        restored_pc   => restored_pc,
+        restored_ccr  => restored_ccr
+    );
+
+    
+    -- For PUSH: Use packed stack data for CALL/INT, otherwise use forwarded register
+    ex_write_data <= packed_stack_data WHEN (ex_is_stack = '1' AND ex_mem_write = '1' AND (is_call_sig = '1' OR is_int_sig = '1')) ELSE
+                     ex_src_a          WHEN (ex_is_stack = '1' AND ex_mem_write = '1') ELSE 
+                     ex_r2_forwarded;
+    
+    -- Fast bits tracking through pipeline (extract from branch_type encoding)
+    -- Since we're using branch_type, we can derive fast bits:
+    -- branch_type 101 = CALL -> fast 11
+    -- branch_type 110 = RET/RTI -> fast 10  
+    -- branch_type 111 = INT -> fast 01
+    ex_fast_bits  <= "11" WHEN ex_branch_type = "101" ELSE  -- CALL
+                     "10" WHEN ex_branch_type = "110" ELSE  -- RET/RTI
+                     "01" WHEN ex_branch_type = "111" ELSE  -- INT
+                     "00";
+    mem_fast_bits <= "11" WHEN mem_branch_type = "101" ELSE -- CALL
+                     "10" WHEN mem_branch_type = "110" ELSE -- RET/RTI
+                     "01" WHEN mem_branch_type = "111" ELSE -- INT
+                     "00";
 
     U_EX_MEM: EX_MEM_Reg PORT MAP (
         clk => clk, 
@@ -616,7 +827,7 @@ BEGIN
         sp_write_in => ex_sp_write, is_stack_in => ex_is_stack,
         branch_type_in => ex_branch_type, 
         
-        pc_in => ex_pc, alu_res_in => ex_alu_result, r_data2_in => ex_write_data,
+        pc_in => ex_pc, alu_res_in => ex_alu_result_muxed, r_data2_in => ex_write_data,
         sp_new_val_in => ex_sp_side_result, sp_val_in => ex_sp_val,
         rdst_addr_in => ex_w_addr_dest,
         rsrc_addr_in => ex_r_addr1,
@@ -636,8 +847,12 @@ BEGIN
     ----------------------------------------------------------------------------
     -- 4. MEMORY STAGE
     ----------------------------------------------------------------------------
-
-   
+    
+    -- Memory address for INT: need to read from vector address
+    -- For INT in MEM stage: after pushing PC+CCR, we need to read the vector
+    -- This requires a 2-cycle operation: first push, then read vector
+    -- For simplicity, we'll handle INT branch in EX stage using the vector unit
+    
     U_Memory: Memory PORT MAP (
         clk => clk,
         addr => memory_addr, data_in => memory_data_in, we => memory_we,
@@ -647,8 +862,28 @@ BEGIN
     -- For swap operations, use the r_data2_out from EX_MEM (which is mem_write_data)
     mem_swap_data <= mem_write_data;
 
-    -- Check for RET/RTI
+    -- Check for RET/RTI (branch_type = 110)
     mem_branch_taken <= '1' WHEN (mem_branch_type = "110") ELSE '0';
+    
+    -- Check for INT - branch happens on the 2nd cycle when vector is read
+    -- int_state = '1' means we're reading the vector this cycle
+    mem_int_branch <= int_state;
+    
+    -- =========================================================================
+    -- CCR RESTORATION FOR RTI
+    -- =========================================================================
+    -- When RTI is in MEM stage, restore CCR from the popped stack value
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            -- ccr handled in EX stage process
+        ELSIF rising_edge(clk) THEN
+            IF mem_rti_en = '1' THEN
+                -- Restore CCR from stack (bits 14:12 of mem_read_data)
+                ccr <= restored_ccr;
+            END IF;
+        END IF;
+    END PROCESS;
 
     U_MEM_WB: MEM_WB_Reg PORT MAP (
         clk => clk, rst => rst, en => '1',

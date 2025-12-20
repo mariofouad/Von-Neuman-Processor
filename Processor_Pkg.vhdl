@@ -37,4 +37,11 @@ PACKAGE Processor_Pkg IS
     CONSTANT OP_INT  : std_logic_vector(4 DOWNTO 0) := "11000";
     CONSTANT OP_RTI  : std_logic_vector(4 DOWNTO 0) := "11001";
 
+    -- Fast Bits (bits 16:15 of instruction) for hazard detection
+    -- Used to quickly identify control flow instructions without full decode
+    CONSTANT FAST_NORMAL : std_logic_vector(1 DOWNTO 0) := "00"; -- Normal instructions
+    CONSTANT FAST_INT    : std_logic_vector(1 DOWNTO 0) := "01"; -- INT
+    CONSTANT FAST_RET    : std_logic_vector(1 DOWNTO 0) := "10"; -- RET, RTI
+    CONSTANT FAST_CALL   : std_logic_vector(1 DOWNTO 0) := "11"; -- CALL
+
 END Processor_Pkg;
