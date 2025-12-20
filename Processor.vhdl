@@ -476,7 +476,7 @@ BEGIN
         port_sel_in => c_port_sel,
         pc_in => id_pc, r_data1_in => id_r_data1, r_data2_in => id_r_data2,
         imm_in => id_imm_or_port, sp_val_in => sp_current,
-        r_addr1_in => id_r1, r_addr2_in => id_r2, rdst_addr_in => id_w,
+        r_addr1_in => id_r1_mux, r_addr2_in => id_r2, rdst_addr_in => id_w,
         
         reg_write_out => ex_reg_write, reg_write_2_out => ex_reg_write_2,
         wb_sel_out => ex_wb_sel, mem_write_out => ex_mem_write, mem_read_out => ex_mem_read,
