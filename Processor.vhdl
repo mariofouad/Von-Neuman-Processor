@@ -8,6 +8,9 @@ ENTITY Processor IS
         clk           : IN  std_logic;
         rst           : IN  std_logic;
         
+        -- Hardware Interrupt Input
+        interrupt     : IN  std_logic;  -- External hardware interrupt signal
+        
         -- Debug Outputs
         debug_pc      : OUT std_logic_vector(31 DOWNTO 0);
         debug_if_pc   : OUT std_logic_vector(31 DOWNTO 0);
@@ -349,24 +352,49 @@ ARCHITECTURE Structure OF Processor IS
     SIGNAL ret_in_ex      : std_logic;
     SIGNAL ret_stall      : std_logic;
 
+    -- Hardware Interrupt State Machine
+    -- States: 00=IDLE, 01=DRAIN, 10=FETCH_VECTOR, 11=PUSH_PC
+    SIGNAL hw_int_state      : std_logic_vector(1 DOWNTO 0) := "00";
+    SIGNAL hw_int_return_addr: std_logic_vector(31 DOWNTO 0);  -- PC+1 to return to
+    SIGNAL hw_int_handler    : std_logic_vector(31 DOWNTO 0);  -- Handler address from M[1]
+    SIGNAL hw_int_drain_cnt  : integer range 0 to 7 := 0;      -- Pipeline drain counter
+    SIGNAL hw_int_active     : std_logic;                      -- Interrupt handling in progress
+    SIGNAL hw_int_sp_dec     : std_logic;                      -- Signal to decrement SP
+    SIGNAL hw_int_sp_new     : std_logic_vector(31 DOWNTO 0);  -- New SP value for interrupt
+    
+    CONSTANT HW_INT_IDLE       : std_logic_vector(1 DOWNTO 0) := "00";
+    CONSTANT HW_INT_DRAIN      : std_logic_vector(1 DOWNTO 0) := "01";
+    CONSTANT HW_INT_FETCH_VEC  : std_logic_vector(1 DOWNTO 0) := "10";
+    CONSTANT HW_INT_PUSH_PC    : std_logic_vector(1 DOWNTO 0) := "11";
+
 BEGIN
 
     ----------------------------------------------------------------------------
     -- 1. FETCH STAGE
     ----------------------------------------------------------------------------
-    -- Memory Access Logic (Arbiter)
+    -- Hardware Interrupt is active when not in IDLE state
+    hw_int_active <= '1' WHEN (hw_int_state /= HW_INT_IDLE) ELSE '0';
+    
+    -- Memory Access Logic (Arbiter) - Hardware interrupt has HIGHEST priority
     mem_busy <= '1' WHEN (mem_mem_write = '1' OR mem_mem_read = '1') ELSE '0';
     
-    memory_addr <= mem_sp_val      WHEN (mem_is_stack = '1' AND mem_mem_write = '1') ELSE -- PUSH
-                   mem_sp_new_val  WHEN (mem_is_stack = '1' AND mem_mem_read = '1')  ELSE -- POP
-                   mem_alu_result  WHEN (mem_busy = '1')                             ELSE 
+    memory_addr <= x"00000001"    WHEN (hw_int_state = HW_INT_FETCH_VEC) ELSE -- Read M[1] for handler
+                   sp_current     WHEN (hw_int_state = HW_INT_PUSH_PC)   ELSE -- Push return addr to stack
+                   mem_sp_val     WHEN (mem_is_stack = '1' AND mem_mem_write = '1') ELSE -- PUSH
+                   mem_sp_new_val WHEN (mem_is_stack = '1' AND mem_mem_read = '1')  ELSE -- POP
+                   mem_alu_result WHEN (mem_busy = '1')                             ELSE 
                    pc_current;
-                   
-    memory_data_in <= mem_write_data;
-    memory_we      <= mem_mem_write;
     
-    -- Stall IF if Memory is used by MEM stage
-    if_stall <= mem_busy;
+    -- Memory data input - for hardware interrupt, push return address (PC+1)
+    memory_data_in <= hw_int_return_addr WHEN (hw_int_state = HW_INT_PUSH_PC) ELSE
+                      mem_write_data;
+    
+    -- Memory write enable - hardware interrupt push takes priority
+    memory_we <= '1' WHEN (hw_int_state = HW_INT_PUSH_PC) ELSE
+                 mem_mem_write;
+    
+    -- Stall IF if Memory is used by MEM stage OR hardware interrupt is active
+    if_stall <= mem_busy OR hw_int_active;
     
     -- Next PC Logic
     pc_plus_1 <= std_logic_vector(unsigned(pc_current) + 1);
@@ -406,22 +434,29 @@ BEGIN
     
     flush_pipeline <= flush_ex OR flush_mem;
 
-    -- 1. IF/ID: Must be flushed for ANY branch (EX or MEM).
-    rst_if_id  <= rst OR flush_ex OR flush_mem; 
+    -- 1. IF/ID: Must be flushed for ANY branch (EX or MEM) or hardware interrupt jump
+    rst_if_id  <= rst OR flush_ex OR flush_mem OR (hw_int_state = HW_INT_PUSH_PC); 
 
-    -- 2. ID/EX: Flush when MEM stage has RET 
-    rst_id_ex  <= rst OR flush_mem;
+    -- 2. ID/EX: Flush when MEM stage has RET or hardware interrupt 
+    rst_id_ex  <= rst OR flush_mem OR (hw_int_state = HW_INT_PUSH_PC);
 
-    -- 3. EX/MEM: Only flush on global reset
-    rst_ex_mem <= rst;
+    -- 3. EX/MEM: Only flush on global reset or hardware interrupt
+    rst_ex_mem <= rst OR (hw_int_state = HW_INT_PUSH_PC);
+    
+    -- Hardware Interrupt SP calculation (decrement SP for push)
+    hw_int_sp_new <= std_logic_vector(unsigned(sp_current) - 1);
     
     -- MASTER PC MUX
     PROCESS(pc_plus_1, if_is_uncond_jmp, if_is_int, if_jmp_target, if_int_target, ex_branch_taken, ex_alu_result, 
-            flush_mem, mem_read_data, reset_state, memory_data_out, ret_stall)
+            flush_mem, mem_read_data, reset_state, memory_data_out, ret_stall, hw_int_state, hw_int_handler)
     BEGIN
         IF reset_state = '1' THEN
             -- After reset, PC=0, memory_data_out contains the reset vector address
             pc_next <= memory_data_out;
+        
+        -- Hardware Interrupt: Jump to handler after pushing return address
+        ELSIF hw_int_state = HW_INT_PUSH_PC THEN
+            pc_next <= hw_int_handler;
             
         -- RET/RTI: When detected in MEM stage, use memory read data (return address)
         ELSIF flush_mem = '1' THEN
@@ -457,6 +492,67 @@ BEGIN
             IF reset_state = '1' THEN
                 reset_state <= '0';  -- Clear after one cycle (vector has been read)
             END IF;
+        END IF;
+    END PROCESS;
+
+    ----------------------------------------------------------------------------
+    -- HARDWARE INTERRUPT STATE MACHINE
+    -- Sequence: IDLE -> DRAIN (let pipeline complete) -> FETCH_VEC -> PUSH_PC -> IDLE
+    -- Behavior:
+    --   1. When interrupt fires, capture return address (PC+1) immediately
+    --   2. Let in-flight instructions complete (DRAIN state, ~5 cycles)
+    --   3. Read handler address from M[1]
+    --   4. Push return address to stack, save CCR to shadow
+    --   5. Jump to handler, flush pipeline
+    ----------------------------------------------------------------------------
+    PROCESS(clk, rst)
+    BEGIN
+        IF rst = '1' THEN
+            hw_int_state <= HW_INT_IDLE;
+            hw_int_return_addr <= (others => '0');
+            hw_int_handler <= (others => '0');
+            hw_int_drain_cnt <= 0;
+        ELSIF rising_edge(clk) THEN
+            CASE hw_int_state IS
+                
+                WHEN HW_INT_IDLE =>
+                    -- Check for hardware interrupt (only when not halted and not in reset)
+                    IF interrupt = '1' AND halted = '0' AND reset_state = '0' THEN
+                        -- Capture return address = PC+1 (next instruction after current)
+                        -- The instruction at pc_current will complete as pipeline drains
+                        hw_int_return_addr <= pc_plus_1;
+                        -- Start pipeline drain (5 cycles to let all stages complete)
+                        hw_int_drain_cnt <= 5;
+                        hw_int_state <= HW_INT_DRAIN;
+                    END IF;
+                
+                WHEN HW_INT_DRAIN =>
+                    -- Let pipeline drain - in-flight instructions complete
+                    -- PC is stalled during this time (hw_int_active = '1')
+                    IF hw_int_drain_cnt = 0 THEN
+                        -- Pipeline drained, now fetch handler vector
+                        hw_int_state <= HW_INT_FETCH_VEC;
+                    ELSE
+                        hw_int_drain_cnt <= hw_int_drain_cnt - 1;
+                    END IF;
+                
+                WHEN HW_INT_FETCH_VEC =>
+                    -- Memory address is set to 1, read handler address
+                    -- Capture the result (available this cycle from memory)
+                    hw_int_handler <= memory_data_out;
+                    hw_int_state <= HW_INT_PUSH_PC;
+                
+                WHEN HW_INT_PUSH_PC =>
+                    -- Push return address to stack (memory_addr = SP, data = return_addr)
+                    -- Save CCR to shadow register for later restoration by RTI
+                    -- SP decrement and PC jump happen via external logic
+                    -- Return to IDLE (jump to handler happens via pc_next mux)
+                    hw_int_state <= HW_INT_IDLE;
+                
+                WHEN OTHERS =>
+                    hw_int_state <= HW_INT_IDLE;
+                    
+            END CASE;
         END IF;
     END PROCESS;
 
@@ -503,12 +599,16 @@ BEGIN
     -- Master PC and IF/ID Enable Logic
     -- Freeze if we have a Hazard (stall) or RET in EX (ret_stall), but allow branches to override
     -- When RET is in MEM (flush_mem), update PC with return address
-    -- Freeze completely when halted
+    -- Freeze completely when halted or during hardware interrupt handling
+    -- EXCEPT: Allow PC update when HW interrupt jumps to handler (HW_INT_PUSH_PC state)
     pc_write_sig <= '0' WHEN halted = '1' ELSE
                     '0' WHEN ret_stall = '1' ELSE  -- Stall PC when RET is in EX
+                    '1' WHEN (hw_int_state = HW_INT_PUSH_PC) ELSE  -- Jump to handler
+                    '0' WHEN hw_int_active = '1' ELSE  -- Stall during HW interrupt handling
                     ((NOT if_stall AND NOT stall) OR ex_branch_taken OR flush_mem OR reset_state);
     if_id_en_sig <= '0' WHEN halted = '1' ELSE
                     '0' WHEN ret_stall = '1' ELSE  -- Stall IF/ID when RET is in EX
+                    '0' WHEN hw_int_active = '1' ELSE  -- Stall IF/ID during HW interrupt
                     (NOT if_stall AND NOT stall AND NOT reset_state);
 
     id_r1_mux <= id_w WHEN (id_opcode = OP_PUSH OR id_opcode = OP_NOT OR id_opcode = OP_INC OR id_opcode = OP_OUT) 
@@ -554,9 +654,14 @@ BEGIN
         read_data1 => id_r_data1, read_data2 => id_r_data2
     );
     
+    -- SP write enable: normal pipeline OR hardware interrupt push
+    hw_int_sp_dec <= '1' WHEN (hw_int_state = HW_INT_PUSH_PC) ELSE '0';
+    
     U_SP: SP PORT MAP (
         clk => clk, rst => rst,
-        sp_write => mem_sp_write, sp_in => mem_sp_new_val, sp_out => sp_current
+        sp_write => (mem_sp_write OR hw_int_sp_dec),
+        sp_in => hw_int_sp_new WHEN (hw_int_state = HW_INT_PUSH_PC) ELSE mem_sp_new_val,
+        sp_out => sp_current
     );
 
     -- SP Forwarding: Use newest SP value from pipeline if stack op is in flight
@@ -675,15 +780,19 @@ BEGIN
     -- Return address for CALL/INT: PC+1 (address after the instruction)
     ex_return_addr <= std_logic_vector(unsigned(ex_pc) + 1);
     
-    -- Shadow CCR: Save flags on INT, Restore on RTI
+    -- Shadow CCR: Save flags on software INT or hardware interrupt, Restore on RTI
     PROCESS(clk, rst)
     BEGIN
         IF rst = '1' THEN
             ccr_shadow <= (others => '0');
         ELSIF rising_edge(clk) THEN
-            -- Save CCR to shadow register when INT is in EX stage
+            -- Save CCR to shadow register when:
+            -- 1. Software INT is in EX stage, OR
+            -- 2. Hardware interrupt is about to push PC (after pipeline drain)
             IF ex_is_int = '1' THEN
                 ccr_shadow <= ccr;
+            ELSIF hw_int_state = HW_INT_PUSH_PC THEN
+                ccr_shadow <= ccr;  -- Save flags after in-flight instructions complete
             END IF;
         END IF;
     END PROCESS;

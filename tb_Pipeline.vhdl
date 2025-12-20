@@ -11,6 +11,7 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
     PORT(
         clk           : IN  std_logic;
         rst           : IN  std_logic;
+        interrupt     : IN  std_logic;  -- Hardware interrupt input
         debug_pc      : OUT std_logic_vector(31 DOWNTO 0);
         debug_if_pc   : OUT std_logic_vector(31 DOWNTO 0);
         debug_id_pc   : OUT std_logic_vector(31 DOWNTO 0);
@@ -21,15 +22,20 @@ ARCHITECTURE Behavior OF tb_Pipeline IS
         debug_reg_w_en: OUT std_logic;
         debug_mem_w_en: OUT std_logic;
         debug_alu     : OUT std_logic_vector(31 DOWNTO 0);
-        input_port    : IN  std_logic_vector(31 DOWNTO 0)
+        input_port    : IN  std_logic_vector(31 DOWNTO 0);
+        output_port   : OUT std_logic_vector(31 DOWNTO 0);
+        out_en        : OUT std_logic
     );
     END COMPONENT;
 
     SIGNAL clk : std_logic := '0';
     SIGNAL rst : std_logic := '0';
+    SIGNAL interrupt_sig : std_logic := '0';  -- Hardware interrupt signal
     SIGNAL debug_pc, debug_inst, debug_alu : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_if_pc, debug_id_pc, debug_ex_pc, debug_mem_pc, debug_wb_pc : std_logic_vector(31 DOWNTO 0);
     SIGNAL debug_reg_w_en, debug_mem_w_en : std_logic;
+    SIGNAL output_port_sig : std_logic_vector(31 DOWNTO 0);
+    SIGNAL out_en_sig : std_logic;
     
     -- Input Port Signal driven by Process
     SIGNAL input_port_sig : std_logic_vector(31 DOWNTO 0) := x"00000000";
@@ -60,6 +66,7 @@ BEGIN
     uut: Processor PORT MAP (
         clk => clk,
         rst => rst,
+        interrupt => interrupt_sig,  -- Hardware interrupt (active high)
         debug_pc => debug_pc,
         debug_if_pc => debug_if_pc,
         debug_id_pc => debug_id_pc,
@@ -70,7 +77,9 @@ BEGIN
         debug_reg_w_en => debug_reg_w_en,
         debug_mem_w_en => debug_mem_w_en,
         debug_alu => debug_alu,
-        input_port => input_port_sig
+        input_port => input_port_sig,
+        output_port => output_port_sig,
+        out_en => out_en_sig
     );
 
     -- Clock Process
@@ -101,6 +110,26 @@ BEGIN
             WHEN OTHERS => input_port_sig <= x"FFFFFFFF"; 
         END CASE;
     END PROCESS;
+
+    -- Hardware Interrupt Trigger Process
+    -- Triggers interrupt at specific cycle (adjust HW_INT_TRIGGER_CYCLE to test)
+    -- Set to 0 to disable hardware interrupt testing
+    hw_int_proc: process
+        CONSTANT HW_INT_TRIGGER_CYCLE : integer := 15;  -- Set to cycle number to trigger, 0 to disable
+        CONSTANT HW_INT_DURATION : integer := 2;       -- How many cycles to hold interrupt high
+    begin
+        interrupt_sig <= '0';
+        IF HW_INT_TRIGGER_CYCLE > 0 THEN
+            -- Wait for trigger cycle
+            wait for (HW_INT_TRIGGER_CYCLE + 2) * clk_period;  -- +2 for reset cycles
+            REPORT ">>> HARDWARE INTERRUPT TRIGGERED at cycle " & integer'image(HW_INT_TRIGGER_CYCLE);
+            interrupt_sig <= '1';
+            wait for HW_INT_DURATION * clk_period;
+            interrupt_sig <= '0';
+            REPORT ">>> HARDWARE INTERRUPT RELEASED";
+        END IF;
+        wait;
+    end process;
 
     -- Stimulus Process
     stim_proc: process

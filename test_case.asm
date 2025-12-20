@@ -8,20 +8,30 @@
 .ORG 0          #this means the the following line would be  at address  0 , and this is the reset address
 10
 
+.ORG 2          #this hw interrupt handler
+900
+
+.ORG 900 #this is hw int
+IN R7 # R7=5
+AND R0,R0,R0     #N=0,Z=1
+OUT R3
+RTI              #POP PC and flags restored
+IADD R1, R2, R3  # Try Hardware interrupt when fetching this (in a second run) - infinite loop?
+
 .ORG 10
 IN R1            #R1=30
 IN R2            #R2=50
 IN R3            #R3=100
 IN R4            #R4=300
 Push R4          #SP=FFE, M[FFF]=300
-INT 0           #taken
+JMP 30           #taken
 INC R1	         #this statement shouldn't be executed
  
 #check flag fowarding  
-.ORG 2
+.ORG 30
 AND R5,R1,R5     #R5=0 , Z = 1
+JZ  50           #Jump taken, Z = 0
 SETC             #this statement shouldn't be executed, C-->1
-RTI
 
 #check on flag updated on jump
 .ORG 50
